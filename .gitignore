@@ -1,0 +1,4 @@
+venv
+*.pyc
+*.pyo
+gac/static_files/*
