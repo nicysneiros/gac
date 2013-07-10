@@ -1,0 +1,67 @@
+
+
+/* header */
+
+#main_nav {
+
+	margin: 0 0 0 200px;
+	display: block;
+}
+
+#main_nav > ul {
+
+	list-style-type: none;
+
+}
+
+#main_nav > ul > li:not(:last-child) {
+
+	float: left; 
+	margin-right: 50px;
+}
+
+#main_nav > ul > li:after{
+
+	margin-left: 15px;
+	content: '|';
+}
+
+/* footer */
+
+footer {
+
+	background: #2f2f2f;
+	height: 57px;
+	margin: 15px 0 0 0;
+	padding: 0;
+	color: white;
+	border-radius: 5px;
+}
+
+footer > p {
+	position: absolute;
+	margin: 15px 0 0 15px;
+}
+
+.dn {
+
+	display: none;
+}
+
+.botao {
+
+	height: 31px;
+	width:  31px;
+	float: right;
+	margin:  15px 8px auto 8px;  /*margin: [top] [right] [bottom] [left]*/
+	border-radius: 3px;
+	box-shadow: 1px 1px 1px 0px rgba(255, 255, 255, 0.2), inset 0px 0px 4px 0px rgba(0, 0, 0, 0.2); /*box-shadow: h-shadow v-shadow blur spread color inset;*/
+	-webkit-transition: width 0.1s, height 0.1s;
+	transition: width 0.1s, height 0.1s;
+}
+
+.botao:hover {
+
+	height: 38px;
+	width: 38px;
+};
