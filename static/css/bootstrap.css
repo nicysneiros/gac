@@ -280,7 +280,6 @@ a:focus {
 }
 
 [class*="span"] {
-  float: left;
   min-height: 1px;
   margin-left: 20px;
 }
@@ -406,8 +405,7 @@ a:focus {
 
 .row-fluid [class*="span"] {
   display: block;
-  float: left;
-  width: 100%;
+  width: auto;
   min-height: 30px;
   margin-left: 2.127659574468085%;
   *margin-left: 2.074468085106383%;
@@ -4055,6 +4053,10 @@ input[type="submit"].btn.btn-mini {
   padding-left: 12px;
   margin-right: 2px;
   line-height: 14px;
+    /*Adicionado por Nicolle*/
+  color: rgb(241,126,33);
+  font-weight: 300;
+  font-size: 120%;
 }
 
 .nav-tabs {
@@ -6070,8 +6072,7 @@ a.badge:focus {
 
 .carousel-indicators {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  bottom: 15px;
   z-index: 5;
   margin: 0;
   list-style: none;

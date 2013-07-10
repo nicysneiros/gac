@@ -123,7 +123,6 @@
     clear: both;
   }
   [class*="span"] {
-    float: left;
     min-height: 1px;
     margin-left: 30px;
   }
@@ -220,8 +219,7 @@
   }
   .row-fluid [class*="span"] {
     display: block;
-    float: left;
-    width: 100%;
+    width: auto;
     min-height: 30px;
     margin-left: 2.564102564102564%;
     *margin-left: 2.5109110747408616%;
@@ -268,10 +266,14 @@
     *width: 40.11774868157847%;
   }
   .row-fluid .span4 {
+    margin-left: 0px;
+    margin-right: 2.5641%;
     width: 31.623931623931625%;
     *width: 31.570740134569924%;
   }
   .row-fluid .span3 {
+    margin-left: 0px;
+    margin-right: 2.5641%;
     width: 23.076923076923077%;
     *width: 23.023731587561375%;
   }
