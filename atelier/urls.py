@@ -11,6 +11,7 @@ urlpatterns = patterns('',
 
     url(r'^sematrito/$', 'core.views.index'),
     url(r'^sematrito/bootstrap/$', 'core.views.insertClient'),
+    url(r'^pedidos/$', 'core.views.pedidos'),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
