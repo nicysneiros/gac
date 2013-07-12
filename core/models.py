@@ -19,8 +19,6 @@ class Cliente (models.Model):
     endereco = models.ForeignKey(Endereco, db_column='ID_Endereco')
     # Inserindo uma variavel booleana para identificar se o cliente e pessoa juridica ou nao
     juridico = models.BooleanField()
-    # Inserido novo atributo somente para testar ImageField
-    # Foto = models.ImageField(upload_to='fotos/', null=True)
 
     class Meta:
         db_table = 'Cliente'
@@ -43,7 +41,6 @@ class Servico (models.Model):
 
 
 class Produto (Servico):
-    # Produto_id = models.OneToOneField(Servico, parent_link=True, db_column='id')
     tamanho = models.TextField(blank=True)
     categoria = models.TextField(blank=True)
     foto = models.ImageField(null=True, blank=True, upload_to='fotos/',)
@@ -52,7 +49,6 @@ class Produto (Servico):
         db_table = 'Produto'
 
 class Pedido (Servico):
-    # Pedido_id = models.OneToOneField(Servico, parent_link=True, db_column='id')
     descricao = models.TextField(blank=True)
     prazo = models.DateTimeField(blank=True)
     desenho =  models.ImageField(null=True, blank=True, upload_to='desenhos/',)
@@ -61,7 +57,6 @@ class Pedido (Servico):
         db_table = 'Pedido'
 
 class Corporativo(Pedido):
-    # Corporativo_id = models.OneToOneField(Pedido, parent_link=True, db_column='id')
     qtd_P = models.IntegerField(blank=True)
     qtd_M = models.IntegerField(blank=True)
     qtd_G = models.IntegerField(blank=True)
@@ -72,7 +67,6 @@ class Corporativo(Pedido):
 # class Ajuste(Pedido):
 
 class Personalizado(Pedido):
-    # Personalizado_id = models.OneToOneField(Pedido, parent_link=True, db_column='id')
     altura = models.TextField(blank=True)
     largura = models.TextField(blank=True)
 
