@@ -11,103 +11,91 @@ class Migration(SchemaMigration):
         # Adding model 'Endereco'
         db.create_table('Endereco', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('Logradouro', self.gf('django.db.models.fields.TextField')()),
-            ('Complemento', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('Bairro', self.gf('django.db.models.fields.TextField')()),
-            ('Cidade', self.gf('django.db.models.fields.TextField')()),
-            ('CEP', self.gf('django.db.models.fields.TextField')()),
+            ('logradouro', self.gf('django.db.models.fields.TextField')()),
+            ('complemento', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('bairro', self.gf('django.db.models.fields.TextField')()),
+            ('cidade', self.gf('django.db.models.fields.TextField')()),
+            ('cep', self.gf('django.db.models.fields.TextField')()),
         ))
-        db.send_create_signal(u'atelier', ['Endereco'])
+        db.send_create_signal(u'core', ['Endereco'])
 
         # Adding model 'Cliente'
         db.create_table('Cliente', (
-            ('id', self.gf('django.db.models.fields.IntegerField')(primary_key=True)),
-            ('Nome', self.gf('django.db.models.fields.TextField')()),
-            ('Email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
-            ('Endereco', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['atelier.Endereco'], db_column='ID_Endereco')),
-            ('Foto', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True)),
+            ('id', self.gf('django.db.models.fields.CharField')(max_length=20, primary_key=True)),
+            ('nome', self.gf('django.db.models.fields.TextField')()),
+            ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
+            ('endereco', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Endereco'], db_column='ID_Endereco')),
+            ('juridico', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
-        db.send_create_signal(u'atelier', ['Cliente'])
-
-        # Adding model 'Pessoa_Fisica'
-        db.create_table('Pessoa_Fisica', (
-            (u'cliente_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['atelier.Cliente'], unique=True, primary_key=True)),
-        ))
-        db.send_create_signal(u'atelier', ['Pessoa_Fisica'])
-
-        # Adding model 'Pessoa_Juridica'
-        db.create_table('Pessoa_Juridica', (
-            (u'cliente_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['atelier.Cliente'], unique=True, primary_key=True)),
-        ))
-        db.send_create_signal(u'atelier', ['Pessoa_Juridica'])
+        db.send_create_signal(u'core', ['Cliente'])
 
         # Adding model 'Telefone'
         db.create_table('Telefone', (
-            ('Numero', self.gf('django.db.models.fields.TextField')(primary_key=True)),
+            ('numero', self.gf('django.db.models.fields.TextField')(primary_key=True)),
         ))
-        db.send_create_signal(u'atelier', ['Telefone'])
+        db.send_create_signal(u'core', ['Telefone'])
 
-        # Adding M2M table for field Clientes on 'Telefone'
-        m2m_table_name = db.shorten_name('Telefone_Clientes')
+        # Adding M2M table for field clientes on 'Telefone'
+        m2m_table_name = db.shorten_name('Telefone_clientes')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('telefone', models.ForeignKey(orm[u'atelier.telefone'], null=False)),
-            ('cliente', models.ForeignKey(orm[u'atelier.cliente'], null=False))
+            ('telefone', models.ForeignKey(orm[u'core.telefone'], null=False)),
+            ('cliente', models.ForeignKey(orm[u'core.cliente'], null=False))
         ))
         db.create_unique(m2m_table_name, ['telefone_id', 'cliente_id'])
 
         # Adding model 'Servico'
         db.create_table('Servico', (
             ('id', self.gf('django.db.models.fields.TextField')(primary_key=True)),
-            ('Valor', self.gf('django.db.models.fields.FloatField')(blank=True)),
-            ('Cliente', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['atelier.Cliente'], db_column='ID_Cliente')),
+            ('valor', self.gf('django.db.models.fields.FloatField')(blank=True)),
+            ('cliente', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Cliente'], db_column='ID_Cliente')),
         ))
-        db.send_create_signal(u'atelier', ['Servico'])
+        db.send_create_signal(u'core', ['Servico'])
 
         # Adding model 'Produto'
         db.create_table('Produto', (
-            (u'servico_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['atelier.Servico'], unique=True, primary_key=True)),
-            ('Tamanho', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('Categoria', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('Foto', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
+            (u'servico_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['core.Servico'], unique=True, primary_key=True)),
+            ('tamanho', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('categoria', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('foto', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
         ))
-        db.send_create_signal(u'atelier', ['Produto'])
+        db.send_create_signal(u'core', ['Produto'])
 
         # Adding model 'Pedido'
         db.create_table('Pedido', (
-            (u'servico_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['atelier.Servico'], unique=True, primary_key=True)),
-            ('Descricao', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('Prazo', self.gf('django.db.models.fields.DateTimeField')(blank=True)),
-            ('Desenho', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
+            (u'servico_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['core.Servico'], unique=True, primary_key=True)),
+            ('descricao', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('prazo', self.gf('django.db.models.fields.DateTimeField')(blank=True)),
+            ('desenho', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
         ))
-        db.send_create_signal(u'atelier', ['Pedido'])
+        db.send_create_signal(u'core', ['Pedido'])
 
         # Adding model 'Corporativo'
         db.create_table('Corporativo', (
-            (u'pedido_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['atelier.Pedido'], unique=True, primary_key=True)),
-            ('Qtd_P', self.gf('django.db.models.fields.IntegerField')(blank=True)),
-            ('Qtd_M', self.gf('django.db.models.fields.IntegerField')(blank=True)),
-            ('Qtd_G', self.gf('django.db.models.fields.IntegerField')(blank=True)),
+            (u'pedido_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['core.Pedido'], unique=True, primary_key=True)),
+            ('qtd_P', self.gf('django.db.models.fields.IntegerField')(blank=True)),
+            ('qtd_M', self.gf('django.db.models.fields.IntegerField')(blank=True)),
+            ('qtd_G', self.gf('django.db.models.fields.IntegerField')(blank=True)),
         ))
-        db.send_create_signal(u'atelier', ['Corporativo'])
+        db.send_create_signal(u'core', ['Corporativo'])
 
         # Adding model 'Personalizado'
         db.create_table('Personalizado', (
-            (u'pedido_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['atelier.Pedido'], unique=True, primary_key=True)),
-            ('Altura', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('Largura', self.gf('django.db.models.fields.TextField')(blank=True)),
+            (u'pedido_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['core.Pedido'], unique=True, primary_key=True)),
+            ('altura', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('largura', self.gf('django.db.models.fields.TextField')(blank=True)),
         ))
-        db.send_create_signal(u'atelier', ['Personalizado'])
+        db.send_create_signal(u'core', ['Personalizado'])
 
         # Adding model 'Despesa'
         db.create_table('Despesa', (
             ('id', self.gf('django.db.models.fields.TextField')(primary_key=True)),
-            ('Valor', self.gf('django.db.models.fields.FloatField')()),
-            ('Fornecedor', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('Descricao', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('Servico', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['atelier.Servico'], db_column='ID_Servico')),
+            ('valor', self.gf('django.db.models.fields.FloatField')()),
+            ('fornecedor', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('descricao', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('servico', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Servico'], db_column='ID_Servico')),
         ))
-        db.send_create_signal(u'atelier', ['Despesa'])
+        db.send_create_signal(u'core', ['Despesa'])
 
 
     def backwards(self, orm):
@@ -117,17 +105,11 @@ class Migration(SchemaMigration):
         # Deleting model 'Cliente'
         db.delete_table('Cliente')
 
-        # Deleting model 'Pessoa_Fisica'
-        db.delete_table('Pessoa_Fisica')
-
-        # Deleting model 'Pessoa_Juridica'
-        db.delete_table('Pessoa_Juridica')
-
         # Deleting model 'Telefone'
         db.delete_table('Telefone')
 
-        # Removing M2M table for field Clientes on 'Telefone'
-        db.delete_table(db.shorten_name('Telefone_Clientes'))
+        # Removing M2M table for field clientes on 'Telefone'
+        db.delete_table(db.shorten_name('Telefone_clientes'))
 
         # Deleting model 'Servico'
         db.delete_table('Servico')
@@ -149,77 +131,69 @@ class Migration(SchemaMigration):
 
 
     models = {
-        u'atelier.cliente': {
-            'Email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'Endereco': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['atelier.Endereco']", 'db_column': "'ID_Endereco'"}),
-            'Foto': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True'}),
+        u'core.cliente': {
             'Meta': {'object_name': 'Cliente', 'db_table': "'Cliente'"},
-            'Nome': ('django.db.models.fields.TextField', [], {}),
-            'id': ('django.db.models.fields.IntegerField', [], {'primary_key': 'True'})
+            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
+            'endereco': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Endereco']", 'db_column': "'ID_Endereco'"}),
+            'id': ('django.db.models.fields.CharField', [], {'max_length': '20', 'primary_key': 'True'}),
+            'juridico': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'nome': ('django.db.models.fields.TextField', [], {})
         },
-        u'atelier.corporativo': {
-            'Meta': {'object_name': 'Corporativo', 'db_table': "'Corporativo'", '_ormbases': [u'atelier.Pedido']},
-            'Qtd_G': ('django.db.models.fields.IntegerField', [], {'blank': 'True'}),
-            'Qtd_M': ('django.db.models.fields.IntegerField', [], {'blank': 'True'}),
-            'Qtd_P': ('django.db.models.fields.IntegerField', [], {'blank': 'True'}),
-            u'pedido_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['atelier.Pedido']", 'unique': 'True', 'primary_key': 'True'})
+        u'core.corporativo': {
+            'Meta': {'object_name': 'Corporativo', 'db_table': "'Corporativo'", '_ormbases': [u'core.Pedido']},
+            u'pedido_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['core.Pedido']", 'unique': 'True', 'primary_key': 'True'}),
+            'qtd_G': ('django.db.models.fields.IntegerField', [], {'blank': 'True'}),
+            'qtd_M': ('django.db.models.fields.IntegerField', [], {'blank': 'True'}),
+            'qtd_P': ('django.db.models.fields.IntegerField', [], {'blank': 'True'})
         },
-        u'atelier.despesa': {
-            'Descricao': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'Fornecedor': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+        u'core.despesa': {
             'Meta': {'object_name': 'Despesa', 'db_table': "'Despesa'"},
-            'Servico': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['atelier.Servico']", 'db_column': "'ID_Servico'"}),
-            'Valor': ('django.db.models.fields.FloatField', [], {}),
-            'id': ('django.db.models.fields.TextField', [], {'primary_key': 'True'})
+            'descricao': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'fornecedor': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.TextField', [], {'primary_key': 'True'}),
+            'servico': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Servico']", 'db_column': "'ID_Servico'"}),
+            'valor': ('django.db.models.fields.FloatField', [], {})
         },
-        u'atelier.endereco': {
-            'Bairro': ('django.db.models.fields.TextField', [], {}),
-            'CEP': ('django.db.models.fields.TextField', [], {}),
-            'Cidade': ('django.db.models.fields.TextField', [], {}),
-            'Complemento': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'Logradouro': ('django.db.models.fields.TextField', [], {}),
+        u'core.endereco': {
             'Meta': {'object_name': 'Endereco', 'db_table': "'Endereco'"},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+            'bairro': ('django.db.models.fields.TextField', [], {}),
+            'cep': ('django.db.models.fields.TextField', [], {}),
+            'cidade': ('django.db.models.fields.TextField', [], {}),
+            'complemento': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'logradouro': ('django.db.models.fields.TextField', [], {})
         },
-        u'atelier.pedido': {
-            'Descricao': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'Desenho': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'Meta': {'object_name': 'Pedido', 'db_table': "'Pedido'", '_ormbases': [u'atelier.Servico']},
-            'Prazo': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
-            u'servico_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['atelier.Servico']", 'unique': 'True', 'primary_key': 'True'})
+        u'core.pedido': {
+            'Meta': {'object_name': 'Pedido', 'db_table': "'Pedido'", '_ormbases': [u'core.Servico']},
+            'descricao': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'desenho': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'prazo': ('django.db.models.fields.DateTimeField', [], {'blank': 'True'}),
+            u'servico_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['core.Servico']", 'unique': 'True', 'primary_key': 'True'})
         },
-        u'atelier.personalizado': {
-            'Altura': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'Largura': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'Meta': {'object_name': 'Personalizado', 'db_table': "'Personalizado'", '_ormbases': [u'atelier.Pedido']},
-            u'pedido_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['atelier.Pedido']", 'unique': 'True', 'primary_key': 'True'})
+        u'core.personalizado': {
+            'Meta': {'object_name': 'Personalizado', 'db_table': "'Personalizado'", '_ormbases': [u'core.Pedido']},
+            'altura': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'largura': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            u'pedido_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['core.Pedido']", 'unique': 'True', 'primary_key': 'True'})
         },
-        u'atelier.pessoa_fisica': {
-            'Meta': {'object_name': 'Pessoa_Fisica', 'db_table': "'Pessoa_Fisica'", '_ormbases': [u'atelier.Cliente']},
-            u'cliente_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['atelier.Cliente']", 'unique': 'True', 'primary_key': 'True'})
+        u'core.produto': {
+            'Meta': {'object_name': 'Produto', 'db_table': "'Produto'", '_ormbases': [u'core.Servico']},
+            'categoria': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'foto': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            u'servico_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['core.Servico']", 'unique': 'True', 'primary_key': 'True'}),
+            'tamanho': ('django.db.models.fields.TextField', [], {'blank': 'True'})
         },
-        u'atelier.pessoa_juridica': {
-            'Meta': {'object_name': 'Pessoa_Juridica', 'db_table': "'Pessoa_Juridica'", '_ormbases': [u'atelier.Cliente']},
-            u'cliente_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['atelier.Cliente']", 'unique': 'True', 'primary_key': 'True'})
-        },
-        u'atelier.produto': {
-            'Categoria': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'Foto': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'Meta': {'object_name': 'Produto', 'db_table': "'Produto'", '_ormbases': [u'atelier.Servico']},
-            'Tamanho': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            u'servico_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['atelier.Servico']", 'unique': 'True', 'primary_key': 'True'})
-        },
-        u'atelier.servico': {
-            'Cliente': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['atelier.Cliente']", 'db_column': "'ID_Cliente'"}),
+        u'core.servico': {
             'Meta': {'object_name': 'Servico', 'db_table': "'Servico'"},
-            'Valor': ('django.db.models.fields.FloatField', [], {'blank': 'True'}),
-            'id': ('django.db.models.fields.TextField', [], {'primary_key': 'True'})
+            'cliente': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Cliente']", 'db_column': "'ID_Cliente'"}),
+            'id': ('django.db.models.fields.TextField', [], {'primary_key': 'True'}),
+            'valor': ('django.db.models.fields.FloatField', [], {'blank': 'True'})
         },
-        u'atelier.telefone': {
-            'Clientes': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['atelier.Cliente']", 'db_column': "'ID_Clientes'", 'symmetrical': 'False'}),
+        u'core.telefone': {
             'Meta': {'object_name': 'Telefone', 'db_table': "'Telefone'"},
-            'Numero': ('django.db.models.fields.TextField', [], {'primary_key': 'True'})
+            'clientes': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['core.Cliente']", 'db_column': "'ID_Clientes'", 'symmetrical': 'False'}),
+            'numero': ('django.db.models.fields.TextField', [], {'primary_key': 'True'})
         }
     }
 
-    complete_apps = ['atelier']
+    complete_apps = ['core']
