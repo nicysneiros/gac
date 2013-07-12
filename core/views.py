@@ -6,11 +6,8 @@ import datetime
 
 def index(request):
     clientes = Cliente.objects.all()
-    t = loader.get_template('index.html')
 
-    ctx = Context({'clientes': clientes,})
-
-    return HttpResponse(t.render(ctx))
+    return render(request,'index.html', {'clientes': clientes,})
 
 def insertClient(request):
     if request.method == 'POST':
@@ -27,7 +24,6 @@ def insertClient(request):
     return render(request, 'index.html', locals())
 
 def pedidos(request):
-    pedidosTemplate = loader.get_template('pedidos.html')
     dataAtual = datetime.datetime.now();
     
     #Gerando a lista de pedidos em aberto mostrados na tabela
@@ -47,9 +43,7 @@ def pedidos(request):
         pedidoFechado = Pedidos(dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente.nome, valorCobrado=pedido.valor, despesasLista=despesasLista)
         pedidosFechados.append(pedidoFechado)
 
-    context = Context({'pedidoAbertoList': pedidosAbertos, 'pedidoFechadosList': pedidosFechados})
-    html = pedidosTemplate.render(context)
-    return HttpResponse(html)
+    return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadosList': pedidosFechados})
 
 class Pedidos:
     def __init__(self, dataEntrega, descricao, cliente, valorCobrado, despesasLista):
