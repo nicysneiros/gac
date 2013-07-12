@@ -34,7 +34,8 @@ def pedidos(request):
     pedidosAbertosLista = Pedido.objects.filter(prazo__gte=dataAtual)
     pedidosAbertos = []
     for pedido in pedidosAbertosLista:
-        despesasLista = Despesa.objects.filter(servico=pedido.id)
+        despesasLista = []
+        #despesasLista = Despesa.objects.filter(servico=pedido.id)
         pedidoAberto = Pedidos(dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente.nome, valorCobrado=pedido.valor, despesasLista=despesasLista)
         pedidosAbertos.append(pedidoAberto)
         print pedidosAbertos
@@ -43,7 +44,8 @@ def pedidos(request):
     pedidosFechadosLista = Pedido.objects.filter(prazo__lt=dataAtual)
     pedidosFechados = []
     for pedido in pedidosFechadosLista:
-        despesasLista = Despesa.objects.filter(servico=pedido.id)
+        despesasLista = []
+        #despesasLista = Despesa.objects.filter(servico=pedido.id)
         pedidoFechado = Pedidos(dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente.nome, valorCobrado=pedido.valor, despesasLista=despesasLista)
         pedidosFechados.append(pedidoFechado)
 
