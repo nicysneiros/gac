@@ -1,4 +1,13 @@
+import os
+
 # Django settings for gac project.
+
+
+ROOT_PATH = os.path.dirname(__file__)
+MAIL_SERVER = "imap.gmail.com"
+BOTMAIL_USER = "botmail.sem.atrito@gmail.com"
+BOTMAIL_PASSWORD = "muequals0"
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -15,9 +24,9 @@ DATABASES = {
         'NAME': 'gac',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'postgres',
-        'PASSWORD': 'nicolle',
+        'PASSWORD': 'sibemol',
         'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'PORT': '5432',                      # Set to empty string for default.
     }
 }
 
@@ -61,7 +70,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(ROOT_PATH,'static')
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -69,6 +78,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    os.path.join(ROOT_PATH,'static_files'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -111,7 +121,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    'C:/Users/Nicolle/Documents/UFPE/6_Periodo/PBD/GAC/djcode/gac/templates',
+    os.path.join(ROOT_PATH, 'templates').replace('\\','/'),
 )
 
 INSTALLED_APPS = (
