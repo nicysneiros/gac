@@ -34,7 +34,7 @@ class Telefone(models.Model):
         db_table = 'Telefone'
 
 class Servico (models.Model):
-    id = models.TextField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     valor = models.FloatField(blank=True)
     cliente = models.ForeignKey(Cliente, db_column='ID_Cliente')
 

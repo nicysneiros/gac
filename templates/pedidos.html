@@ -16,6 +16,7 @@
       }
     </style>
     <link href="../static/css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/datepicker.css">
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="../static/img/favicon.ico">
@@ -65,8 +66,56 @@
                   <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>             
                   <!-- Everything you want hidden at 940px or less, place within here -->
                   <div class="nav-collapse collapse">
-                    <!-- .nav, .navbar-search, .navbar-form, etc -->
-                    <button class="btn pull-left">Adicionar Pedido</button>
+                    <!-- Botão de Adicionar Pedido (abre Modal) -->
+                    <a href="#adicionarPedido" role="button" class="btn pull-left" data-toggle="modal">Adicionar Pedido</a>
+
+                    <!--Modal de Adicionar Pedido-->
+                    <div id="adicionarPedido" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="myModalLabel">Adicionar Pedido</h3>
+                      </div>
+                      <div class="modal-body">
+                        <form class="form-horizontal" method="post">
+
+                          <div class="control-group">
+                            <label class="control-label" for="inputDescricao">Descrição do Pedido:</label>
+                            <textarea row="3" id="inputDescricao" placeholder="descrição"></textarea>
+                          </div>
+
+                          <div class="control-group">
+                            <label class="control-label" for="inputPrazo">Prazo de Entrega:</label>
+                            <div class="input-append date" id="dp3" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                              <input class="span2" size="16" type="text" value="12-02-2012" readonly>
+                              <span class="add-on"><i class="icon-calendar"></i></span>
+                            </div>
+                          </div>
+
+                          <div class="control-group">
+                            <label class="control-label" for="inputValor">Valor do Pedido:</label>
+                            <div class="input-prepend input-append">
+                              <span class="add-on">R$</span>
+                              <input class="span2" id="inputValor" type="text">
+                            </div>
+                          </div>
+
+                          <div class="control-group">
+                            <label class="control-label" for="inputCliente">Cliente Solicitante:</label>
+                            <form class="form-search" method="post">
+                              <div class="input-append">
+                                <input type="text" class="span2" id="inputCliente" placeholder="Digite o nome do cliente"></input>
+                                <button type="button" class="btn">Procurar Cliente</button>
+                              </div>
+                            </form>
+                          </div>
+
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <a href="#" class="btn">Close</a>
+                        <a href="#" class="btn btn-primary">Save changes</a>
+                      </div>
+                    </div> <!--Final Modal de Adicionar Pedido-->
 
                     <form class="navbar-search pull-right">
                       <input type="text" class="search-query" placeholder="Search">
@@ -144,6 +193,15 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="../static/js/jquery.js"></script>
-    <script src="../static/bootstrap.js"></script>
+    <script src="../static/js/bootstrap.js"></script>
     <script src="../static/js/bootstrap-editable.js"></script>
+    <script src="../static/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+      $('#dp3').datepicker();
+       $('.datepicker').datepicker()
+          .on('changeDate', function(ev){
+           $('.datepicker').datepicker('hide');
+           });
+    </script>
+    
 </body></html>
