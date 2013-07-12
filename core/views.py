@@ -4,6 +4,10 @@ from django.shortcuts import render
 from django.template import Context, loader
 import datetime
 
+
+def home(request):
+    return render(request,'GAC2.html', {"lol" : "l"})
+
 def index(request):
     clientes = Cliente.objects.all()
 
