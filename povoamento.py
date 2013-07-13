@@ -2,6 +2,11 @@ from core.models import *
 
 #para rodar, abra python manage.py shell, e digite execfile('povoamento.py')
 
+Endereco.objects.all().delete()
+Cliente.objects.all().delete()
+Produto.objects.all().delete()
+Despesa.objects.all().delete()
+
 
 for i in range(0,5):
 	e = Endereco(i, 'logradouro%d'%i,'complemento%d'%i,'bairro%d'%i,'cidade%d'%i,'cep%d'%i)
