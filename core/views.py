@@ -2,14 +2,19 @@ from django.http import HttpResponse
 from core.models import *
 from django.shortcuts import render
 from django.template import Context, loader
-import datetime
-
 import logging
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+import datetime
+
+
 
 logger = logging.getLogger(__name__)
+
+
+def home(request):
+    return render(request,'GAC2.html', {"lol" : "l"})
 
 @csrf_protect
 def index(request):
@@ -68,7 +73,6 @@ def addClient(request):
     return index(request)
 
 def pedidos(request):
-    pedidosTemplate = loader.get_template('pedidos.html')
     dataAtual = datetime.datetime.now();
     
     #Gerando a lista de pedidos em aberto mostrados na tabela
@@ -90,9 +94,9 @@ def pedidos(request):
         pedidoFechado = Pedidos(dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente.nome, valorCobrado=pedido.valor, despesasLista=despesasLista)
         pedidosFechados.append(pedidoFechado)
 
-    context = Context({'pedidoAbertoList': pedidosAbertos, 'pedidoFechadosList': pedidosFechados})
-    html = pedidosTemplate.render(context)
-    return HttpResponse(html)
+    clienteLista = Cliente.objects.all()
+
+    return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadosList': pedidosFechados, 'clienteList': clienteLista})
 
 class Pedidos:
     def __init__(self, dataEntrega, descricao, cliente, valorCobrado, despesasLista):
@@ -111,3 +115,7 @@ class Pedidos:
 def editClientName(request):
     return render_to_response('index.html', {}, context_instance=RequestContext(request))
 
+
+
+def home2(request):
+    return render(request,'home_admin.htm',{})

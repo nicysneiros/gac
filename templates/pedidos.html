@@ -8,18 +8,18 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="../static/css/bootstrap.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
         padding-bottom: 40px;
       }
     </style>
-    <link href="../static/css/bootstrap-responsive.css" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/datepicker.css">
+    <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
 
     <!-- Fav and touch icons -->
-    <link rel="shortcut icon" href="../static/img/favicon.ico">
+    <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico">
 
   </head>
 
@@ -125,10 +125,11 @@
                                  <label class="control-label" for="inputCliente">Cliente Solicitante:</label>
                               </div>
                               <div class="span5">
-                                <div class="input-append">
-                                  <input type="text" class="span2" id="inputCliente" placeholder="Digite o nome do cliente"></input>
-                                  <button type="button" class="btn">Procurar Cliente</button>
-                                </div>
+                                <select>
+                                  {% for cliente in clienteList %}
+                                  <option>{{ cliente.nome }}</option>
+                                  {% endfor %}
+                                </select>
                               </div>
                             </div>
 
@@ -216,10 +217,10 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../static/js/jquery.js"></script>
-    <script src="../static/js/bootstrap.js"></script>
-    <script src="../static/js/bootstrap-editable.js"></script>
-    <script src="../static/js/bootstrap-datepicker.js"></script>
+    <script src="{{STATIC_URL}}js/jquery.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap-editable.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap-datepicker.js"></script>
     <script type="text/javascript">
       $('#dp3').datepicker();
        $('.datepicker').datepicker()
