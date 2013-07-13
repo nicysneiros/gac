@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 
-from core.views import index, addClient, pedidos, home, home2
+from core.views import index, addClient, pedidos, home, home2, cliente
 
 
 
@@ -11,4 +11,6 @@ urlpatterns = patterns('',
 	url(r'bootstrap/$', addClient ),
 	url(r'pedidos/$', pedidos ),
 	url(r'home/$', home2),
+	url(r'cliente/$', cliente),
+
 	)

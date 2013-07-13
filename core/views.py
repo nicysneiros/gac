@@ -119,3 +119,6 @@ def editClientName(request):
 
 def home2(request):
     return render(request,'home_admin.htm',{})
+
+def cliente(request):
+    return render(request, 'cliente.html', {})
