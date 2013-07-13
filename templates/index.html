@@ -4,36 +4,198 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 
+	<script src="{{STATIC_URL}}js/jquery.min.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap-editable.js"></script> 
 	<link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap-editable.css" >
+	<link href="{{STATIC_URL}}css/gac-style.css" rel="stylesheet" media="screen">
+
+	<script type="text/javascript">
+
+	 $(document).ready(function (){
+
+	 	// Criar evento de clique em cada btn-remove para que um método post seja lançado (e, assim, remover um cliente clicado na tabela)
+	 	 
+	 	$(document).on('click','.btn-remove',{}, function () { confirm('Deseja mesmo deletar este cliente?'); }); 
+
+
+	 	$.fn.editable.defaults.mode = 'inline';
+
+	 	$('.nameClient').editable();
+	 	$('.phoneClient').editable();
+
+	 });
+
+	</script>
 </head>
 <body>
-	<img src="{{STATIC_URL}}img/clear.png">
 
-	<h1>Clientes no BD:</h1>
-
-	{% if clientes %}
-	<ul>
-		{% for cliente in clientes %}
-		<li>{{cliente.Nome}}</li>
-		{% endfor %}
-	</ul>
-	{% else %}
-	<p> No clients on database</p>
-	{% endif %}
-
-	<h1>Testando bootstrap:</h1>
+	<h1> Cliente </h1>
 
 	<div class="navbar navbar-inverse">
-	  <div class="navbar-inner">
-		<form class="form-search" style="position:absolute; margin-left: 1000px; margin-top:5px;" method="POST" action="/sematrito/bootstrap/">
+  		<div class="navbar-inner">
+
+  			<!-- Botão para adicionar novo cliente -->
+  			<button type="button"class="btn" data-toggle="modal" data-target="#addClienteModal">Adicionar Cliente</button>
+
+			<!-- Botão para procurar cliente -->
+			<form id="search-form" class="form-search pull-right">
+				<div class="input-append">
+  					<input type="text" class="search-query" placeholder="Search">
+  					<button type="submit" class="btn"><i class="icon-search"></i></button>
+  				</div>
+			</form>
+
+			<!-- Combobox para escolha do tipo de ordenamento -->
+			<select id="sort-select"class="pull-right">
+  				<option>Ordem Alfabética</option>
+  				<option>Pedidos em aberto</option>
+			</select>
+		</div>
+	</div>
+
+	<!-- Tabela de Clientes -->
+
+	{% if linhas %}
+	<table class="table table-striped table-bordered table-hover">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Telefone</th>
+				<th>Pedidos em Aberto</th>
+				<th>Produtos Comprados</th>
+				<th></th>
+			</tr>
+		</thead>
+			{% for linha in linhas %}
+			<tr>
+				<td><a href="#" class="nameClient" data-type="text" data-pk="{{linha.cliente.id}}" data-url="/sematrito/editClientName/">{{linha.cliente.nome}}</a></td>
+				<td><a href="#" class="phoneClient" data-type="text" data-pk="{{linha.cliente.id}}" data-url="/sematrito/editClientName/">{{linha.telefones}}</a></td>
+				<td></td>
+				<td></td>
+				<td><a type="button" class="btn-remove" href="#"><i class="icon-remove"></i></a></td>
+			</tr>
+			{% endfor %}
+		<tbody>
+			
+		</tbody>
+	</table>
+	{% else %}
+	{% endif %}
+
+		<!-- Modal para adicionar novo cliente  -->
+
+		<!-- O que precisa ser feito:
+
+			 1.  Organizar o posicionamento dos elementos
+			 2.  Colocar a acao de submit/post no botao que esta no modal-footer (atualmente esta no botao interno ao form) 
+		-->
+
+	<div id="addClienteModal" class="modal hide fade">
+  		<div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    		<h3>Adicionar Cliente</h3>
+ 		</div>
+ 		<div class="modal-body">
+
+			<form class="form-horizontal" method="POST" action="/sematrito/addClient/">
 				{% csrf_token %}
-	    		<input type="text" class="span2 search-query" placeholder="Nome" name="nome">
-	    		<input type="text" class="span2 search-query" placeholder="Email" name="email">
-	    		<input type="text" class="span2 search-query" placeholder="CPF" name="CPF">
-	    		<input type="submit" class="btn">Search</input>
-	  	</form>
-	  </div>
+
+		  		<fieldset>
+					<div class="control-group">
+		    			<label class="control-label" for="inputName">Nome:</label>
+		    			<div class="controls">
+		      				<input type="text" id="inputName" name="nome">
+		    			</div>
+		  			</div>
+		  			<div class="control-group">
+		    			<label class="control-label" for="inputEmail">Email:</label>
+		    			<div class="controls">
+		      				<input type="text" id="inputEmail" name="email">
+		    			</div>
+		  			</div>
+		  			<div class="control-group">
+		    			<label class="control-label" for="inputId">CPF/CNPJ:</label>
+		    			<div class="controls">
+		      				<input type="text" id="inputId" name="id">
+		    			</div>
+		  			</div>
+		  			<h4>Telefones</h4> 
+		  			<div class="control-group">
+		    			<label class="control-label" for="inputCellPhone">Telefone Celular:</label>
+		    			<div class="controls">
+		      				<input type="text" id="inputCellPhone" name="celular">
+		    			</div>
+		  			</div>
+		    		<div class="control-group">
+		    			<label class="control-label" for="inputPhone">Telefone Residencial:</label>
+		    			<div class="controls">
+		      				<input type="text" id="inputPhone" name="residencial">
+		    			</div>
+		  			</div>
+		  			<h4>Endereço</h4> 
+		  			<div class="control-group">
+		    			<label class="control-label" for="inputStreet">Logradouro:</label>
+		    			<div class="controls">
+		      				<input type="text" id="inputStreet" name="logradouro">
+		    			</div>
+		  			</div>
+		  			<div class="control-group">
+		    			<label class="control-label" for="inputCompl">Complemento:</label>
+		    			<div class="controls">
+		      				<input type="text" id="inputCompl" name="complemento">
+		    			</div>
+		  			</div>
+		  			<div class="control-group">
+		    			<label class="control-label" for="inputZipCode">CEP:</label>
+		    			<div class="controls">
+		      				<input type="text" id="inputZipCode" name="cep">
+		    			</div>
+		  			</div>
+		  			<div class="control-group">
+		    			<label class="control-label" for="inputNeig">Bairro:</label>
+		    			<div class="controls">
+		      				<input type="text" id="inputNeig" name="bairro">
+		    			</div>
+		  			</div>
+		  			<div class="control-group">
+
+		    			<label class="control-label" for="inputCity">Cidade:</label>
+
+		    			<div class="controls controls-row">
+		      				<input type="text" id="inputCity" name="cidade">
+		    			</div>
+		  			</div>
+
+		  		</fieldset>
+				
+		  		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+		  		<button type="submit" class="btn">Adicionar</button>
+			</form>
+
+ 		</div>
+  		<div class="modal-footer">
+    		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+    		<button id="modal-btn-save" class="btn btn-primary">Salvar</button>
+  		</div>
+	</div>
+
+	<div class="span6">
+		  <form>
+			    <div class="controls controls-row">
+			      <input id="name" name="name" type="text" class="span3" placeholder="Name">
+			      <input id="email" name="email" type="email" class="span3" placeholder="Email address">
+			    </div>
+
+			   <div class="controls">
+			     <textarea id="message" name="message" class="span6" placeholder="Your Message" rows="5"></textarea>
+			   </div>
+
+			   <div class="controls">
+			     <button id="contact-submit" type="submit" class="btn btn-primary input-medium pull-right">Send</button>
+			   </div>
+		  </form>
 	</div>
 </body>
 </html>

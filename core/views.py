@@ -2,30 +2,75 @@ from django.http import HttpResponse
 from core.models import *
 from django.shortcuts import render
 from django.template import Context, loader
+import logging
+from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 import datetime
+
+
+
+logger = logging.getLogger(__name__)
 
 
 def home(request):
     return render(request,'GAC2.html', {"lol" : "l"})
 
+@csrf_protect
 def index(request):
+
+    linhas = []
+
     clientes = Cliente.objects.all()
 
-    return render(request,'index.html', {'clientes': clientes,})
+    for cliente in clientes:
+        telefones = cliente.telefone_set.all()
+        linha = {'cliente': cliente, 'telefones': telefones, }
+        linhas.append(linha)
 
-def insertClient(request):
+    return render_to_response('index.html', {'linhas': linhas, }, context_instance=RequestContext(request))
+
+
+# Obs.: Note que falta validar os dados passados pelo usuario. Parte da validacao poderia ser feita no nivel da aplicacao.
+# 
+# Obs.2: Precisa criar o campo "ehJuridico" no formulario para adicionar um novo Cliente
+
+@csrf_protect
+def addClient(request):
+
     if request.method == 'POST':
-        e = Endereco.objects.get(id=1)
-        c = Client()
-        c.Nome = request.POST.get('nome')
-        c.Email = request.POST.get("email")
-        c.id = request.POST.get("CPF")
-        c.Endereco_id = e.id
+        # Cria o endereco
+        e = Endereco()
+        e.logradouro = request.POST.get("logradouro")
+        e.complemento = request.POST.get("complemento")
+        e.bairro = request.POST.get("bairro")
+        e.cidade = request.POST.get("cidade")
+        e.cep = request.POST.get("cep")
+        e.save()
+
+        # Cria o Cliente
+        c = Cliente()
+        c.id = request.POST.get("id")
+        c.nome = request.POST.get('nome')
+        c.email = request.POST.get("email")
+        c.endereco = e
+        c.juridico = True
         c.save()
 
-    clientes = Cliente.objects.all()
+        # Cria o telefone
+        celular = Telefone()
+        celular.numero = request.POST.get("celular")
+        celular.save()
 
-    return render(request, 'index.html', locals())
+        fixo = Telefone()
+        fixo.numero = request.POST.get("residencial")
+        fixo.save()
+
+        # Associa o telefone ao Cliente
+        celular.clientes.add(c)
+        fixo.clientes.add(c)
+
+    return index(request)
 
 def pedidos(request):
     dataAtual = datetime.datetime.now();
@@ -34,7 +79,8 @@ def pedidos(request):
     pedidosAbertosLista = Pedido.objects.filter(prazo__gte=dataAtual)
     pedidosAbertos = []
     for pedido in pedidosAbertosLista:
-        despesasLista = Despesa.objects.filter(servico=pedido.id)
+        despesasLista = []
+        #despesasLista = Despesa.objects.filter(servico=pedido.id)
         pedidoAberto = Pedidos(dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente.nome, valorCobrado=pedido.valor, despesasLista=despesasLista)
         pedidosAbertos.append(pedidoAberto)
         print pedidosAbertos
@@ -43,7 +89,8 @@ def pedidos(request):
     pedidosFechadosLista = Pedido.objects.filter(prazo__lt=dataAtual)
     pedidosFechados = []
     for pedido in pedidosFechadosLista:
-        despesasLista = Despesa.objects.filter(servico=pedido.id)
+        despesasLista = []
+        #despesasLista = Despesa.objects.filter(servico=pedido.id)
         pedidoFechado = Pedidos(dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente.nome, valorCobrado=pedido.valor, despesasLista=despesasLista)
         pedidosFechados.append(pedidoFechado)
 
@@ -61,3 +108,8 @@ class Pedidos:
         valorGastoTotal = 0
         for despesa in despesasLista: valorGastoTotal = valorGastoTotal + despesa.valor
         self.valorGasto = valorGastoTotal
+
+@csrf_protect
+def editClientName(request):
+    return render_to_response('index.html', {}, context_instance=RequestContext(request))
+
