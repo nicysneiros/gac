@@ -133,3 +133,12 @@ def cliente(request):
 def detalhe_pedido(request):
     return render(request, 'detalhe_pedido.html', {})
 
+def produtos(request):
+    return render(request,'produtos.html',{})
+
+def detalhe_produto(request):
+    return render(request, 'detalhe_produto.html', {})
+
+def servico (request):
+    return render(request, 'servico.html', {})
+

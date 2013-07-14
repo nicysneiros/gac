@@ -47,33 +47,37 @@
 
     <div class="tabbable tabs-left" style="padding-left:50px;">
       <ul class="nav nav-tabs">
-        <li class="active">
+        <li>
           <a href="../templates/pedidos.html#" data-toggle="tab">Pedidos</a>
         </li>
-        <li>
+        <li class="active">
           <a href="../templates/servico.html#" data-toggle="tab">Produtos</a>
         </li>
       </ul>
       <!-- Example row of columns -->
       <div class="tab-content" style="padding-right:50px;">
-        <h2>Detalhes do Pedido</h2>
+        <h2>Detalhes do Produto</h2>
         <hr>
         <div align = "left">
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <td colspan="3">
-                  <p style="font-weight:bold;">Descrição do Pedido</p>
+                <td colspan="4">
+                  <p style="font-weight:bold;">Descrição do Produto</p>
                   <p style="color:rgb(124,124,124);">"blablalbalblablalbvalballballvba"</p>
                 </td>
                 <td rowspan="2">
-                  <p style="font-weight:bold;">Desenho do Pedido</p>
+                  <p style="font-weight:bold;">Foto do Produto</p>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <p style="font-weight:bold;">Prazo de Entrega</p>
-                  <p style="color:rgb(124,124,124);">dd/mm/yyyy</p>
+                  <p style="font-weight:bold;">Categoria</p>
+                  <p style="color:rgb(124,124,124);">Moda Feminina</p>
+                </td>
+                <td>
+                  <p style="font-weight:bold;">Tamanho</p>
+                  <p style="color:rgb(124,124,124);">M</p>
                 </td>
                 <td>
                   <p style="font-weight:bold;">Valor Cobrado</p>
@@ -87,7 +91,8 @@
             </tbody>
           </table>
 
-          <h4>Cliente Solicitante</h4>
+          <!--Essa parte só será mostrada se o produto já foi comprado-->
+          <h4>Cliente Comprador</h4>
           <hr>
           <table class="table table-bordered table-hover">
             <tbody>

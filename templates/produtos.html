@@ -47,33 +47,28 @@
 
     <div class="tabbable tabs-left" style="padding-left:50px;">
       <ul class="nav nav-tabs">
-        <li class="active">
+        <li>
           <a href="../templates/pedidos.html#" data-toggle="tab">Pedidos</a>
         </li>
-        <li>
+        <li class="active">
           <a href="../templates/servico.html#" data-toggle="tab">Produtos</a>
         </li>
       </ul>
       <!-- Example row of columns -->
       <div class="tab-content" style="padding-right:50px;">
-        <h2>Pedidos</h2>
+        <h2>Produtos</h2>
         <div align = "center">
           <!-- Barra Inicial -->
            <div class="navbar">
               <div class="navbar-inner">
-                <div class="container">
-                  <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-                  <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></a>             
-                  <!-- Everything you want hidden at 940px or less, place within here -->
-                  <div class="nav-collapse collapse">
-                    <!-- Botão de Adicionar Pedido (abre Modal) -->
-                    <a href="#adicionarPedido" role="button" class="btn pull-left" data-toggle="modal">Adicionar Pedido</a>
+                   <!-- Botão de Adicionar Pedido (abre Modal) -->
+                    <a href="#adicionarPedido" role="button" class="btn pull-left" data-toggle="modal">Adicionar Produto</a>
 
                     <!--Modal de Adicionar Pedido-->
                     <div id="adicionarPedido" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 id="myModalLabel">Adicionar Pedido</h3>
+                        <h3 id="myModalLabel">Adicionar Produto</h3>
                       </div>
                       <div class="modal-body">
                         <form method="post">
@@ -81,7 +76,7 @@
 
                             <div class="span5" align="left">
                               <div>
-                                <label for="inputDescricao">Descrição do Pedido:</label>
+                                <label for="inputDescricao">Descrição do Produto:</label>
                               </div>
                               <div>
                                 <textarea class="span5" row="3" id="inputDescricao" placeholder="descrição"></textarea>
@@ -91,18 +86,15 @@
                             <div class="span5" align="left">
                               <div style="float:left;">
                                 <div>
-                                  <label for="inputPrazo">Prazo de Entrega:</label>
+                                  <label for="inputCategoria">Categoria:</label>
                                 </div>
                                 <div> 
-                                  <div class="input-append date" id="inputPrazo" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input class="span2" size="16" type="text" value="12-02-2012" readonly></input>
-                                    <span class="add-on"><i class="icon-calendar"></i></span>
-                                  </div>
+                                  <input class="span3" type="text" id="inputCategoria"></input>
                                 </div>
                               </div>
                               <div style="float:right;">
                                 <div>
-                                  <label for="inputValor">Valor do Pedido:</label>
+                                  <label for="inputValor">Valor do Produto:</label>
                                 </div>
                                 <div> 
                                   <div class="input-prepend input-append">
@@ -122,20 +114,7 @@
 
                             <div class="span5" align="left">
                               <div>
-                                 <label for="inputCliente">Cliente Solicitante:</label>
-                              </div>
-                              <div>
-                                <select class="span5">
-                                  {% for cliente in clienteList %}
-                                  <option>{{ cliente.nome }}</option>
-                                  {% endfor %}
-                                </select>
-                              </div>
-                            </div>
-
-                            <div class="span5" align="left">
-                              <div>
-                                <label>Escolha o Desenho do Pedido:</label>
+                                <label>Escolha a Foto do Produto:</label>
                               </div>
                               <div>
                                 <div style="width:320px;height:100px;overflow:auto;float:left;">
@@ -168,62 +147,114 @@
                       <input type="text" class="search-query" placeholder="Search">
                     </form>
                   </div>
-                </div>
-              </div>
             </div> <!--Fim da Barra Inicial-->
-          <!--Tabela de Pedidos em aberto-->
+          <!--Tabela de Produtos em Estoque-->
           <div>
-            <h4 align="left">Pedidos em Aberto</h4>
+            <h4 align="left">Produtos em Estoque</h4>
             <table class="table table-striped table-bordered table-hover">
               <thead>
                 <tr>
-                  <th>Data de Entrega</th>
                   <th>Descrição</th>
-                  <th>Cliente</th>
-                  <th>Valor Cobrado</th>
-                  <th>Valor Gasto</th>
+                  <th>Categoria</th>
+                  <th>Valor</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
-                {% for pedidoAberto in pedidoAbertoList %}
-                  <tr>
-                    <td>{{ pedidoAberto.dataEntrega }}</td>
-                    <td>{{ pedidoAberto.descricao }}</td>
-                    <td>{{ pedidoAberto.cliente }}</td>
-                    <td>R$ {{ pedidoAberto.valorCobrado }}</td>
-                    <td>R$ {{ pedidoAberto.valorGasto }}</td>
-                  </tr>
-                {% endfor %}
+                <tr>
+                  <td>Vestido Azul de Seda</td>
+                  <td>Moda Feminina</td>
+                  <td>R$ 60,00</td>
+                  <td width="130">
+                    <button class="btn" href="#registrarVenda" data-toggle="modal">Registrar Venda</button>
+                  </td>
+                </tr>
               </tbody>
             </table>
-          </div> <!--Fim da Tabela de Pedidos em Aberto-->
-          <!--Tabela de Pedidos Fechados-->
+          </div> <!--Fim da Tabela de Produtos em Estoque-->
+
+          <!--Modal de Registrar Venda-->
+                    <div id="registrarVenda" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h3 id="myModalLabel">Registrar Venda</h3>
+                      </div>
+                      <div class="modal-body">
+                        <form method="post">
+                          <div align="center">
+
+                            <div class="span5" align="left">
+                              <div>
+                                 <label for="inputCliente">Cliente Comprador:</label>
+                              </div>
+                              <div>
+                                <select class="span5">
+                                  {% for cliente in clienteList %}
+                                  <option>{{ cliente.nome }}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                            </div>
+
+                            <div class="span5" align="left">
+                              <div style="float:left;">
+                                <div>
+                                  <label for="inputPrazo">Data da Venda:</label>
+                                </div>
+                                <div> 
+                                  <div class="input-append date" id="inputPrazo" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                                    <input class="span2" size="16" type="text" value="12-02-2012" readonly></input>
+                                    <span class="add-on"><i class="icon-calendar"></i></span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="float:right;">
+                                <div>
+                                  <label for="inputValor">Valor do Produto:</label>
+                                </div>
+                                <div> 
+                                  <div class="input-prepend input-append">
+                                    <span class="add-on">R$</span>
+                                    <input class="span2" id="inputValor" type="text" ></input>
+                                  </div>
+                                </div>
+                              </div>
+                              <div style="clear:both;"></div>
+                            </div>
+                          </div>                    
+                         
+                      </div>
+                      <div class="modal-footer">
+                        <a href="#" class="btn">Fechar</a>
+                        <a href="#" class="btn btn-primary" type="submit">Registrar</a>
+                      </div>
+                      </form>
+                    </div> <!--Final Modal de Adicionar Pedido-->
+          <!--Tabela de Produtos Vendidos-->
           <hr>
           <div>
-            <h4 align="left">Pedidos Fechados</h4>
+            <h4 align="left">Produtos Vendidos</h4>
             <table class="table table-striped table-bordered table-hover">
               <thead>
                 <tr>
-                  <th>Data de Entrega</th>
+                  <th>Data de Venda</th>
                   <th>Descrição</th>
+                  <th>Categoria</th>
                   <th>Cliente</th>
-                  <th>Valor Cobrado</th>
-                  <th>Valor Gasto</th>
+                  <th>Valor</th>
                 </tr>
               </thead>
               <tbody>
-                {% for pedidoFechado in pedidoFechadoList %}
                 <tr>
-                  <td>{{ pedidoFechado.dataEntrega }}</td>
-                  <td>{{ pedidoFechado.descricao }}</td>
-                  <td>{{ pedidoFechado.cliente }}</td>
-                  <td>R$ {{ pedidoFechado.valorCobrado }}</td>
-                  <td>R$ {{ pedidoFechado.valorGasto }}</td>
+                  <td>12/06/2013</td>
+                  <td>Camisa social preta</td>
+                  <td>Moda Masculina</td>
+                  <td>João da Silva</td>
+                  <td>R$ 50,00</td>
                 </tr>
-                {% endfor %}
               </tbody>
             </table>
-          </div> <!--Fim da Tabela de Pedidos Fechados-->
+          </div> <!--Fim da Tabela de Produtos Vendidos-->
         </div>
       </div>
     </div> <!-- /container -->
