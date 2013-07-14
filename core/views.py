@@ -96,6 +96,8 @@ def pedidos(request):
 
     clienteLista = Cliente.objects.all()
 
+    for cliente in clienteLista: print cliente.nome
+
     return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadosList': pedidosFechados, 'clienteList': clienteLista})
 
 class Pedidos:
@@ -122,3 +124,6 @@ def home2(request):
 
 def cliente(request):
     return render(request, 'cliente.html', {})
+
+def detalhe_pedido(request):
+    return render(request, 'detalhe_pedido.html', {})
