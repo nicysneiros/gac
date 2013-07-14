@@ -7,6 +7,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 import datetime
+from django.contrib.auth.decorators import login_required
+
+
 
 
 
@@ -72,6 +75,7 @@ def addClient(request):
 
     return index(request)
 
+@login_required(redirect_field_name='redirect_to')
 def pedidos(request):
     dataAtual = datetime.datetime.now();
     
@@ -118,4 +122,4 @@ def editClientName(request):
 
 
 def home2(request):
-    return render(request,'home_admin.htm',{})
+    return render(request,'home_admin.html',{})
