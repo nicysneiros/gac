@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://twitter.github.io/bootstrap/examples/hero.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>GAC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico">
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">GAC</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Inicio</a></li>
+              <li><a href="#">Sobre</a></li>
+              <li><a href="#">Contato</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="tabbable tabs-left" style="padding-left:50px;">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="../templates/pedidos.html#" data-toggle="tab">Pedidos</a>
+        </li>
+        <li>
+          <a href="../templates/servico.html#" data-toggle="tab">Produtos</a>
+        </li>
+      </ul>
+      <!-- Example row of columns -->
+      <div class="tab-content" style="padding-right:50px;">
+        <h2>Detalhes do Pedido</h2>
+        <hr>
+        <div align = "left">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <td colspan="3">
+                  <p style="font-weight:bold;">Descrição do Pedido</p>
+                  <p style="color:rgb(124,124,124);">"blablalbalblablalbvalballballvba"</p>
+                </td>
+                <td rowspan="2">
+                  <p style="font-weight:bold;">Desenho do Pedido</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p style="font-weight:bold;">Prazo de Entrega</p>
+                  <p style="color:rgb(124,124,124);">dd/mm/yyyy</p>
+                </td>
+                <td>
+                  <p style="font-weight:bold;">Valor Cobrado</p>
+                  <p style="color:rgb(124,124,124);">R$ 50,00</p>
+                </td>
+                <td>
+                  <p style="font-weight:bold;">Valor Gasto</p>
+                  <p style="color:rgb(124,124,124);">R$ 30,00</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Cliente Solicitante</h4>
+          <hr>
+          <table class="table table-bordered table-hover">
+            <tbody>
+              <tr>
+                <td>
+                  <p style="font-weight:bold;">Nome do Cliente</p>
+                  <p style="color:rgb(124,124,124);">João da Silva</p>
+                </td>
+                <td>
+                  <p style="font-weight:bold;">Telefone</p>
+                  <p style="color:rgb(124,124,124);">3333-3333</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+         <h4>Histórico de Despesas</h4>
+         <hr>
+         <p><button class="btn" type="button">Adicionar Despesa</button></p>
+         <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Data de Compra</th>
+              <th>Descrição</th>
+              <th>Fornecedor</th>
+              <th>Valor</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>dd/mm/yyyy</td>
+              <td>Blablablablablablbablablablabla</td>
+              <td>Tecidos Mil</td>
+              <td>R$ 20,00</td>
+              <td>
+                <a type="button" class="btn-remove" href="#"><i class="icon-remove"></i></a>
+              </td>
+            </tr>
+          </tbody>           
+         </table>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+    <div>
+      <hr>
+
+      <footer>
+        <p>© NER²J Solutions 2013</p>
+      </footer>
+    </div>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{STATIC_URL}}js/jquery.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap-editable.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+      $('#inputPrazo').datepicker();
+       $('.datepicker').datepicker()
+          .on('changeDate', function(ev){
+           $('.datepicker').datepicker('hide');
+           });
+    </script>
+    <script>
+      function ampliarImagem(_src){
+        element = document.getElementById('imagemAmpliada');
+        element.src = _src;
+      }
+    </script>
+    
+</body></html>
