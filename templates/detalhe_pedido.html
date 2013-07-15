@@ -57,7 +57,7 @@
       <!-- Example row of columns -->
       <div class="tab-content" style="padding-right:50px;">
         <h2>Detalhes do Pedido</h2>
-        <hr>
+        <hr style="margin-top:0px;">
         <div align = "left">
           <table class="table table-bordered">
             <tbody>
@@ -87,8 +87,12 @@
             </tbody>
           </table>
 
+          <p style="margin-bottom:20px;" align="right">
+            <button class="btn" type="button">Remover Pedido</button>
+          </p>
+
           <h4>Cliente Solicitante</h4>
-          <hr>
+          <hr style="margin-top:0px;">
           <table class="table table-bordered table-hover">
             <tbody>
               <tr>
@@ -105,75 +109,10 @@
           </table>
 
          <h4>Histórico de Despesas</h4>
-         <hr>
+         <hr style="margin-top:0px;">
+         
          <p><button class="btn" type="button" href="#adicionarDespesa" data-toggle="modal">Adicionar Despesa</button></p>
-          <!--Modal Adicionar Despesa-->
-          <div id="adicionarDespesa" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 id="myModalLabel">Adicionar Despesa</h3>
-                      </div>
-                      <div class="modal-body">
-                        <form method="post">
-                          <div align="center">
-
-                            <div class="span5" align="left">
-                              <div>
-                                <label for="inputDescricao">Descrição da Despesa:</label>
-                              </div>
-                              <div>
-                                <textarea class="span5" row="3" id="inputDescricao" placeholder="descrição"></textarea>
-                              </div>
-                            </div>
-
-                            <div class="span5" align="left">
-                              <div style="float:left;">
-                                <div>
-                                  <label for="inputData">Data de Compra:</label>
-                                </div>
-                                <div> 
-                                  <div class="input-append date" id="inputData" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input class="span2" size="16" type="text" value="12-02-2012" readonly></input>
-                                    <span class="add-on"><i class="icon-calendar"></i></span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div style="float:right;">
-                                <div>
-                                  <label for="inputValor">Valor da Compra:</label>
-                                </div>
-                                <div> 
-                                  <div class="input-prepend input-append">
-                                    <span class="add-on">R$</span>
-                                    <input class="span2" id="inputValor" type="text" ></input>
-                                  </div>
-                                </div>
-                              </div>
-                              <div style="clear:both;"></div>
-                            </div>
-
-                            <div align="left">
-                              <div style="float:left;">
-                                
-                              </div>
-                            </div>
-
-                            <div class="span5" align="left">
-                              <div>
-                                 <label for="inputFornecedor">Fornecedor:</label>
-                              </div>
-                              <div>
-                                <input class="span5" id="inputFornecedor" type="text"></input>
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-                      <div class="modal-footer">
-                        <a href="#" class="btn">Fechar</a>
-                        <a href="#" class="btn btn-primary" type="submit">Adicionar</a>
-                      </div>
-                      </form>
-                    </div>
+         
          <table class="table table-bordered table-striped">
           <thead>
             <tr>
@@ -206,6 +145,68 @@
       <footer>
         <p>© NER²J Solutions 2013</p>
       </footer>
+    </div>
+
+    <!--Modal Adicionar Despesa-->
+    <div id="adicionarDespesa" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel">Adicionar Despesa</h3>
+      </div>
+      
+      <form method="post">
+        <div class="modal-body">
+          <div align="center">
+              <div class="span5" align="left">
+                <div>
+                  <label for="inputDescricao">Descrição da Despesa:</label>
+                </div>
+                <div>
+                  <textarea class="span5" row="3" id="inputDescricao" placeholder="descrição"></textarea>
+                </div>
+              </div>
+
+              <div class="span5" align="left">
+                <div style="float:left;">
+                  <div>
+                    <label for="inputData">Data de Compra:</label>
+                  </div>
+                  <div> 
+                    <div class="input-append date" id="inputData" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                      <input class="span2" size="16" type="text" value="12-02-2012" readonly>
+                      <span class="add-on"><i class="icon-calendar"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="float:right;">
+                  <div>
+                    <label for="inputValor">Valor da Compra:</label>
+                  </div>
+                  <div> 
+                    <div class="input-prepend input-append">
+                      <span class="add-on">R$</span>
+                      <input class="span2" id="inputValor" type="text" >
+                    </div>
+                  </div>
+                </div>
+                <div style="clear:both;"></div>
+              </div>
+
+              <div class="span5" align="left">
+                <div>
+                  <label for="inputFornecedor">Fornecedor:</label>
+                </div>
+                <div>
+                  <input class="span5" id="inputFornecedor" type="text">
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn">Fechar</a>
+          <a href="#" class="btn btn-primary" type="submit">Adicionar</a>
+        </div>
+      </form>
     </div>
 
     <!-- Le javascript

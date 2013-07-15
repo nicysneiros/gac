@@ -142,3 +142,6 @@ def detalhe_produto(request):
 def servico (request):
     return render(request, 'servico.html', {})
 
+def detalhe_cliente (request):
+    return render(request, 'detalhe_cliente.html', {})
+

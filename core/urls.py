@@ -12,10 +12,11 @@ urlpatterns = patterns('',
 	url(r'pedidos/$', pedidos ),
 	url(r'home/$', views.login, name='login'),
 	url(r'^$', views.login, name='login'),
-	url(r'cliente/$', cliente),
+	url(r'clientes/$', cliente),
 	url(r'detalhe_pedido/$', detalhe_pedido),
 	url(r'produtos/$', produtos),
 	url(r'detalhe_produto/$', detalhe_produto),
 	url(r'servico/$', servico),
+	url(r'detalhe_cliente/$', detalhe_cliente),
 
 	)
