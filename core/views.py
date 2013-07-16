@@ -7,6 +7,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 import datetime
+from django.contrib.auth.decorators import login_required
+
+
 
 
 
@@ -72,6 +75,7 @@ def addClient(request):
 
     return index(request)
 
+@login_required(redirect_field_name='redirect_to')
 def pedidos(request):
     dataAtual = datetime.datetime.now();
     
@@ -96,6 +100,8 @@ def pedidos(request):
 
     clienteLista = Cliente.objects.all()
 
+    for cliente in clienteLista: print cliente.nome
+
     return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadosList': pedidosFechados, 'clienteList': clienteLista})
 
 class Pedidos:
@@ -118,7 +124,24 @@ def editClientName(request):
 
 
 def home2(request):
-    return render(request,'home_admin.htm',{})
+    return render(request,'home_admin.html',{})
+
 
 def cliente(request):
     return render(request, 'cliente.html', {})
+
+def detalhe_pedido(request):
+    return render(request, 'detalhe_pedido.html', {})
+
+def produtos(request):
+    return render(request,'produtos.html',{})
+
+def detalhe_produto(request):
+    return render(request, 'detalhe_produto.html', {})
+
+def servico (request):
+    return render(request, 'servico.html', {})
+
+def detalhe_cliente (request):
+    return render(request, 'detalhe_cliente.html', {})
+

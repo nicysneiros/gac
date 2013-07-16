@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://twitter.github.io/bootstrap/examples/hero.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>GAC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico">
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">GAC</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Inicio</a></li>
+              <li><a href="#">Sobre</a></li>
+              <li><a href="#">Contato</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="tabbable tabs-left" style="padding-left:50px;">
+      <ul class="nav nav-tabs">
+        <li class="active">
+          <a href="../templates/pedidos.html#" data-toggle="tab">Pedidos</a>
+        </li>
+        <li>
+          <a href="../templates/servico.html#" data-toggle="tab">Produtos</a>
+        </li>
+      </ul>
+      <!-- Example row of columns -->
+      <div class="tab-content" style="padding-right:50px;">
+        <h2>Detalhes do Pedido</h2>
+        <hr style="margin-top:0px;">
+        <div align = "left">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <td colspan="3">
+                  <p style="font-weight:bold;">Descrição do Pedido</p>
+                  <p style="color:rgb(124,124,124);">"blablalbalblablalbvalballballvba"</p>
+                </td>
+                <td rowspan="2">
+                  <p style="font-weight:bold;">Desenho do Pedido</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p style="font-weight:bold;">Prazo de Entrega</p>
+                  <p style="color:rgb(124,124,124);">dd/mm/yyyy</p>
+                </td>
+                <td>
+                  <p style="font-weight:bold;">Valor Cobrado</p>
+                  <p style="color:rgb(124,124,124);">R$ 50,00</p>
+                </td>
+                <td>
+                  <p style="font-weight:bold;">Valor Gasto</p>
+                  <p style="color:rgb(124,124,124);">R$ 30,00</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p style="margin-bottom:20px;" align="right">
+            <button class="btn" type="button">Remover Pedido</button>
+          </p>
+
+          <h4>Cliente Solicitante</h4>
+          <hr style="margin-top:0px;">
+          <table class="table table-bordered table-hover">
+            <tbody>
+              <tr>
+                <td>
+                  <p style="font-weight:bold;">Nome do Cliente</p>
+                  <p style="color:rgb(124,124,124);">João da Silva</p>
+                </td>
+                <td>
+                  <p style="font-weight:bold;">Telefone</p>
+                  <p style="color:rgb(124,124,124);">3333-3333</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+         <h4>Histórico de Despesas</h4>
+         <hr style="margin-top:0px;">
+         
+         <p><button class="btn" type="button" href="#adicionarDespesa" data-toggle="modal">Adicionar Despesa</button></p>
+         
+         <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Data de Compra</th>
+              <th>Descrição</th>
+              <th>Fornecedor</th>
+              <th>Valor</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>dd/mm/yyyy</td>
+              <td>Blablablablablablbablablablabla</td>
+              <td>Tecidos Mil</td>
+              <td>R$ 20,00</td>
+              <td>
+                <a type="button" class="btn-remove" href="#"><i class="icon-remove"></i></a>
+              </td>
+            </tr>
+          </tbody>           
+         </table>
+        </div>
+      </div>
+    </div> <!-- /container -->
+
+    <div>
+      <hr>
+
+      <footer>
+        <p>© NER²J Solutions 2013</p>
+      </footer>
+    </div>
+
+    <!--Modal Adicionar Despesa-->
+    <div id="adicionarDespesa" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 id="myModalLabel">Adicionar Despesa</h3>
+      </div>
+      
+      <form method="post">
+        <div class="modal-body">
+          <div align="center">
+              <div class="span5" align="left">
+                <div>
+                  <label for="inputDescricao">Descrição da Despesa:</label>
+                </div>
+                <div>
+                  <textarea class="span5" row="3" id="inputDescricao" placeholder="descrição"></textarea>
+                </div>
+              </div>
+
+              <div class="span5" align="left">
+                <div style="float:left;">
+                  <div>
+                    <label for="inputData">Data de Compra:</label>
+                  </div>
+                  <div> 
+                    <div class="input-append date" id="inputData" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                      <input class="span2" size="16" type="text" value="12-02-2012" readonly>
+                      <span class="add-on"><i class="icon-calendar"></i></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="float:right;">
+                  <div>
+                    <label for="inputValor">Valor da Compra:</label>
+                  </div>
+                  <div> 
+                    <div class="input-prepend input-append">
+                      <span class="add-on">R$</span>
+                      <input class="span2" id="inputValor" type="text" >
+                    </div>
+                  </div>
+                </div>
+                <div style="clear:both;"></div>
+              </div>
+
+              <div class="span5" align="left">
+                <div>
+                  <label for="inputFornecedor">Fornecedor:</label>
+                </div>
+                <div>
+                  <input class="span5" id="inputFornecedor" type="text">
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn">Fechar</a>
+          <a href="#" class="btn btn-primary" type="submit">Adicionar</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{STATIC_URL}}js/jquery.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap-editable.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+      $('#inputData').datepicker();
+       $('.datepicker').datepicker()
+          .on('changeDate', function(ev){
+           $('.datepicker').datepicker('hide');
+           });
+    </script>
+    
+</body></html>
