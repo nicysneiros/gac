@@ -8,6 +8,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 import datetime
 from django.contrib.auth.decorators import login_required
+from ecrawler.models import Draft
 
 
 
@@ -102,7 +103,9 @@ def pedidos(request):
 
     for cliente in clienteLista: print cliente.nome
 
-    return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadosList': pedidosFechados, 'clienteList': clienteLista})
+
+    drawings = Draft.objects.all()
+    return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadosList': pedidosFechados, 'clienteList': clienteLista, "drawings" : drawings})
 
 class Pedidos:
     def __init__(self, dataEntrega, descricao, cliente, valorCobrado, despesasLista):

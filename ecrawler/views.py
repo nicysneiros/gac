@@ -2,8 +2,9 @@
 from django.shortcuts import render
 import imaplib, email, os
 from django.conf import settings
-from books.models import Draft
+from ecrawler.models import Draft
 from django.core.files.base import ContentFile
+from core.views import pedidos
 
 
 
@@ -47,6 +48,6 @@ def crawl(request):
 	                
 	                new_draft.photo.save("%s%d.%s"%("image",new_draft.id,ext),ContentFile(part.get_payload(decode=True)))
 
-	return photos(request)
+	return pedidos(request)
 
 
