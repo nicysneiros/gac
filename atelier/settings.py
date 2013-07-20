@@ -1,6 +1,17 @@
 import os
 
+<<<<<<< HEAD:atelier/settings.py
 # Django settings for sematrito project.
+
+ROOT_PATH = os.path.dirname(__file__)
+MAIL_SERVER = "imap.gmail.com"
+BOTMAIL_USER = "botmail.sem.atrito@gmail.com"
+BOTMAIL_PASSWORD = "muequals0"
+
+=======
+# Django settings for gac project.
+>>>>>>> 74e1a7f61d493e230fc578cea520d1fe563ee71d:gac/settings.py
+
 
 ROOT_PATH = os.path.dirname(__file__)
 MAIL_SERVER = "imap.gmail.com"
@@ -23,9 +34,15 @@ DATABASES = {
         'NAME': 'gac',               # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'postgres',
+<<<<<<< HEAD:atelier/settings.py
         'PASSWORD': '1234',
         'HOST': 'localhost',             # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
+=======
+        'PASSWORD': 'sibemol',
+        'HOST': 'localhost',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '5432',                      # Set to empty string for default.
+>>>>>>> 74e1a7f61d493e230fc578cea520d1fe563ee71d:gac/settings.py
     }
 }
 
@@ -69,7 +86,11 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
+<<<<<<< HEAD:atelier/settings.py
 STATIC_ROOT = os.path.abspath(os.path.join(ROOT_PATH,'../static'))
+=======
+STATIC_ROOT = os.path.join(ROOT_PATH,'static')
+>>>>>>> 74e1a7f61d493e230fc578cea520d1fe563ee71d:gac/settings.py
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -77,7 +98,11 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+<<<<<<< HEAD:atelier/settings.py
     os.path.abspath(os.path.join(ROOT_PATH,'../static_files')),
+=======
+    os.path.join(ROOT_PATH,'static_files'),
+>>>>>>> 74e1a7f61d493e230fc578cea520d1fe563ee71d:gac/settings.py
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -121,6 +146,10 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+<<<<<<< HEAD:atelier/settings.py
+=======
+    os.path.join(ROOT_PATH, 'templates').replace('\\','/'),
+>>>>>>> 74e1a7f61d493e230fc578cea520d1fe563ee71d:gac/settings.py
 )
 
 INSTALLED_APPS = (
