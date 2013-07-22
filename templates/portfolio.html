@@ -55,11 +55,75 @@
         <li class="active">
           <a href="../templates/portfolio.html#" data-toggle="tab">Portfólio</a>
         </li>
+        <li>
+          <a href="../templates/portfolio.html#" data-toggle="tab">Relatório</a>
+        </li>
       </ul>
       <!-- Example row of columns -->
       <div class="tab-content">
-        <p> Conteúdo da página "Portfólio" </p>
-      </div>
+        <h2>Portfólio</h2>
+
+        <!-- Barra Inicial -->
+           <div class="navbar"  style="padding-right:50px;">
+              <div class="navbar-inner">
+                   <!-- Botão de Adicionar Pedido (abre Modal) -->
+                    <a href="#adicionarItem" role="button" class="btn pull-left" data-toggle="modal">Adicionar Item</a>
+
+                    <form class="navbar-search pull-right">
+                      <input type="text" class="search-query" placeholder="Search">
+                    </form>
+                  </div>
+            </div> <!--Fim da Barra Inicial-->
+
+            <!--Thumbnails (Aparece apenas os produtos que estão expostos no portfólio-->
+            <div align="center">
+                <div id="portfolio" align="center">
+                  <ul class="thumbnails" aling="center">
+                    <li class="span3">
+                      <div class="thumbnail">
+                        <img src="{{STATIC_URL}}img/thumbnail/saia.png" width="160" height="230">
+                        <div class="caption">
+                          <h3>Saia Pontilhada</h3>
+                          <h5>Moda Feminina</h5>
+                          <p>
+                            Saia de meia altura, recortada feita de algodão. Cor: Pontilhada
+                          </p>
+                          <h5>R$ 30,00</h5>
+                          <p> <a href="#" class="btn">Remover Item</a> </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="span3">
+                      <div class="thumbnail">
+                        <img src="{{STATIC_URL}}img/thumbnail/calca.png" width="160" height="230">
+                        <div class="caption">
+                          <h3>Calça Jeans</h3>
+                          <h5>Moda Masculina</h5>
+                          <p>
+                            Calça Jeans de cintura baixa e bolsos frontais. Cor: Preta
+                          </p>
+                          <h5>R$ 85,00</h5>
+                          <p> <a href="#" class="btn">Remover Item</a> </p>
+                        </div>
+                      </div>
+                    </li>
+                     <li class="span3">
+                      <div class="thumbnail">
+                        <img src="{{STATIC_URL}}img/thumbnail/camisa.png" width="160" height="230">
+                        <div class="caption">
+                          <h3>Camisa Social</h3>
+                          <h5>Moda Masculina</h5>
+                          <p>
+                            Camisa social de algodão com mangas longas. Cor: Preta
+                          </p>
+                          <h5>R$ 60,00</h5>
+                          <p> <a href="#" class="btn">Remover Item</a> </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div><!--Thumbnails-->
+        </div>
     </div> <!-- /container -->
 
     <div>
@@ -70,10 +134,78 @@
       </footer>
     </div>
 
+    <!--Modal de Adicionar Item no Portfólio-->
+    <div id="adicionarItem" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true" style="width:630px;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Adicionar Item no Portfólio</h3>
+      </div>
+      
+      <div class="modal-body">
+       <!-- Barra Inicial -->
+           <div class="navbar">
+              <div class="navbar-inner">
+                    <form class="navbar-search pull-right">
+                      <input type="text" class="search-query" placeholder="Search">
+                    </form>
+                  </div>
+            </div> 
+            <!--Fim da Barra Inicial-->
+      <!--Aqui serão mostrados apenas os produtos cadastrados que não estão no portfólio-->
+       <div id="portfolio" align="center">
+                  <ul class="thumbnails" aling="center">
+                    <li class="span2">
+                      <div class="thumbnail">
+                        <img src="{{STATIC_URL}}img/thumbnail/vestido.png" width="80" height="115">
+                        <div class="caption">
+                          <h4>Vestido</h4>
+                          <h6>Moda Feminina</h6>
+                          <p>
+                            Vestido tomara-que-caia com babados Cor: Salmão
+                          </p>
+                          <h6>R$ 90,00</h6>
+                          <p> <a href="#" class="btn btn-primary">Adicionar ao Portfólio</a> </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="span2">
+                      <div class="thumbnail">
+                        <img src="{{STATIC_URL}}img/thumbnail/short.png" width="80" height="115">
+                        <div class="caption">
+                          <h4>Short Jeans</h4>
+                          <h6>Moda Feminina</h6>
+                          <p>
+                            Short Jeans de lavagem clara Cor: Azul
+                          </p>
+                          <h6>R$ 40,00</h6>
+                          <p> <a href="#" class="btn btn-primary">Adicionar ao Portfólio</a> </p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="span2">
+                      <div class="thumbnail">
+                        <img src="{{STATIC_URL}}img/thumbnail/blusa.png" width="80" height="115">
+                        <div class="caption">
+                          <h4>Blusa de Botão</h4>
+                          <h6>Moda Feminina</h6>
+                          <p>
+                            Blusa de botão, sem mangas e com detalhes em renda e babados Cor: Verde
+                          </p>
+                          <h6>R$ 25,00</h6>
+                          <p> <a href="#" class="btn btn-primary">Adicionar ao Portfólio</a> </p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div><!--Thumbnails-->
+              </div>
+    </div> <!--Final Modal de Adicionar Pedido-->
+
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="{{STATIC_URL}}js/jquery.js"></script>
     <script src="{{STATIC_URL}}js/bootstrap.js"></script>
     <script src="{{STATIC_URL}}js/bootstrap-editable.js"></script>
+    <script type="text/javascript">$('.thumbnail-title').editable();</script>
 </body></html>

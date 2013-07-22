@@ -19,5 +19,7 @@ urlpatterns = patterns('',
 	url(r'detalhe_produto/$', detalhe_produto),
 	url(r'servico/$', servico),
 	url(r'detalhe_cliente/$', detalhe_cliente),
+	url(r'portfolio/$', portfolio),
+	url(r'relatorio/$', relatorio),
 
 	)

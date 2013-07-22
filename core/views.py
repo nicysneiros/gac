@@ -148,3 +148,9 @@ def servico (request):
 def detalhe_cliente (request):
     return render(request, 'detalhe_cliente.html', {})
 
+def portfolio (request):
+    return render(request, 'portfolio.html', {})
+
+def relatorio (request):
+    return render(request, 'relatorio.html', {})
+
