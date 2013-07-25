@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 
+from pedido.views import *
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -8,9 +10,9 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
 
-    url(r'^sematrito/', include('core.urls')),
-    url(r'^accounts/login/', include('core.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'info_pedidos/$', pedidos),
+    url(r'detalhe_pedido/(\d+)/$', detalhe_pedido),
+
 )
 
 

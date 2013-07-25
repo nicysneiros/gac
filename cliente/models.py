@@ -21,6 +21,8 @@ class Cliente (models.Model):
     # Inserindo uma variavel booleana para identificar se o cliente e pessoa juridica ou nao
     juridico = models.BooleanField()
 
+    #Sugestão de Alteração do BD: ao invés de uma tabela de telefones, criar os atributos "telefoneResidencial" e "telefoneCelular" no Model Cliente
+
     class Meta:
         db_table = 'Cliente'
 

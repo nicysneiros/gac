@@ -10,18 +10,14 @@ urlpatterns = patterns('',
 
     url(r'^sematrito/', include('core.urls')),
     url(r'^accounts/login/', include('core.urls')),
-    #url(r'^sematrito/bootstrap/$', 'core.views.insertClient'),
-    #url(r'^sematrito/bootstrap/$', 'core.views.insertClient')
-    #url(r'^pedidos/$', 'core.views.pedidos'),
-    #-
-    #url(r'^sematrito/$', 'core.views.index'),
-    #url(r'^pedidos/$', 'core.views.pedidos'),
-    #url(r'^sematrito/addClient/$', 'core.views.addClient'),
-    #url(r'^sematrito/editClientName/$', 'core.views.editClientName'),
-    #-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
+    url(r'^cliente/', include('cliente.urls')),
+    url(r'^pedido/', include('pedido.urls')),
+    url(r'^produto/', include('produto.urls')),
+    url(r'^portfolio/', include('portfolio.urls')),
+    url(r'^portfolio_admin/', include('portfolio_admin.urls')),
+    url(r'^relatorio/', include('relatorio.urls')),
+    
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )

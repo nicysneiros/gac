@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
 
-from core.views import *
+from core.views import detalhe_pedido,addClient,pedidos,produtos,servico,cliente,detalhe_produto,detalhe_cliente,portfolio,relatorio
 
 from django.contrib.auth import views
 

@@ -69,101 +69,6 @@
                     <!-- Botão de Adicionar Pedido (abre Modal) -->
                     <a href="#adicionarPedido" role="button" class="btn pull-left" data-toggle="modal">Adicionar Pedido</a>
 
-                    <!--Modal de Adicionar Pedido-->
-                    <div id="adicionarPedido" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 id="myModalLabel">Adicionar Pedido</h3>
-                      </div>
-                      <div class="modal-body">
-                        <form method="post">
-                          <div align="center">
-
-                            <div class="span5" align="left">
-                              <div>
-                                <label for="inputDescricao">Descrição do Pedido:</label>
-                              </div>
-                              <div>
-                                <textarea class="span5" row="3" id="inputDescricao" placeholder="descrição"></textarea>
-                              </div>
-                            </div>
-
-                            <div class="span5" align="left">
-                              <div style="float:left;">
-                                <div>
-                                  <label for="inputPrazo">Prazo de Entrega:</label>
-                                </div>
-                                <div> 
-                                  <div class="input-append date" id="inputPrazo" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input class="span2" size="16" type="text" value="12-02-2012" readonly></input>
-                                    <span class="add-on"><i class="icon-calendar"></i></span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div style="float:right;">
-                                <div>
-                                  <label for="inputValor">Valor do Pedido:</label>
-                                </div>
-                                <div> 
-                                  <div class="input-prepend input-append">
-                                    <span class="add-on">R$</span>
-                                    <input class="span2" id="inputValor" type="text" ></input>
-                                  </div>
-                                </div>
-                              </div>
-                              <div style="clear:both;"></div>
-                            </div>
-
-                            <div align="left">
-                              <div style="float:left;">
-                                
-                              </div>
-                            </div>
-
-                            <div class="span5" align="left">
-                              <div>
-                                 <label for="inputCliente">Cliente Solicitante:</label>
-                              </div>
-                              <div>
-                                <select class="span5">
-                                  {% for cliente in clienteList %}
-                                  <option>{{ cliente.nome }}</option>
-                                  {% endfor %}
-                                </select>
-                              </div>
-                            </div>
-
-                            <div class="span5" align="left">
-                              <div>
-                                <label>Escolha o Desenho do Pedido:</label>
-                              </div>
-                              <div>
-                                <div style="width:320px;height:100px;overflow:auto;float:left;">
-                                  <ul class="thumbnails" style="margin-left:0px;">
-                                    <li style="margin-bottom:0px;margin-left:0px;">
-                                        <img src="{{STATIC_URL}}img/teste_2.png" width="75" height="75" onClick="ampliarImagem(this.src)">
-                                    </li>
-                                  </ul>
-                                </div>
-                                <div style="float:right;">
-                                  <img id="imagemAmpliada" src="{{STATIC_URL}}img/blank.png" width="100" height="100">
-                                </div>
-                                <div style="clear:both;"></div>
-                              </div>
-                            </div>
-
-                          </div>
-
-                        
-                         
-                      </div>
-                      <div class="modal-footer">
-                        <a href="#" class="btn">Fechar</a>
-                        <a href="#" class="btn btn-primary" type="submit">Adicionar</a>
-                      </div>
-                      </form>
-                    </div> <!--Final Modal de Adicionar Pedido-->
-
                     <form class="navbar-search pull-right">
                       <input type="text" class="search-query" placeholder="Search">
                     </form>
@@ -171,6 +76,7 @@
                 </div>
               </div>
             </div> <!--Fim da Barra Inicial-->
+
           <!--Tabela de Pedidos em aberto-->
           <div>
             <h4 align="left">Pedidos em Aberto</h4>
@@ -186,21 +92,14 @@
               </thead>
               <tbody>
                 {% for pedidoAberto in pedidoAbertoList %}
-                  <tr>
+                  <tr onclick="location.href = '../pedido/detalhe_pedido/{{pedidoAberto.id}}'">
                     <td>{{ pedidoAberto.dataEntrega }}</td>
                     <td>{{ pedidoAberto.descricao }}</td>
-                    <td>{{ pedidoAberto.cliente }}</td>
+                    <td>{{ pedidoAberto.cliente.nome }}</td>
                     <td>R$ {{ pedidoAberto.valorCobrado }}</td>
                     <td>R$ {{ pedidoAberto.valorGasto }}</td>
                   </tr>
                 {% endfor %}
-                <tr>
-                  <td>18/07/2013</td>
-                  <td>Vestido de Seda. Cor: Azul</td>
-                  <td>Maria Barbosa</td>
-                  <td>R$ 75,00</td>
-                  <td>R$ 45,00</td>
-                </tr>
               </tbody>
             </table>
           </div> <!--Fim da Tabela de Pedidos em Aberto-->
@@ -220,21 +119,14 @@
               </thead>
               <tbody>
                 {% for pedidoFechado in pedidoFechadoList %}
-                <tr>
+                <tr onclick="location.href = '../pedido/detalhe_pedido/{{pedidoFechado.id}}">
                   <td>{{ pedidoFechado.dataEntrega }}</td>
                   <td>{{ pedidoFechado.descricao }}</td>
-                  <td>{{ pedidoFechado.cliente }}</td>
+                  <td>{{ pedidoFechado.cliente.nome }}</td>
                   <td>R$ {{ pedidoFechado.valorCobrado }}</td>
                   <td>R$ {{ pedidoFechado.valorGasto }}</td>
                 </tr>
                 {% endfor %}
-                <tr>
-                  <td>03/06/2013</td>
-                  <td>Terno Masculino. Cor:Preto</td>
-                  <td>João da Silva</td>
-                  <td>R$ 98,00</td>
-                  <td>R$ 67,00</td>
-                </tr>
               </tbody>
             </table>
           </div> <!--Fim da Tabela de Pedidos Fechados-->
@@ -249,6 +141,99 @@
         <p>© NER²J Solutions 2013</p>
       </footer>
     </div>
+
+                        <!--Modal de Adicionar Pedido-->
+    <div id="adicionarPedido" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Adicionar Pedido</h3>
+      </div>
+      <div class="modal-body">
+        <form method="post">
+          <div align="center">
+
+            <div class="span5" align="left">
+              <div>
+                <label for="inputDescricao">Descrição do Pedido:</label>
+              </div>
+              <div>
+                <textarea class="span5" row="3" id="inputDescricao" placeholder="descrição"></textarea>
+              </div>
+            </div>
+
+            <div class="span5" align="left">
+              <div style="float:left;">
+                <div>
+                  <label for="inputPrazo">Prazo de Entrega:</label>
+                </div>
+                <div> 
+                  <div class="input-append date" id="inputPrazo" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+                    <input class="span2" size="16" type="text" value="12-02-2012" readonly></input>
+                    <span class="add-on"><i class="icon-calendar"></i></span>
+                  </div>
+                </div>
+              </div>
+              <div style="float:right;">
+                <div>
+                  <label for="inputValor">Valor do Pedido:</label>
+                </div>
+                <div> 
+                  <div class="input-prepend input-append">
+                    <span class="add-on">R$</span>
+                    <input class="span2" id="inputValor" type="text" ></input>
+                  </div>
+                </div>
+              </div>
+              <div style="clear:both;"></div>
+            </div>
+
+            <div align="left">
+              <div style="float:left;">
+                
+              </div>
+            </div>
+
+            <div class="span5" align="left">
+              <div>
+                 <label for="inputCliente">Cliente Solicitante:</label>
+              </div>
+              <div>
+                <select class="span5">
+                  {% for cliente in clienteList %}
+                  <option>{{ cliente.nome }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="span5" align="left">
+              <div>
+                <label>Escolha o Desenho do Pedido:</label>
+              </div>
+              <div>
+                <div style="width:320px;height:100px;overflow:auto;float:left;">
+                  <ul class="thumbnails" style="margin-left:0px;">
+                    <li style="margin-bottom:0px;margin-left:0px;">
+                        <img src="{{STATIC_URL}}img/teste_2.png" width="75" height="75" onClick="ampliarImagem(this.src)">
+                    </li>
+                  </ul>
+                </div>
+                <div style="float:right;">
+                  <img id="imagemAmpliada" src="{{STATIC_URL}}img/blank.png" width="100" height="100">
+                </div>
+                <div style="clear:both;"></div>
+              </div>
+            </div>
+
+          </div>
+    
+          </div>
+            <div class="modal-footer">
+              <a href="#" class="btn">Fechar</a>
+              <a href="#" class="btn btn-primary" type="submit">Adicionar</a>
+            </div>
+          </form>
+        </div> <!--Final Modal de Adicionar Pedido-->
 
     <!-- Le javascript
     ================================================== -->

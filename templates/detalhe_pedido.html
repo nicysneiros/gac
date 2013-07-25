@@ -64,7 +64,7 @@
               <tr>
                 <td colspan="3">
                   <p style="font-weight:bold;">Descrição do Pedido</p>
-                  <p style="color:rgb(124,124,124);">Vestido de Seda. Cor: Azul</p>
+                  <p style="color:rgb(124,124,124);">{{pedido.descricao}}</p>
                 </td>
                 <td rowspan="2" align="middle">
                   <p style="font-weight:bold;">Desenho do Pedido</p>
@@ -74,15 +74,15 @@
               <tr>
                 <td>
                   <p style="font-weight:bold;">Prazo de Entrega</p>
-                  <p style="color:rgb(124,124,124);">18/07/2013</p>
+                  <p style="color:rgb(124,124,124);">{{pedido.dataEntrega}}</p>
                 </td>
                 <td>
                   <p style="font-weight:bold;">Valor Cobrado</p>
-                  <p style="color:rgb(124,124,124);">R$ 75,00</p>
+                  <p style="color:rgb(124,124,124);">R$ {{pedido.valorCobrado}}</p>
                 </td>
                 <td>
                   <p style="font-weight:bold;">Valor Gasto</p>
-                  <p style="color:rgb(124,124,124);">R$ 45,00</p>
+                  <p style="color:rgb(124,124,124);">R$ {{pedido.valorGasto}}</p>
                 </td>
               </tr>
             </tbody>
@@ -99,11 +99,11 @@
               <tr>
                 <td>
                   <p style="font-weight:bold;">Nome do Cliente</p>
-                  <p style="color:rgb(124,124,124);">Maria Barbosa</p>
+                  <p style="color:rgb(124,124,124);">{{pedido.cliente.nome}}</p>
                 </td>
                 <td>
                   <p style="font-weight:bold;">Telefone</p>
-                  <p style="color:rgb(124,124,124);">3333-3333</p>
+                  <p style="color:rgb(124,124,124);">{{pedido.telefoneCliente}}</p>
                 </td>
               </tr>
             </tbody>
@@ -125,11 +125,12 @@
             </tr>
           </thead>
           <tbody>
+          {% for despesa in pedido.despesaLista%}
             <tr>
-              <td>15/07/2013</td>
-              <td>10 metros de tecido de seda azul</td>
-              <td>Tecidos Mil</td>
-              <td>R$ 45,00</td>
+              <td>{{despesa.dataCompra}}</td>
+              <td>{{despesa.descricao}}</td>
+              <td>{{despesa.fornecedor}}</td>
+              <td>R$ {{despesa.valor}}</td>
               <td>
                 <a type="button" class="btn-remove" href="#"><i class="icon-remove"></i></a>
               </td>
