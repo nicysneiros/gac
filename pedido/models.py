@@ -5,15 +5,18 @@ from cliente.models import Cliente
 # Create your models here.
 
 class Servico (models.Model):
-    id = models.AutoField(primary_key=True)
+    #atributos de servico
     valor = models.FloatField(blank=True)
-    cliente = models.ForeignKey(Cliente, db_column='ID_Cliente')
+    descricao = models.TextField()
+
+    #relacao com a entidade cliente. essa e uma relacao opcional
+    cliente = models.ForeignKey(Cliente, db_column='ID_Cliente', blank=True, null=True)
+    data = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         db_table = 'Servico'
 
 class Pedido (Servico):
-    descricao = models.TextField(blank=True)
     prazo = models.DateTimeField(blank=True)
     desenho =  models.ImageField(null=True, blank=True, upload_to='desenhos/',)
 
@@ -38,11 +41,14 @@ class Personalizado(Pedido):
         db_table = 'Personalizado'
 
 class Despesa(models.Model):
-    id = models.TextField(primary_key=True)
+    #atributos de despesa
     valor = models.FloatField()
     fornecedor = models.TextField(blank=True)
     descricao = models.TextField(blank=True)
+
+    #relacao com a entidade servico
     servico = models.ForeignKey(Servico, db_column='ID_Servico')
+    data = models.DateTimeField()
 
     class Meta:
         db_table = 'Despesa'

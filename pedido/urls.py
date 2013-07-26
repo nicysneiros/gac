@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
-
 from pedido.views import *
 
 # Uncomment the next two lines to enable the admin:

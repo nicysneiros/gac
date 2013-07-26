@@ -16,7 +16,13 @@ from cliente.models import Cliente
 
 def detalhe_pedido(request, id_pedido):
 
-    return render(request, 'detalhe_pedido.html', {})
+    pedido = Pedido.objects.get(id=id_pedido)
+    despesaLista = Despesa.objects.filter(servico=pedido.id)
+
+    peedidoInfo = Pedido (id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesaLista)
+
+
+    return render(request, 'detalhe_pedido.html', {'pedido':pedido})
 
 def pedidos(request):
     dataAtual = datetime.datetime.now();
@@ -26,7 +32,7 @@ def pedidos(request):
     pedidosAbertos = []
     for pedido in pedidosAbertosLista:
         despesasLista = []
-        #despesasLista = Despesa.objects.filter(servico=pedido.id)
+        despesasLista = Despesa.objects.filter(servico=pedido.id)
         pedidoAberto = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista)
         pedidosAbertos.append(pedidoAberto)
         print pedidosAbertos
@@ -36,7 +42,7 @@ def pedidos(request):
     pedidosFechados = []
     for pedido in pedidosFechadosLista:
         despesasLista = []
-        #despesasLista = Despesa.objects.filter(servico=pedido.id)
+        despesasLista = Despesa.objects.filter(servico=pedido.id)
         pedidoFechado = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista)
         pedidosFechados.append(pedidoFechado)
 
@@ -53,6 +59,7 @@ class Pedidos:
         self.descricao = descricao
         self.cliente = cliente
         self.valorCobrado = valorCobrado
+        self.despesaLista = despesasLista
         self.calcularValorGasto(despesasLista)
 
     def calcularValorGasto(self, despesasLista):

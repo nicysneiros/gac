@@ -1,4 +1,6 @@
-from core.models import *
+from cliente.models import *
+from pedido.models import *
+from produto.models import *
 from random import randrange
 from datetime import timedelta
 from random import randint
@@ -20,15 +22,38 @@ Pedido.objects.all().delete()
 startDate = datetime.strptime('19/07/2013 1:30 PM', '%d/%m/%Y %I:%M %p')
 endDate = datetime.strptime('28/07/2013 1:30 PM', '%d/%m/%Y %I:%M %p')
 
-for i in range(0,10):
-	e = Endereco(i, 'logradouro%d'%i,'complemento%d'%i,'bairro%d'%i,'cidade%d'%i,'cep%d'%i)
-	c = Cliente(i, 'nome%d'%i, 'email@email.com%d'%i,e.id, False)
-	p = Produto(i,150,c.id,'mm','categoria','abc/')
-	d = Despesa(i,10,'abc','desc',p.id)
-	data = random_date(startDate,endDate)
-	pe = Pedido(i,100,c.id,'descPedido','descPedido',data)
+for i in range(0,9):
+	#Endereco(logradouro, complemento, bairro, cidade, cep)
+	e = Endereco(logradouro='logradouro%d'%i, complemento='complemento%d'%i, bairro='bairro%d'%i, cidade='cidade%d'%i, cep='cep%d'%i)
 	e.save()
+
+	#Cliente (cpf, nome, email, Endereco, telResidencial, telCelular, juridico)
+	c = Cliente(id=i, nome='nome%d'%i, email='email@email.com%d'%i, endereco=e, telResidencial='3333-3333', telCelular='8888-8888', juridico=False)
 	c.save()
-	p.save()
-	d.save()
+
+	#Produto (valor, descricao, Cliente, data, tamanho, categoria, foto, titulo, portfolio)
+	if (i%2 == 0):
+		dataProduto = random_date(startDate,datetime.now())
+		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=c, data=dataProduto, tamanho='mm', categoria='categoria', foto='abc/', titulo='tituloProduto%d'%i, portfolio=False)
+		p.save()
+	else:
+		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=None, data=None, tamanho='mm', categoria='categoria', foto='abc/', titulo='tituloProduto%d'%i, portfolio=True)
+		p.save()
+	
+	
+	#Pedido (valor, descricao, Cliente, data, prazo, desenho)
+	dataPrazo = random_date(startDate,endDate)
+	dataPedido = random_date(startDate,datetime.now())
+	pe = Pedido(valor=randint(10,500), descricao='descPedido', cliente=c, data=dataPedido, prazo=dataPrazo, desenho='def/')
 	pe.save()
+
+	#Despesa (valor, fornecedor, descricao, Servico, data)
+	for j in range(0,5):
+		dataDespesa1 = random_date(startDate,datetime.now())
+		d1 = Despesa(valor=randint(5,50), fornecedor='fornecedor%d'%i, descricao='descDespesaProduto%d'%i, servico=p, data=dataDespesa1)
+		d1.save()
+
+		dataDespesa2 = random_date(startDate,datetime.now())
+		d2 = Despesa(valor=randint(5,50), fornecedor='fornecedor%d'%i, descricao='descDespesaPedido%d'%i, servico=pe, data=dataDespesa2)
+		d2.save()
+	

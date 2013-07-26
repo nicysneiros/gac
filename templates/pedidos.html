@@ -92,7 +92,7 @@
               </thead>
               <tbody>
                 {% for pedidoAberto in pedidoAbertoList %}
-                  <tr onclick="location.href = '../pedido/detalhe_pedido/{{pedidoAberto.id}}'">
+                  <tr onclick="location.href = 'detalhe_pedido/{{pedidoAberto.id}}'">
                     <td>{{ pedidoAberto.dataEntrega }}</td>
                     <td>{{ pedidoAberto.descricao }}</td>
                     <td>{{ pedidoAberto.cliente.nome }}</td>

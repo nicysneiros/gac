@@ -103,7 +103,7 @@
                 </td>
                 <td>
                   <p style="font-weight:bold;">Telefone</p>
-                  <p style="color:rgb(124,124,124);">{{pedido.telefoneCliente}}</p>
+                  <p style="color:rgb(124,124,124);">{{pedido.cliente.telResidencial}}</p>
                 </td>
               </tr>
             </tbody>
@@ -135,6 +135,7 @@
                 <a type="button" class="btn-remove" href="#"><i class="icon-remove"></i></a>
               </td>
             </tr>
+          {% endfor %}
           </tbody>           
          </table>
         </div>

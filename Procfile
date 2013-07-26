@@ -1,1 +1,1 @@
-web: gunicorn sematrito.wsgi
+web: gunicorn atelier.wsgi
