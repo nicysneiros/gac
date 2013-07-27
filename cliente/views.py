@@ -16,7 +16,6 @@ from produto.models import Produto
 
 def cliente(request):
     # Pega todos os pedidos que ainda estao em aberto
-    # pedidos_ab = Pedido.objects.all().filter(prazo__gte=datetime.now())
 
     # Pega o numero de produtos comprados de cada cliente
     clientes = Cliente.objects.all()
