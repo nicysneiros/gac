@@ -17,9 +17,6 @@ from pedido.models import Pedido
 from produto.models import Produto
 
 def cliente(request):
-
-
-
     # Pega todos os pedidos que ainda estao em aberto
 
     # Pega o numero de produtos comprados de cada cliente
@@ -28,7 +25,7 @@ def cliente(request):
         cliente.produtos = Produto.objects.filter(cliente=cliente.id)
         cliente.pedidos = Pedido.objects.filter(cliente=cliente.id, prazo__gte=datetime.now()) 
     return render(request, 'cliente.html', {'clientes': clientes})
->>>>>>> refs/remotes/origin/master
+
 
 @login_required(redirect_field_name='redirect_to')
 def detalhe_cliente (request):
