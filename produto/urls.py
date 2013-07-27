@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^sematrito/', include('core.urls')),
     url(r'^accounts/login/', include('core.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
 )
 
 
