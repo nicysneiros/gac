@@ -127,7 +127,7 @@
           <tbody>
           {% for despesa in pedido.despesaLista%}
             <tr>
-              <td>{{despesa.dataCompra}}</td>
+              <td>{{despesa.data.day}}/{{despesa.data.month}}/{{despesa.data.year}}</td>
               <td>{{despesa.descricao}}</td>
               <td>{{despesa.fornecedor}}</td>
               <td>R$ {{despesa.valor}}</td>

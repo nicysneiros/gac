@@ -48,10 +48,10 @@
     <div class="tabbable tabs-left" style="padding-left:50px;">
       <ul class="nav nav-tabs">
         <li>
-          <a href="../templates/pedidos.html#" data-toggle="tab">Pedidos</a>
+          <a href="/sematrito/pedidos/" data-toggle="tab">Pedidos</a>
         </li>
         <li class="active">
-          <a href="../templates/servico.html#" data-toggle="tab">Produtos</a>
+          <a href="#" data-toggle="tab">Produtos</a>
         </li>
       </ul>
       <!-- Example row of columns -->
@@ -161,12 +161,25 @@
                 </tr>
               </thead>
               <tbody>
+
+                 {% for produto in produtoList %}
+                  <tr onclick="location.href = 'detalhe_produto/{{produto.id}}'">
+                    <td>{{ produto.descricao }}</td>
+                    <td>{{ produto.categoria }}</td>
+                    <td>{{ produto.valor }}</td>
+                    <td width="130">
+                      <button class="btn" href="#registrarVenda" onclick="addProductId('{{produto.id}}')" data-toggle="modal">Registrar Venda</button>
+                    </td>
+                  </tr>
+
+                {% empty %}
+
                 <tr>
-                  <td>Vestido tomara-que-caia com babados Cor: Salmão</td>
+                  <td>Demo: Vestido tomara-que-caia com babados Cor: Salmão</td>
                   <td>Moda Feminina</td>
                   <td>R$ 90,00</td>
                   <td width="130">
-                    <button class="btn" href="#registrarVenda" data-toggle="modal">Registrar Venda</button>
+                    <button class="btn" href="#registrarVenda" onclick="addProductId('someProductId')" data-toggle="modal">Registrar Venda</button>
                   </td>
                 </tr>
                 <tr>
@@ -174,9 +187,12 @@
                   <td>Moda Feminina</td>
                   <td>R$ 40,00</td>
                   <td width="130">
-                    <button class="btn" href="#registrarVenda" data-toggle="modal">Registrar Venda</button>
+                    <button class="btn" href="#registrarVenda" onclick="addProductId('someProductId')" data-toggle="modal">Registrar Venda</button>
                   </td>
                 </tr>
+
+                {% endfor %}
+                
               </tbody>
             </table>
           </div> <!--Fim da Tabela de Produtos em Estoque-->
@@ -188,7 +204,10 @@
                         <h3 id="myModalLabel">Registrar Venda</h3>
                       </div>
                       <div class="modal-body">
-                        <form method="post">
+                        <form id='registrarVendaForm' method="post" action="">
+                          {% csrf_token %}
+                          <input type = 'hidden' id = 'productId' name = 'productId' value=""></input>
+
                           <div align="center">
 
                             <div class="span5" align="left">
@@ -234,7 +253,7 @@
                       </div>
                       <div class="modal-footer">
                         <a href="#" class="btn">Fechar</a>
-                        <a href="#" class="btn btn-primary" type="submit">Registrar</a>
+                        <button class="btn btn-primary" type="submit">Registrar</button>
                       </div>
                       </form>
                     </div> <!--Final Modal de Adicionar Pedido-->
@@ -293,6 +312,14 @@
       function ampliarImagem(_src){
         element = document.getElementById('imagemAmpliada');
         element.src = _src;
+      }
+
+      function addProductId(_id){
+        productId = document.getElementById('productId');
+
+        productId.value = _id;
+
+
       }
     </script>
     
