@@ -80,7 +80,7 @@ def pedidos(request):
         if 'descricao' in request.POST:
             descricao = request.POST['descricao']
         else:
-            erros.append("O campo 'Descrição do Pedido' e obrigatorio")
+            erros.append("O campo 'Descricao do Pedido' e obrigatorio")
 
         if erros.length > 0:
             try:
@@ -90,7 +90,7 @@ def pedidos(request):
             except Exception as e:
                 erros.append (e.__str__())
 
-        else:
+        # else:
 
     return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadoList': pedidosFechados, 'clienteList': clienteLista, 'drawings':drawings})
 
