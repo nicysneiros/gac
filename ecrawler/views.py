@@ -15,7 +15,7 @@ def photos(request):
 
 	return render(request, 'photos.html', {"img_list": img_list})
 
-def crawl(request):
+def crawl():
 
 	imap = imaplib.IMAP4_SSL(settings.MAIL_SERVER)
 	imap.login(settings.BOTMAIL_USER, settings.BOTMAIL_PASSWORD)
@@ -48,6 +48,6 @@ def crawl(request):
 	                
 	                new_draft.photo.save("%s%d.%s"%("image",new_draft.id,ext),ContentFile(part.get_payload(decode=True)))
 
-	return pedidos(request)
+	
 
 

@@ -10,8 +10,13 @@ from django.template import RequestContext
 import datetime
 from django.contrib.auth.decorators import login_required
 
+from ecrawler.views import crawl
+
 from pedido.models import Pedido, Despesa
 from cliente.models import Cliente
+from ecrawler.models import Draft
+
+from pedido.forms import PedidoForm
 
 
 def detalhe_pedido(request, id_pedido):
@@ -19,13 +24,45 @@ def detalhe_pedido(request, id_pedido):
     pedido = Pedido.objects.get(id=id_pedido)
     despesaLista = Despesa.objects.filter(servico=pedido.id)
 
-    peedidoInfo = Pedido (id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesaLista)
+    pedidoInfo = Pedidos (id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesaLista)
 
 
-    return render(request, 'detalhe_pedido.html', {'pedido':pedido})
+    return render(request, 'detalhe_pedido.html', {'pedido':pedidoInfo})
 
 def pedidos(request):
+
     dataAtual = datetime.datetime.now();
+
+    #Se o usuario adicionou um novo pedido
+    if request.POST:
+
+        erros = []
+        valor = 0
+        prazo = datetime.datetime.strptime((request.POST['prazo']) + ' 1:00 AM', '%d/%m/%Y %I:%M %p')
+        descricao = ""
+        cliente = Cliente.objects.get(id=(request.POST['cliente']))
+        data = dataAtual
+        desenho = request.POST['desenho']
+
+        if 'valor' in request.POST:
+            valorStr = request.POST['valor']
+            try:
+                valor = float(valorStr)
+            except exceptions.ValueError:
+                erros.append("Entrada do campo 'Valor do Pedido' precisa ser um dado numérico")
+        else:
+            erros.append("O campo 'Valor do Pedido' é obrigatório")
+
+        if 'descricao' in request.POST:
+            descricao = request.POST['descricao']
+        else:
+            erros.append("O campo 'Descrição do Pedido' é obrigatório")
+
+        if erros.length > 0:
+            #Pedido (valor, descricao, Cliente, data, prazo, desenho)
+            novoPedido = Pedido (valor=valor, descricao=descricao, cliente=cliente, data=data, prazo=prazo, desenho=desenho)
+            novoPedido.save()
+            
     
     #Gerando a lista de pedidos em aberto mostrados na tabela
     pedidosAbertosLista = Pedido.objects.filter(prazo__gte=dataAtual)
@@ -48,9 +85,10 @@ def pedidos(request):
 
     clienteLista = Cliente.objects.all()
 
-    for cliente in clienteLista: print cliente.nome
+    crawl()
+    drawings = Draft.objects.all()
 
-    return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadoList': pedidosFechados, 'clienteList': clienteLista})
+    return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadoList': pedidosFechados, 'clienteList': clienteLista, 'drawings':drawings})
 
 class Pedidos:
     def __init__(self, id, dataEntrega, descricao, cliente, valorCobrado, despesasLista):
