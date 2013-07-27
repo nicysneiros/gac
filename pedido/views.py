@@ -33,37 +33,6 @@ def pedidos(request):
 
     dataAtual = datetime.datetime.now();
 
-    #Se o usuario adicionou um novo pedido
-    if request.POST:
-
-        erros = []
-        valor = 0
-        prazo = datetime.datetime.strptime((request.POST['prazo']) + ' 1:00 AM', '%d/%m/%Y %I:%M %p')
-        descricao = ""
-        cliente = Cliente.objects.get(id=(request.POST['cliente']))
-        data = dataAtual
-        desenho = request.POST['desenho']
-
-        if 'valor' in request.POST:
-            valorStr = request.POST['valor']
-            try:
-                valor = float(valorStr)
-            except exceptions.ValueError:
-                erros.append("Entrada do campo 'Valor do Pedido' precisa ser um dado numérico")
-        else:
-            erros.append("O campo 'Valor do Pedido' é obrigatório")
-
-        if 'descricao' in request.POST:
-            descricao = request.POST['descricao']
-        else:
-            erros.append("O campo 'Descrição do Pedido' é obrigatório")
-
-        if erros.length > 0:
-            #Pedido (valor, descricao, Cliente, data, prazo, desenho)
-            novoPedido = Pedido (valor=valor, descricao=descricao, cliente=cliente, data=data, prazo=prazo, desenho=desenho)
-            novoPedido.save()
-            
-    
     #Gerando a lista de pedidos em aberto mostrados na tabela
     pedidosAbertosLista = Pedido.objects.filter(prazo__gte=dataAtual)
     pedidosAbertos = []
@@ -87,6 +56,41 @@ def pedidos(request):
 
     crawl()
     drawings = Draft.objects.all()
+
+    #Se o usuario adicionou um novo pedido
+    if request.POST:
+
+        erros = []
+        valor = 0
+        prazo = datetime.datetime.strptime((request.POST['prazo']) + ' 1:00 AM', '%d/%m/%Y %I:%M %p')
+        descricao = ""
+        cliente = Cliente.objects.get(id=(request.POST['cliente']))
+        data = dataAtual
+        desenho = request.POST['desenho']
+
+        if 'valor' in request.POST:
+            valorStr = request.POST['valor']
+            try:
+                valor = float(valorStr)
+            except exceptions.ValueError:
+                erros.append("Entrada do campo 'Valor do Pedido' precisa ser um dado numerico")
+        else:
+            erros.append("O campo 'Valor do Pedido' e obrigatorio")
+
+        if 'descricao' in request.POST:
+            descricao = request.POST['descricao']
+        else:
+            erros.append("O campo 'Descrição do Pedido' e obrigatorio")
+
+        if erros.length > 0:
+            try:
+                #Pedido (valor, descricao, Cliente, data, prazo, desenho)
+                novoPedido = Pedido (valor=valor, descricao=descricao, cliente=cliente, data=data, prazo=prazo, desenho=desenho)
+                novoPedido.save()
+            except Exception as e:
+                erros.append (e.__str__())
+
+        else:
 
     return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadoList': pedidosFechados, 'clienteList': clienteLista, 'drawings':drawings})
 
