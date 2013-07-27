@@ -93,15 +93,22 @@
                   <th></th>
                 </tr>
               </thead>
+              <tbody>
+                {# clientes com pedidos em aberto #}
+                {% for cliente in clientes %}
                 <tr>
-                  <td>João da Silva</td>
-                  <td>3333-3333</td>
-                  <td>Sim</td>
-                  <td>4</td>
+                  <td>{{cliente.nome}}</td>
+                  <td>{{cliente.telCelular}}</td>
+                  {% ifequal cliente.pedidos|length 0 %}
+                  <td>False</td>
+                  {% else %}
+                  <td>True</td>
+                  {% endifequal %}
+                  <td>{{cliente.produtos|length}}</td>
                   <td><a type="button" class="btn-remove" href="#"><i class="icon-remove"></i></a></td>
                 </tr>
-              <tbody>
-                
+              {% endfor %}
+
               </tbody>
             </table>
           </div> <!--Fim da Tabela de Clientes-->
