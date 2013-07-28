@@ -5,7 +5,7 @@ import os
 ROOT_PATH = os.path.dirname(__file__)
 MAIL_SERVER = "imap.gmail.com"
 BOTMAIL_USER = "botmail.sem.atrito@gmail.com"
-BOTMAIL_PASSWORD = "muqueals0"
+BOTMAIL_PASSWORD = "muequals0"
 
 
 DEBUG = True
