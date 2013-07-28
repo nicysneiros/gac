@@ -157,4 +157,3 @@ def produtos(request):
         print request.POST['productId']
         
     return render(request,'produtos.html',{})
-

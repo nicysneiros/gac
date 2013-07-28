@@ -61,17 +61,18 @@
           <!-- Barra Inicial -->
            <div class="navbar">
               <div class="navbar-inner">
-                   <!-- Botão de Adicionar Pedido (abre Modal) -->
-                    <a href="#adicionarPedido" role="button" class="btn pull-left" data-toggle="modal">Adicionar Produto</a>
+                   <!-- Botão de Adicionar Produto(abre Modal) -->
+                    <a href="#adicionarProduto" role="button" class="btn pull-left" data-toggle="modal">Adicionar Produto</a>
 
                     <!--Modal de Adicionar Pedido-->
-                    <div id="adicionarPedido" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
+                    <div id="adicionarProduto" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarProdutoLabel" aria-hidden="true">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         <h3 id="myModalLabel">Adicionar Produto</h3>
                       </div>
                       <div class="modal-body">
-                        <form method="post">
+                        <form id='adicionarProdutoForm' method="post" action="add_produto/">
+                          {% csrf_token %}
                           <div align="center">
 
                             <div class="span5" align="left">
@@ -79,7 +80,7 @@
                                 <label for="inputDescricao">Descrição do Produto:</label>
                               </div>
                               <div>
-                                <textarea class="span5" row="3" id="inputDescricao" placeholder="descrição"></textarea>
+                                <textarea class="span5" row="3" name = "descricao" id="inputDescricao" placeholder="descrição"></textarea>
                               </div>
                             </div>
 
@@ -89,7 +90,7 @@
                                   <label for="inputCategoria">Categoria:</label>
                                 </div>
                                 <div> 
-                                  <input class="span3" type="text" id="inputCategoria"></input>
+                                  <input class="span3" type="text" name = "categoria" id="inputCategoria"></input>
                                 </div>
                               </div>
                               <div style="float:right;">
@@ -99,7 +100,7 @@
                                 <div> 
                                   <div class="input-prepend input-append">
                                     <span class="add-on">R$</span>
-                                    <input class="span2" id="inputValor" type="text" ></input>
+                                    <input class="span2" name = "valor" id="inputValor" type="text" ></input>
                                   </div>
                                 </div>
                               </div>
@@ -137,11 +138,11 @@
                          
                       </div>
                       <div class="modal-footer">
-                        <a href="#" class="btn">Fechar</a>
-                        <a href="#" class="btn btn-primary" type="submit">Adicionar</a>
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+                        <button class="btn btn-primary" type="submit">Adicionar</button>
                       </div>
                       </form>
-                    </div> <!--Final Modal de Adicionar Pedido-->
+                    </div> <!--Final Modal de Adicionar Produto-->
 
                     <form class="navbar-search pull-right">
                       <input type="text" class="search-query" placeholder="Search">
@@ -162,15 +163,19 @@
               </thead>
               <tbody>
 
-                 {% for produto in produtoList %}
-                  <tr onclick="location.href = 'detalhe_produto/{{produto.id}}'">
-                    <td>{{ produto.descricao }}</td>
-                    <td>{{ produto.categoria }}</td>
-                    <td>{{ produto.valor }}</td>
+                 {% for product in productList %}
+
+                  {% if not product.cliente %}
+                  <tr>
+                    <td onclick="location.href = 'detalhe_produto/{{product.id}}'">{{ product.descricao }}</td>
+                    <td onclick="location.href = 'detalhe_produto/{{product.id}}'">{{ product.categoria }}</td>
+                    <td onclick="location.href = 'detalhe_produto/{{product.id}}'">{{ product.valor }}</td>
                     <td width="130">
-                      <button class="btn" href="#registrarVenda" onclick="addProductId('{{produto.id}}')" data-toggle="modal">Registrar Venda</button>
+                      <button class="btn" href="#registrarVenda" onclick="addProductId('{{product.id}}')" data-toggle="modal">Registrar Venda</button>
                     </td>
                   </tr>
+                   {% endif %}
+
 
                 {% empty %}
 
@@ -198,13 +203,13 @@
           </div> <!--Fim da Tabela de Produtos em Estoque-->
 
           <!--Modal de Registrar Venda-->
-                    <div id="registrarVenda" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
+                    <div id="registrarVenda" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarProdutoLabel" aria-hidden="true">
                       <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         <h3 id="myModalLabel">Registrar Venda</h3>
                       </div>
                       <div class="modal-body">
-                        <form id='registrarVendaForm' method="post" action="">
+                        <form id='registrarVendaForm' method="post" action="registrar_venda/">
                           {% csrf_token %}
                           <input type = 'hidden' id = 'productId' name = 'productId' value=""></input>
 
@@ -215,9 +220,9 @@
                                  <label for="inputCliente">Cliente Comprador:</label>
                               </div>
                               <div>
-                                <select class="span5">
+                                <select name="selectedClient" class="span5">
                                   {% for cliente in clienteList %}
-                                  <option>{{ cliente.nome }}</option>
+                                  <option value = "{{cliente.id}}">{{ cliente.nome }}</option>
                                   {% endfor %}
                                 </select>
                               </div>
@@ -230,7 +235,7 @@
                                 </div>
                                 <div> 
                                   <div class="input-append date" id="inputPrazo" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input class="span2" size="16" type="text" value="12-02-2012" readonly></input>
+                                    <input name="data_venda" class="span2" size="16" type="text" value="12-02-2012" readonly></input>
                                     <span class="add-on"><i class="icon-calendar"></i></span>
                                   </div>
                                 </div>
@@ -252,7 +257,7 @@
                          
                       </div>
                       <div class="modal-footer">
-                        <a href="#" class="btn">Fechar</a>
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
                         <button class="btn btn-primary" type="submit">Registrar</button>
                       </div>
                       </form>
@@ -272,13 +277,30 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>12/06/2013</td>
-                  <td>Camisa social preta</td>
-                  <td>Moda Masculina</td>
-                  <td>João da Silva</td>
-                  <td>R$ 50,00</td>
-                </tr>
+               
+
+                  {% for product in productList %}
+                  
+                    {% if product.cliente %}
+                      <tr onclick="location.href = 'detalhe_produto/{{product.id}}'">
+                      <td>{{product.data.day}}/{{product.data.month}}/{{product.data.year}}</td>
+                      <td>{{product.descricao}}</td>
+                      <td>{{product.categoria}}</td>
+                      <td>{{product.cliente.nome}}</td>
+                      <td>R$ {{product.valor}}</td>
+                      </tr>
+                    {% endif %}
+                  
+                  {% empty %}
+                    <tr>
+                    <td>12/06/2013</td>
+                    <td>Camisa social preta</td>
+                    <td>Moda Masculina</td>
+                    <td>João da Silva</td>
+                    <td>R$ 50,00</td>
+                    </tr>
+                  {% endfor %}
+                
               </tbody>
             </table>
           </div> <!--Fim da Tabela de Produtos Vendidos-->

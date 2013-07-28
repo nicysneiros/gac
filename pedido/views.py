@@ -49,14 +49,14 @@ def pedidos(request):
             try:
                 valor = float(valorStr)
             except exceptions.ValueError:
-                erros.append("Entrada do campo 'Valor do Pedido' precisa ser um dado numérico")
+                erros.append("Entrada do campo 'Valor do Pedido' precisa ser um dado numerico")
         else:
-            erros.append("O campo 'Valor do Pedido' é obrigatório")
+            erros.append("O campo 'Valor do Pedido' e obrigatorio")
 
         if 'descricao' in request.POST:
             descricao = request.POST['descricao']
         else:
-            erros.append("O campo 'Descrição do Pedido' é obrigatório")
+            erros.append("O campo 'Descricao do Pedido' e obrigatorio")
 
         if erros.length > 0:
             #Pedido (valor, descricao, Cliente, data, prazo, desenho)
