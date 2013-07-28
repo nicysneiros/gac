@@ -33,6 +33,30 @@ def pedidos(request):
 
     dataAtual = datetime.datetime.now();
 
+    #Gerando a lista de pedidos em aberto mostrados na tabela
+    pedidosAbertosLista = Pedido.objects.filter(prazo__gte=dataAtual)
+    pedidosAbertos = []
+    for pedido in pedidosAbertosLista:
+        despesasLista = []
+        despesasLista = Despesa.objects.filter(servico=pedido.id)
+        pedidoAberto = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista)
+        pedidosAbertos.append(pedidoAberto)
+        print pedidosAbertos
+
+    #Gerando a lista de pedidos fechados mostrados na tabela
+    pedidosFechadosLista = Pedido.objects.filter(prazo__lt=dataAtual)
+    pedidosFechados = []
+    for pedido in pedidosFechadosLista:
+        despesasLista = []
+        despesasLista = Despesa.objects.filter(servico=pedido.id)
+        pedidoFechado = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista)
+        pedidosFechados.append(pedidoFechado)
+
+    clienteLista = Cliente.objects.all()
+
+    crawl()
+    drawings = Draft.objects.all()
+
     #Se o usuario adicionou um novo pedido
     if request.POST:
 
@@ -59,34 +83,14 @@ def pedidos(request):
             erros.append("O campo 'Descricao do Pedido' e obrigatorio")
 
         if erros.length > 0:
-            #Pedido (valor, descricao, Cliente, data, prazo, desenho)
-            novoPedido = Pedido (valor=valor, descricao=descricao, cliente=cliente, data=data, prazo=prazo, desenho=desenho)
-            novoPedido.save()
-            
-    
-    #Gerando a lista de pedidos em aberto mostrados na tabela
-    pedidosAbertosLista = Pedido.objects.filter(prazo__gte=dataAtual)
-    pedidosAbertos = []
-    for pedido in pedidosAbertosLista:
-        despesasLista = []
-        despesasLista = Despesa.objects.filter(servico=pedido.id)
-        pedidoAberto = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista)
-        pedidosAbertos.append(pedidoAberto)
-        print pedidosAbertos
+            try:
+                #Pedido (valor, descricao, Cliente, data, prazo, desenho)
+                novoPedido = Pedido (valor=valor, descricao=descricao, cliente=cliente, data=data, prazo=prazo, desenho=desenho)
+                novoPedido.save()
+            except Exception as e:
+                erros.append (e.__str__())
 
-    #Gerando a lista de pedidos fechados mostrados na tabela
-    pedidosFechadosLista = Pedido.objects.filter(prazo__lt=dataAtual)
-    pedidosFechados = []
-    for pedido in pedidosFechadosLista:
-        despesasLista = []
-        despesasLista = Despesa.objects.filter(servico=pedido.id)
-        pedidoFechado = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista)
-        pedidosFechados.append(pedidoFechado)
-
-    clienteLista = Cliente.objects.all()
-
-    crawl()
-    drawings = Draft.objects.all()
+        # else:
 
     return render(request, 'pedidos.html',{'pedidoAbertoList': pedidosAbertos, 'pedidoFechadoList': pedidosFechados, 'clienteList': clienteLista, 'drawings':drawings})
 

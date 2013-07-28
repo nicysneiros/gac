@@ -10,10 +10,6 @@ import datetime
 from django.contrib.auth.decorators import login_required
 from ecrawler.models import Draft
 
-
-
-
-
 logger = logging.getLogger(__name__)
 
 
