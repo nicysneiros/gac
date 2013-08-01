@@ -14,7 +14,6 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
-      
     </style>
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -39,8 +38,7 @@
               <li class="active"><a href="#">Inicio</a></li>
               <li><a href="#">Sobre</a></li>
               <li><a href="#">Contato</a></li>
-            </ul>
-            {%if not logado%}            
+            </ul>            
             <form class="navbar-form pull-right" method="post" action=".">
             {% if form.errors %}
             <p>Your username and password didn't match!Please try again!</p>
@@ -48,11 +46,9 @@
             {% csrf_token %}
             <input class="span2" type="text" name="username" placeholder="Nome de Usuário">
             <input class="span2" type="password" name="password" placeholder="Senha">
-            <input type="hidden" name="next" value="/cliente/info_clientes" />
+            <input type="hidden" name="next" value="/pedidos" />
             <button type="submit" class="btn">Entrar</button>
             </form>
-            {% endif %}
-           <p>{{nome_usuario}}</p>
           </div><!--/.nav-collapse -->
         </div>
       </div>

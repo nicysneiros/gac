@@ -11,6 +11,9 @@ urlpatterns = patterns('',
     url(r'^sematrito/', include('core.urls')),
     url(r'^accounts/login/', include('core.urls')),
 
+
+    url(r'^$', include('login.urls')),
+    url(r'^login', include('login.urls')),
     url(r'^cliente/', include('cliente.urls')),
     url(r'^pedido/', include('pedido.urls')),
     url(r'^produto/', include('produto.urls')),
