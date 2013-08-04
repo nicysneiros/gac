@@ -67,7 +67,7 @@
                   <!-- Everything you want hidden at 940px or less, place within here -->
                   <div class="nav-collapse collapse">
                     <!-- Botão de Adicionar Pedido (abre Modal) -->
-                    <a href="#adicionarPedido" role="button" class="btn pull-left" data-toggle="modal">Adicionar Pedido</a>
+                    <a id="adicionarPedidoBtn" href="#adicionarPedido" role="button" class="btn pull-left" data-toggle="modal">Adicionar Pedido</a>
 
                     <form class="navbar-search pull-right">
                       <input type="text" class="search-query" placeholder="Search">
@@ -145,22 +145,35 @@
     <!--Modal de Adicionar Pedido-->
     <div id="adicionarPedido" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <button onclick="location.href='/pedido/info_pedidos'" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
         <h3 id="myModalLabel">Adicionar Pedido</h3>
       </div>
       <div class="modal-body">
-
         <form method="post" action="">
           {% csrf_token %}
           <div align="center">
+
+            {% if retornoAdd%}
+              {% if not form.errors %}
+                <div class="span5" align="left">
+                  <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>Sucesso!</h4>
+                    <p>Pedido adicionado corretamente</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
 
             <div class="span5" align="left">
               <div>
                 <label for="id_descricao">Descrição do Pedido:</label>
               </div>
               <div>
-                <textarea class="span5" row="3" name="descricao" placeholder="descrição"></textarea>
+                <!--<textarea class="span5" row="3" name="descricao" placeholder="descrição"></textarea>-->
+                {{ form.descricao }}
               </div>
+              <p style="color:red;font-size:small;"> {{form.descricao.errors.as_text}} </p>
             </div>
 
             <div class="span5" align="left">
@@ -170,10 +183,12 @@
                 </div>
                 <div> 
                   <div class="input-append date" id="inputPrazo" data-date="01-01-2013" data-date-format="dd/mm/yyyy">
-                    <input class="span2" name="prazo" size="16" type="text" value="12-02-2012" readonly></input>
+                    <!--<input class="span2" name="prazo" size="16" type="text" value="01/01/2013" readonly></input>-->
+                    {{ form.prazo }}
                     <span class="add-on"><i class="icon-calendar"></i></span>
                   </div>
                 </div>
+                <p style="color:red;font-size:small;"> {{form.prazo.errors.as_text}} </p>
               </div>
               <div style="float:right;">
                 <div>
@@ -182,9 +197,11 @@
                 <div> 
                   <div class="input-prepend input-append">
                     <span class="add-on">R$</span>
-                    <input class="span2" name="valor" type="text" ></input>
+                    <!--<input class="span2" name="valor" type="text" ></input>-->
+                    {{ form.valor }}
                   </div>
                 </div>
+                <p style="color:red;font-size:small;"> {{form.valor.errors.as_text}} </p>
               </div>
               <div style="clear:both;"></div>
             </div>
@@ -200,12 +217,15 @@
                  <label for="id_cliente">Cliente Solicitante:</label>
               </div>
               <div>
-                <select class="span5" name="cliente">
+                <!--<select class="span5" name="cliente">
                   {% for cliente in clienteList %}
                   <option value="{{ cliente.id }}">{{ cliente.nome }}</option>
                   {% endfor %}
-                </select>
+                </select>-->
+                {{ form.cliente }}
               </div>
+              <p style="color:red;font-size:small;"> {{form.cliente.errors.as_text}} </p>
+              <p style="color:red;font-size:small;"> Data: {{form.data.errors.as_text}} </p>
             </div>
 
             <div class="span5" align="left">
@@ -230,8 +250,10 @@
                 </div>
                 <div style="float:right;">
                   <img id="imagemAmpliada" src="{{STATIC_URL}}img/blank.png" width="100" height="100">
-                  <input type="hidden" id="desenho" name="desenho" value="">
+                  <!--<input type="hidden" id="desenho" name="desenho" value="">-->
+                  {{ form.desenhoStr }}
                 </div>
+                <p style="color:red;font-size:small;"> {{form.desenhoStr.errors.as_text}} </p>
                 <div style="clear:both;"></div>
               </div>
             </div>
@@ -240,7 +262,7 @@
     
           </div>
             <div class="modal-footer">
-              <a href="#" class="btn">Fechar</a>
+              <a href="/pedido/info_pedidos" class="btn">Fechar</a>
               <button class="btn btn-primary" type="submit">Adicionar</button>
             </div>
           </form>
@@ -269,5 +291,11 @@
         element2.value = _src;
       }
     </script>
+
+    {% if retornoAdd %}
+      <script>
+       $('#adicionarPedido').modal('show');
+      </script>
+    {% endif %}
      
 </body></html>
