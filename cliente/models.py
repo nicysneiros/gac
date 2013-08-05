@@ -13,12 +13,12 @@ class Endereco (models.Model):
         db_table = 'Endereco'
 
 class Cliente (models.Model):
-    id = models.CharField(max_length=20, primary_key=True)
+    id = models.CharField(max_length=15, primary_key=True)
     nome = models.TextField()
     email = models.EmailField(blank=True)
     endereco = models.ForeignKey(Endereco, db_column='ID_Endereco')
-    telResidencial = models.TextField()
-    telCelular = models.TextField()
+    telResidencial = models.TextField(blank=True)
+    telCelular = models.TextField(blank=True)
 
     # pessoa juridica
     juridico = models.BooleanField()

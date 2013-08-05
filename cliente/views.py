@@ -15,6 +15,7 @@ from datetime import datetime
 from cliente.models import Cliente, Endereco
 from pedido.models import Pedido
 from produto.models import Produto
+from cliente.forms import ClienteForm
 
 def cliente(request):
     # Pega todos os pedidos que ainda estao em aberto
@@ -24,7 +25,10 @@ def cliente(request):
     for cliente in clientes:
         cliente.produtos = Produto.objects.filter(cliente=cliente.id)
         cliente.pedidos = Pedido.objects.filter(cliente=cliente.id, prazo__gte=datetime.now()) 
-    return render(request, 'cliente.html', {'clientes': clientes})
+
+    # Envia o formulario para adicionar um novo cliente
+    form = ClienteForm()
+    return render(request, 'cliente.html', {'clientes': clientes, 'form': form})
 
 
 @login_required(redirect_field_name='redirect_to')
