@@ -14,6 +14,16 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
+
+      #descricao textarea {
+        width: inherit;
+      }
+
+      #descricao > div {
+        margin: 0 15px 0 0; 
+        background-color:red;
+      }
+
     </style>
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
     <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
@@ -79,8 +89,13 @@
                               <div>
                                 <label for="inputDescricao">Descrição do Produto:</label>
                               </div>
-                              <div>
-                                <textarea class="span5" row="3" name = "descricao" id="inputDescricao" placeholder="descrição"></textarea>
+                              <div id = "descricao">
+                                <div class="span5" row="3">
+                                  <textarea  name = "descricao" id="inputDescricao" placeholder="descrição"></textarea>
+
+                                </div>
+
+                                
                               </div>
                             </div>
 
@@ -324,6 +339,9 @@
     <script src="{{STATIC_URL}}js/bootstrap-editable.js"></script>
     <script src="{{STATIC_URL}}js/bootstrap-datepicker.js"></script>
     <script type="text/javascript">
+          
+     
+
       $('#inputPrazo').datepicker();
        $('.datepicker').datepicker()
           .on('changeDate', function(ev){
