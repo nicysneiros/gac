@@ -15,15 +15,6 @@
         padding-bottom: 40px;
       }
 
-      #descricao textarea {
-        width: inherit;
-      }
-
-      #descricao > div {
-        margin: 0 15px 0 0; 
-        background-color:red;
-      }
-
     </style>
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
     <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
@@ -81,22 +72,31 @@
                         <h3 id="myModalLabel">Adicionar Produto</h3>
                       </div>
                       <div class="modal-body">
-                        <form id='adicionarProdutoForm' method="post" action="add_produto/">
+                        <form id='adicionarProdutoForm' method="post" action="">
                           {% csrf_token %}
-                          <div align="center">
 
+                          
+                          <div align="center">
+                            {% if retornoAdd %}
+                              {% if not form.errors %}
+                                <div class="span5" align="left">
+                                  <div class="alert alert-success">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <h4>Sucesso!</h4>
+                                    <p>Produto adicionado corretamente</p>
+                                  </div>
+                                </div>
+                              {% endif %}
+                            {% endif %}
                             <div class="span5" align="left">
                               <div>
                                 <label for="inputDescricao">Descrição do Produto:</label>
                               </div>
                               <div id = "descricao">
-                                <div class="span5" row="3">
-                                  <textarea  name = "descricao" id="inputDescricao" placeholder="descrição"></textarea>
-
-                                </div>
-
-                                
+                                {{ form.descricao }}                                
                               </div>
+                              <p style="color:red;font-size:small;"> {{form.descricao.errors.as_text}} </p>
+                              
                             </div>
 
                             <div class="span5" align="left">
@@ -105,8 +105,10 @@
                                   <label for="inputCategoria">Categoria:</label>
                                 </div>
                                 <div> 
-                                  <input class="span3" type="text" name = "categoria" id="inputCategoria"></input>
+                                  {{ form.categoria }}
+                                  <!--<input class="span3" type="text" name = "categoria" id="inputCategoria"></input>-->
                                 </div>
+                                <p style="color:red;font-size:small;"> {{form.categoria.errors.as_text}} </p>
                               </div>
                               <div style="float:right;">
                                 <div>
@@ -115,8 +117,10 @@
                                 <div> 
                                   <div class="input-prepend input-append">
                                     <span class="add-on">R$</span>
-                                    <input class="span2" name = "valor" id="inputValor" type="text" ></input>
+                                    {{ form.valor }}
+                                    
                                   </div>
+                                  <p style="color:red;font-size:small;"> {{form.valor.errors.as_text}} </p>
                                 </div>
                               </div>
                               <div style="clear:both;"></div>
@@ -135,13 +139,20 @@
                               <div>
                                 <div style="width:320px;height:100px;overflow:auto;float:left;">
                                   <ul class="thumbnails" style="margin-left:0px;">
-                                    <li style="margin-bottom:0px;margin-left:0px;">
-                                        <img src="{{STATIC_URL}}img/thumbnail/vestido.png" width="75" height="75" onClick="ampliarImagem(this.src)">
-                                    </li>
+                                   {% for drawing in drawings %}
+                                        <li style="margin-bottom:0px;margin-left:0px;">
+                                            <img src="{{drawing.photo.url}}" width="75" height="75" onClick="ampliarImagem(this.src, {{drawing.id}})">
+                                        </li>
+                                  {% empty %}
+                                        <li style="margin-bottom:0px;margin-left:0px;">
+                                             <img src="{{STATIC_URL}}img/teste_2.png" width="75" height="75" onClick="ampliarImagem(this.src,0)">
+                                        </li>
+                                  {% endfor %}
                                   </ul>
                                 </div>
                                 <div style="float:right;">
                                   <img id="imagemAmpliada" src="{{STATIC_URL}}img/blank.png" width="100" height="100">
+                                  <input type="hidden" id="foto" name="foto" value="0">
                                 </div>
                                 <div style="clear:both;"></div>
                               </div>
@@ -349,9 +360,12 @@
            });
     </script>
     <script>
-      function ampliarImagem(_src){
+      function ampliarImagem(_src,_id){
         element = document.getElementById('imagemAmpliada');
         element.src = _src;
+
+        element2 = document.getElementById('foto');
+        element2.value = _id;
       }
 
       function addProductId(_id){
@@ -362,5 +376,11 @@
 
       }
     </script>
+
+    {% if retornoAdd %}
+      <script>
+       $('#adicionarProduto').modal('show');
+      </script>
+    {% endif %}
     
 </body></html>
