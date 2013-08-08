@@ -26,6 +26,8 @@ def detalhe_pedido(request, id_pedido):
     pedido = Pedido.objects.get(id=id_pedido)
     despesaLista = Despesa.objects.filter(servico=pedido.id)
 
+    print("Pedido desenho = %s"%pedido.desenho)
+
     pedidoInfo = Pedidos (id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesaLista, desenho=pedido.desenho)
 
 
@@ -56,22 +58,21 @@ def pedidos(request):
 
     clienteLista = Cliente.objects.all()
 
-    #crawl()
+    crawl()
     drawings = Draft.objects.all()
 
     #Se o usuario adicionou um novo pedido
     erros = []
     retornoAdd = False
     form = PedidoForm()
+
     if request.POST:
-        form = PedidoForm(request.POST)
+        d = Draft.objects.get(id=request.POST['desenho'])
+        p = Pedido(desenho=d.photo) 
+        form = PedidoForm(request.POST, instance=p)
         print form.is_valid()
         if form.is_valid():
-            desenhoStr = form.cleaned_data.get('desenhoStr')
-            print desenhoStr
-            image_url = desenhoStr.split('/')[-1]
-            image_data = urllib2.urlopen(image_url, timeout=5)
-            form.fields['desenho'] = CharField("/fotos/" + desenhoStr)
+            
             form.save()
             form = PedidoForm()
         else:

@@ -2,17 +2,46 @@
 from produto.models import Produto
 from pedido.models import Despesa
 from cliente.models import Cliente
+from produto.forms import ProdutoForm
 from django.shortcuts import render
 from django.http import Http404, HttpResponseRedirect
+from ecrawler.views import crawl
+from ecrawler.models import Draft
+
 import datetime
+
 
 def produtos(request):
 
     productList = Produto.objects.all()
 
     clientList = Cliente.objects.all()
+
+    crawl()
+    drawings = Draft.objects.all()
+
+    erros = []
+    retornoAdd = False
+    form = ProdutoForm()
+
+    if request.POST:
+        d = Draft.objects.all().filter(id=request.POST.get('foto',0))
+        if d: 
+            p = Produto(foto=d[0].photo) 
+            form = ProdutoForm(request.POST, instance=p)
+        else:
+            form = ProdutoForm(request.POST)
+        print form.is_valid()
+        if form.is_valid():
+            
+            form.save()
+            form = ProdutoForm()
+        else:
+            print form.errors
+        retornoAdd = True   
         
-    return render(request,'produtos.html',{"productList": productList, "clienteList" : clientList})
+    return render(request,'produtos.html',{"productList": productList, "clienteList" : clientList, 'drawings': drawings, 'erros': erros, 'retornoAdd' : retornoAdd,'form':form})
+
 
 def registrar_venda(request):
     if request.method == 'POST':
@@ -29,14 +58,39 @@ def registrar_venda(request):
 
 
 def add_product(request):
-    if request.method == 'POST':
-        _descricao = request.POST['descricao']
-        _categoria = request.POST['categoria']
-        _valor = request.POST['valor']
-        p = Produto(descricao=_descricao,categoria=_categoria,valor=_valor)
-        p.save()
 
-    return HttpResponseRedirect('/produto/')
+    #Se o usuario adicionou um novo produto
+    erros = []
+    retornoAdd = False
+    form = ProdutoForm()
+
+    if request.POST:
+        d = Draft.objects.all().filter(id=request.POST.get('foto',0))
+        if d: 
+            p = Produto(foto=d[0].photo) 
+            form = ProdutoForm(request.POST, instance=p)
+        else:
+            form = ProdutoForm(request.POST)
+        print form.is_valid()
+        if form.is_valid():
+            
+            form.save()
+            form = ProdutoForm()
+        else:
+            print form.errors
+        retornoAdd = True        
+
+    #template = loader.get_template('pedidos.html')
+    #html = template.render(Context({'pedidoAbertoList': pedidosAbertos, 'pedidoFechadoList': pedidosFechados, 'clienteList': clienteLista, 'drawings': drawings, 'erros': erros, 'retornoAdd' : retornoAdd}))
+    #return HttpResponse(html)
+    
+    productList = Produto.objects.all()
+
+    clientList = Cliente.objects.all()
+
+    drawings = Draft.objects.all()
+        
+    return render(request,'produtos.html',{"productList": productList, "clienteList" : clientList, 'drawings': drawings, 'erros': erros, 'retornoAdd' : retornoAdd,'form':form})
 
 def add_despesa(request, product_id):
     if request.method == 'POST':
