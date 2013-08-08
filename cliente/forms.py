@@ -28,7 +28,7 @@ class ClienteForm(ModelForm):
             'telResidencial': forms.TextInput(),
             'telCelular': forms.TextInput(attrs={'placeholder': 'ex: (81) 8888-8888'}),
         }
-        
+            
     # class Meta:
     #     model = Endereco
     #     fields = ('complemento')
