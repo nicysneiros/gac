@@ -129,12 +129,15 @@
         <h3 id="myModalLabel">Adicionar Cliente</h3>
       </div>
       
-      <form method="post" action="/cliente/adicionar/">
+      <form method="post" action="">
         {% csrf_token %}
         <div class="modal-body">
 
           <table>
-            {{form.as_table}}
+            {{clienteForm.as_table}}
+          </table>
+          <table>
+            {{enderecoForm.as_table}}
           </table>
           <!-- <div align="center">
 
@@ -246,8 +249,8 @@
               </div>
               <div style="clear:both;"></div>
             </div>
-          </div>    -->
-        </div>
+          </div>   
+        </div> -->
         <div class="modal-footer">
           <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
           <button type="submit" class="btn btn-primary">Adicionar</button>

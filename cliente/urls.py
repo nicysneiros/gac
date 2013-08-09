@@ -8,11 +8,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-
+  
     url(r'info_clientes/$', cliente),
     url(r'detalhe_cliente/$', detalhe_cliente),
-    url(r'adicionar/$', adicionar),
 )
 
 
