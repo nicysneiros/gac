@@ -12,10 +12,10 @@ class ClienteForm(ModelForm):
 
     class Meta:
         model = Cliente
-        fields = ('id', 'nome', 'email', 'telResidencial', 'telCelular')
+        fields = ('nome', 'email', 'telResidencial', 'telCelular', 'id')
         widgets = {
             'nome': forms.TextInput(),
-            'email': forms.TextInput(attrs={'placeholder': 'ex: meunome@exemplo.com'}),
+            'email': forms.TextInput(),
             'telResidencial': forms.TextInput(),
             'telCelular': forms.TextInput(),
         }
