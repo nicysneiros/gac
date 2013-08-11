@@ -5,12 +5,17 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
+from portfolio_admin.views import *
+
 urlpatterns = patterns('',
     # Examples:
 
     url(r'^sematrito/', include('core.urls')),
     url(r'^accounts/login/', include('core.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^adicionar_portfolio/', adicionar_portfolio),
+    url(r'^remover_portfolio/', remover_portfolio),
+    url(r'^', portfolio),
 )
 
 

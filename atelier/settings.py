@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'portfolio_admin',
     'produto',
     'relatorio',
+    'django.contrib.humanize',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -177,7 +178,7 @@ LOGGING = {
     }
 }
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config(default='postgres://postgres:1234@localhost/gac')
+#import dj_database_url
+#DATABASES['default'] = dj_database_url.config(default='postgres://postgres:1234@localhost/gac')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

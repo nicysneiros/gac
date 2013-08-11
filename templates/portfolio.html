@@ -79,7 +79,7 @@
             <div align="center">
                 <div id="portfolio" align="center">
                   <ul class="thumbnails" aling="center">
-                    <li class="span3">
+                    <!-- <li class="span3">
                       <div class="thumbnail">
                         <img src="{{STATIC_URL}}img/thumbnail/saia.png" width="160" height="230">
                         <div class="caption">
@@ -120,7 +120,33 @@
                           <p> <a href="#" class="btn">Remover Item</a> </p>
                         </div>
                       </div>
+                    </li>!-->
+					
+					{% for produto in produtos %}
+					{% if produto.portfolio %}
+					<li class="span3">
+                      <div class="thumbnail">
+                        <img src="{{STATIC_URL}}img/thumbnail/camisa.png" width="160" height="230">
+                        <div class="caption">
+                          <h3>{{ produto.titulo }}</h3>
+                          <h5>{{ produto.categoria }}</h5>
+                          <p>
+                            {{ produto.descricao }}
+                          </p>
+                          {% load humanize %}
+                          <h5>R$ {{ produto.valor|floatformat:2|intcomma }}</h5>
+                          <p> 
+                          <form id="form{{ produto.id }}" action="../portfolio_admin/remover_portfolio/" method="POST">
+                          <p> <a href="javascript:;" onclick="document.getElementById('form{{ produto.id }}').submit();" class="btn">Remover Item</a> </p>
+                          <input type='hidden' name='id' value='{{ produto.id }}'/>
+                          {% csrf_token %}
+                          </form>
+                        </div>
+                      </div>
                     </li>
+					{% endif %}
+					{% endfor %}
+					
                   </ul>
                 </div><!--Thumbnails-->
         </div>
@@ -154,7 +180,7 @@
       <!--Aqui serão mostrados apenas os produtos cadastrados que não estão no portfólio-->
        <div id="portfolio" align="center">
                   <ul class="thumbnails" aling="center">
-                    <li class="span2">
+                    <!-- <li class="span2">
                       <div class="thumbnail">
                         <img src="{{STATIC_URL}}img/thumbnail/vestido.png" width="80" height="115">
                         <div class="caption">
@@ -195,7 +221,31 @@
                           <p> <a href="#" class="btn btn-primary">Adicionar ao Portfólio</a> </p>
                         </div>
                       </div>
+                    </li> !-->
+					{% for produto in produtos %}
+					{% if not produto.portfolio %}
+					<li class="span3">
+                      <div class="thumbnail">
+                        <img src="{{STATIC_URL}}img/thumbnail/camisa.png" width="160" height="230">
+                        <div class="caption">
+                          <h3>{{ produto.titulo }}</h3>
+                          <h5>{{ produto.categoria }}</h5>
+                          <p>
+                            {{ produto.descricao }}
+                          </p>
+                          {% load humanize %}
+                          <h5>R$ {{ produto.valor|floatformat:2|intcomma }}</h5>
+						  {% csrf_token %}
+                          <form id="form{{ produto.id }}" action="../portfolio_admin/adicionar_portfolio/" method="POST">
+						  <p> <a href="javascript:;" onclick="document.getElementById('form{{ produto.id }}').submit();" class="btn btn-primary">Adicionar ao Portfólio</a> </p>
+						  <input type='hidden' name='id' value='{{ produto.id }}'/>
+						  {% csrf_token %}
+						  </form>
+                        </div>
+                      </div>
                     </li>
+					{% endif %}
+					{% endfor %}
                   </ul>
                 </div><!--Thumbnails-->
               </div>
