@@ -2,7 +2,7 @@
 from produto.models import Produto
 from pedido.models import Despesa
 from cliente.models import Cliente
-# from produto.forms import ProdutoForm
+from produto.forms import ProdutoForm
 from django.shortcuts import render
 from django.http import Http404, HttpResponseRedirect
 from ecrawler.views import crawl
