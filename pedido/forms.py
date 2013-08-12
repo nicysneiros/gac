@@ -38,7 +38,7 @@ class DespesaForm(ModelForm):
 
 	def __init__(self, *args, **kwargs):
 		super(DespesaForm, self).__init__(*args, **kwargs)
-		self.fields['descricao'].widget.attrs.update({'class':'span5', 'row':'3'})
+		self.fields['descricao'].widget.attrs.update({'class':'span5', 'rows':'3'})
 		self.fields['data'].widget.attrs.update({'class':'span2', 'size':'16', 'readonly':''})
 		self.fields['valor'].widget.attrs.update({'class':'span2', 'id':'inputValor'})
-		self.fields['fornecedor'].widget.attrs.update({'class':'span5', 'id':'inputFornecedor', 'type':'text'})
+		self.fields['fornecedor'].widget.attrs.update({'class':'span5', 'id':'inputFornecedor', 'type':'text', 'rows':'3'})
