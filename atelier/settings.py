@@ -5,7 +5,7 @@ import os
 ROOT_PATH = os.path.dirname(__file__)
 MAIL_SERVER = "imap.gmail.com"
 BOTMAIL_USER = "botmail.sem.atrito@gmail.com"
-BOTMAIL_PASSWORD = "password"
+BOTMAIL_PASSWORD = "muequals0"
 
 
 DEBUG = True
@@ -177,7 +177,7 @@ LOGGING = {
     }
 }
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config(default='postgres://postgres:1234@localhost/gac')
+#import dj_database_url
+#DATABASES['default'] = dj_database_url.config(default='postgres://postgres:1234@localhost/gac')
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
