@@ -126,7 +126,7 @@
 					{% if produto.portfolio %}
 					<li class="span3">
                       <div class="thumbnail">
-                        <img src="{{STATIC_URL}}{{ produto.foto }}" width="160" height="230">
+                        <img src="{{ produto.foto.url }}" width="160" height="230"/>
                         <div class="caption">
                           <h3>{{ produto.titulo }}</h3>
                           <h5>{{ produto.categoria }}</h5>
@@ -223,10 +223,10 @@
                       </div>
                     </li> !-->
 					{% for produto in produtos %}
-					{% if not produto.portfolio %}
+					{% if not produto.portfolio and produto.foto %}
 					<li class="span3">
                       <div class="thumbnail">
-                        <img src="{{STATIC_URL}}{{ produto.foto }}" width="160" height="230">
+                        <img src="{{ produto.foto.url }}" width="160" height="230">
                         <div class="caption">
                           <h3>{{ produto.titulo }}</h3>
                           <h5>{{ produto.categoria }}</h5>
