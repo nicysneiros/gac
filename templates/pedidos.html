@@ -181,7 +181,7 @@
                   <label for="id_prazo">Prazo de Entrega:</label>
                 </div>
                 <div> 
-                  <div class="input-append date" id="inputPrazo" data-date="01-01-2013" data-date-format="dd/mm/yyyy">
+                  <div class="input-append date" id="inputPrazo" data-date="01/01/2013" data-date-format="dd/mm/yyyy">
                     <!--<input class="span2" name="prazo" size="16" type="text" value="01/01/2013" readonly></input>-->
                     {{ form.prazo }}
                     <span class="add-on"><i class="icon-calendar"></i></span>
@@ -224,7 +224,7 @@
                 {{ form.cliente }}
               </div>
               <p style="color:red;font-size:small;"> {{form.cliente.errors.as_text}} </p>
-              <p style="color:red;font-size:small;"> Data: {{form.data.errors.as_text}} </p>
+              <p style="color:red;font-size:small;"> {{form.data.errors.as_text}} </p>
             </div>
 
             <div class="span5" align="left">
@@ -289,9 +289,7 @@
         element2 = document.getElementById('desenho');
 
         element2.value = _id;
-        alert('setting source id ' + element2.value);
-
-
+        
       }
     </script>
 

@@ -17,7 +17,7 @@ class Servico (models.Model):
         db_table = 'Servico'
 
 class Pedido (Servico):
-    prazo = models.DateTimeField(blank=True)
+    prazo = models.DateField(blank=True)
     desenho =  models.ImageField(null=True, blank=True, upload_to='fotos/',)
 
     class Meta:

@@ -12,26 +12,46 @@ from django.contrib.auth.decorators import login_required
 
 from ecrawler.views import crawl
 
-from pedido.models import Pedido, Despesa
+from pedido.models import Pedido, Despesa, Servico
 from cliente.models import Cliente
 from ecrawler.models import Draft
 
-from pedido.forms import PedidoForm
+from pedido.forms import PedidoForm, DespesaForm
 from django.forms import CharField
 
 import urllib2, urlparse
+
 
 def detalhe_pedido(request, id_pedido):
 
     pedido = Pedido.objects.get(id=id_pedido)
     despesaLista = Despesa.objects.filter(servico=pedido.id)
 
-    print("Pedido desenho = %s"%pedido.desenho)
-
     pedidoInfo = Pedidos (id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesaLista, desenho=pedido.desenho)
+    
+    retornoAddDespesa = False
+    despesaForm = DespesaForm()
 
+    if request.POST:
+        idServico = request.POST['servico']
+        print "ID: " + idServico
+        servico = Servico.objects.get(id=idServico)
+        print isinstance(servico, Servico)
+        print servico
+        despesa = Despesa(servico=servico)
+        despesaForm = DespesaForm(request.POST or None, instance=despesa)
 
-    return render(request, 'detalhe_pedido.html', {'pedido':pedidoInfo})
+        if despesaForm.is_valid():
+            despesaForm.save()
+
+        retornoAddDespesa = True
+
+    return render(request,
+        'detalhe_pedido.html',
+        {'pedido' : pedidoInfo,
+         'form' : despesaForm,
+          'retornoAddDespesa' : retornoAddDespesa})
+
 
 def pedidos(request):
 
@@ -45,8 +65,7 @@ def pedidos(request):
         despesasLista = Despesa.objects.filter(servico=pedido.id)
         pedidoAberto = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista, desenho=pedido.desenho)
         pedidosAbertos.append(pedidoAberto)
-       
-
+    
     #Gerando a lista de pedidos fechados mostrados na tabela
     pedidosFechadosLista = Pedido.objects.filter(prazo__lt=dataAtual)
     pedidosFechados = []
@@ -62,29 +81,29 @@ def pedidos(request):
     drawings = Draft.objects.all()
 
     #Se o usuario adicionou um novo pedido
-    erros = []
     retornoAdd = False
     form = PedidoForm()
 
     if request.POST:
         d = Draft.objects.get(id=request.POST['desenho'])
         p = Pedido(desenho=d.photo) 
-        form = PedidoForm(request.POST, instance=p)
-        print form.is_valid()
+        form = PedidoForm(request.POST or None, instance=p)
+        
         if form.is_valid():
-            
             form.save()
-            form = PedidoForm()
-        else:
-            print form.errors
+        
         retornoAdd = True        
+    return render(
+        request,
+        'pedidos.html',
+        {'pedidoAbertoList': pedidosAbertos,
+         'pedidoFechadoList': pedidosFechados,
+         'clienteList': clienteLista,
+         'drawings': drawings,
+         'retornoAdd' : retornoAdd,
+         'form':form})
+    
 
-    #template = loader.get_template('pedidos.html')
-    #html = template.render(Context({'pedidoAbertoList': pedidosAbertos, 'pedidoFechadoList': pedidosFechados, 'clienteList': clienteLista, 'drawings': drawings, 'erros': erros, 'retornoAdd' : retornoAdd}))
-    #return HttpResponse(html)
-    
-    return render(request, 'pedidos.html', {'pedidoAbertoList': pedidosAbertos, 'pedidoFechadoList': pedidosFechados, 'clienteList': clienteLista, 'drawings': drawings, 'erros': erros, 'retornoAdd' : retornoAdd,'form':form})
-    
 class Pedidos:
     def __init__(self, id, dataEntrega, descricao, cliente, valorCobrado, despesasLista, desenho):
         self.id = id

@@ -112,7 +112,7 @@
          <h4>Histórico de Despesas</h4>
          <hr style="margin-top:0px;">
          
-         <p><button class="btn" type="button" href="#adicionarDespesa" data-toggle="modal">Adicionar Despesa</button></p>
+         <p><button class="btn" type="button" href="#adicionarDespesa" data-toggle="modal" onClick="setServico({{ pedido.id }})">Adicionar Despesa</button></p>
          
          <table class="table table-bordered table-striped">
           <thead>
@@ -153,20 +153,36 @@
     <!--Modal Adicionar Despesa-->
     <div id="adicionarDespesa" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
       <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <button onclick="location.href='/pedido/detalhe_pedido/{{pedido.id}}'" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
           <h3 id="myModalLabel">Adicionar Despesa</h3>
       </div>
       
-      <form method="post">
+      <form method="post" action="">
+        {% csrf_token %}
         <div class="modal-body">
           <div align="center">
+
+            {% if retornoAddDespesa %}
+              {% if not form.errors %}
+                <div class="span5" align="left">
+                  <div class="alert alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <h4>Sucesso!</h4>
+                    <p>Despesa adicionada corretamente</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+
               <div class="span5" align="left">
                 <div>
                   <label for="inputDescricao">Descrição da Despesa:</label>
                 </div>
                 <div>
-                  <textarea class="span5" row="3" id="inputDescricao" placeholder="descrição"></textarea>
+                  <!--<textarea class="span5" row="3" id="inputDescricao" placeholder="descrição"></textarea>-->
+                  {{ form.descricao }}
                 </div>
+                <p style="color:red;font-size:small;"> {{form.descricao.errors.as_text}} </p>
               </div>
 
               <div class="span5" align="left">
@@ -175,10 +191,12 @@
                     <label for="inputData">Data de Compra:</label>
                   </div>
                   <div> 
-                    <div class="input-append date" id="inputData" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                      <input class="span2" size="16" type="text" value="12-02-2012" readonly>
+                    <div class="input-append date" id="inputData" data-date="01/01/2013" data-date-format="dd/mm/yyyy">
+                      <!--<input class="span2" size="16" type="text" value="12-02-2012" readonly>-->
+                      {{ form.data }}
                       <span class="add-on"><i class="icon-calendar"></i></span>
                     </div>
+                    <p style="color:red;font-size:small;"> {{form.data.errors.as_text}} </p>
                   </div>
                 </div>
                 <div style="float:right;">
@@ -188,8 +206,10 @@
                   <div> 
                     <div class="input-prepend input-append">
                       <span class="add-on">R$</span>
-                      <input class="span2" id="inputValor" type="text" >
+                      <!--<input class="span2" id="inputValor" type="text" >-->
+                      {{ form.valor }}
                     </div>
+                    <p style="color:red;font-size:small;"> {{form.valor.errors.as_text}} </p>
                   </div>
                 </div>
                 <div style="clear:both;"></div>
@@ -200,14 +220,17 @@
                   <label for="inputFornecedor">Fornecedor:</label>
                 </div>
                 <div>
-                  <input class="span5" id="inputFornecedor" type="text">
+                  <!--<input class="span5" id="inputFornecedor" type="text">-->
+                  {{ form.fornecedor }}
                 </div>
+                <p style="color:red;font-size:small;"> {{form.fornecedor.errors.as_text}} </p>
+                <input type="hidden" id="servico" name="servico" value="">
               </div>
           </div>
         </div>
         <div class="modal-footer">
-          <a href="#" class="btn">Fechar</a>
-          <a href="#" class="btn btn-primary" type="submit">Adicionar</a>
+          <a href="/pedido/detalhe_pedido/{{pedido.id}}" class="btn">Fechar</a>
+          <button class="btn btn-primary" type="submit">Adicionar</button>
         </div>
       </form>
     </div>
@@ -226,5 +249,16 @@
            $('.datepicker').datepicker('hide');
            });
     </script>
+    <script type="text/javascript">
+      function setServico(_id){
+        element = document.getElementById('servico');
+        element.value = _id;
+      }
+    </script>
     
+    {% if retornoAddDespesa %}
+      <script>
+       $('#adicionarDespesa').modal('show');
+      </script>
+    {% endif %}
 </body></html>
