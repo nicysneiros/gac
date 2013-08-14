@@ -48,10 +48,10 @@
 
     <div class="tabbable tabs-left" style="padding-left:50px;">
       <ul class="nav nav-tabs">
-        <li>
-          <a href="/sematrito/pedidos/" data-toggle="tab">Pedidos</a>
+        <li id="liPedidos" onClick="location.href = '/pedido/info_pedidos';">
+          <a href="pedidos/info_pedidos/" data-toggle="tab">Pedidos</a>
         </li>
-        <li class="active">
+        <li id="liProdutos" class="active">
           <a href="#" data-toggle="tab">Produtos</a>
         </li>
       </ul>
@@ -99,6 +99,18 @@
                               
                             </div>
 
+                            <div class = "span5" align="left">
+                                <div>
+                                  <label for="inputTamanho">Tamanho:</label>
+                                </div>
+                                <div> 
+                                  {{ form.tamanho }}
+                                  <!--<input class="span3" type="text" name = "categoria" id="inputCategoria"></input>-->
+                                </div>
+                                <p style="color:red;font-size:small;"> {{form.tamanho.errors.as_text}} </p>
+                              </div>
+
+
                             <div class="span5" align="left">
                               <div style="float:left;">
                                 <div>
@@ -110,6 +122,9 @@
                                 </div>
                                 <p style="color:red;font-size:small;"> {{form.categoria.errors.as_text}} </p>
                               </div>
+
+
+
                               <div style="float:right;">
                                 <div>
                                   <label for="inputValor">Valor do Produto:</label>
@@ -131,6 +146,7 @@
                                 
                               </div>
                             </div>
+
 
                             <div class="span5" align="left">
                               <div>
@@ -193,9 +209,9 @@
 
                   {% if not product.cliente %}
                   <tr>
-                    <td onclick="location.href = 'detalhe_produto/{{product.id}}'">{{ product.descricao }}</td>
-                    <td onclick="location.href = 'detalhe_produto/{{product.id}}'">{{ product.categoria }}</td>
-                    <td onclick="location.href = 'detalhe_produto/{{product.id}}'">{{ product.valor }}</td>
+                    <td onclick="location.href = '/produto/detalhe_produto/{{product.id}}'">{{ product.descricao }}</td>
+                    <td onclick="location.href = '/produto/detalhe_produto/{{product.id}}'">{{ product.categoria }}</td>
+                    <td onclick="location.href = '/produto/detalhe_produto/{{product.id}}'">{{ product.valor }}</td>
                     <td width="130">
                       <button class="btn" href="#registrarVenda" onclick="addProductId('{{product.id}}')" data-toggle="modal">Registrar Venda</button>
                     </td>
@@ -308,7 +324,7 @@
                   {% for product in productList %}
                   
                     {% if product.cliente %}
-                      <tr onclick="location.href = 'detalhe_produto/{{product.id}}'">
+                      <tr onclick="location.href = '/produto/detalhe_produto/{{product.id}}'">
                       <td>{{product.data.day}}/{{product.data.month}}/{{product.data.year}}</td>
                       <td>{{product.descricao}}</td>
                       <td>{{product.categoria}}</td>
@@ -375,6 +391,21 @@
 
 
       }
+
+      function info_pedidos(){
+
+        liPedidos = document.getElementById('liPedidos');
+        liProdutos = document.getElementById('liProdutos');
+
+        liPedidos.class = "active";
+        liProdutos.class = "";
+
+        location.href = "/pedido/info_pedidos";
+
+
+      }
+
+      
     </script>
 
     {% if retornoAdd %}

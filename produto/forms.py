@@ -16,10 +16,10 @@ class ProdutoForm (ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(ProdutoForm, self).__init__(*args, **kwargs)
 		self.fields['descricao'].widget.attrs.update({'class':'span5', 'rows':'3'})
-		#self.fields['categoria'].widget = forms.TextInput(attrs={'class':'span3'})
-		self.fields['categoria'].widget.attrs.update({'class':'span3'})
-		self.fields['tamanho'].widget.attrs.update({'class':'span2'})
-		#self.fields['tamanho'].widget = forms.TextInput(attrs={'class':'span2'})
+		self.fields['categoria'].widget = forms.TextInput(attrs={'class':'span3'})
+		#self.fields['categoria'].widget.attrs.update({'class':'span3'})
+		#self.fields['tamanho'].widget.attrs.update({'class':'span2'})
+		self.fields['tamanho'].widget = forms.TextInput(attrs={'class':'span2'})
 		#self.fields['valor'].widget = forms.NumberInput(attrs={'class':'span2'})
 		self.fields ['valor'].widget.attrs.update({'class':'span2'})
 

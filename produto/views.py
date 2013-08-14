@@ -54,7 +54,7 @@ def registrar_venda(request):
         produto.data = datetime.datetime.strptime( data + ' 1:00 AM', '%d/%m/%Y %I:%M %p')
         produto.save()
 
-    return HttpResponseRedirect('/produto/')
+    return HttpResponseRedirect('/produto/info_produtos/')
 
 
 def add_product(request):
@@ -128,7 +128,7 @@ def remover_produto(request, product_id):
 
 	Produto.objects.get(id = product_id).delete()
 
-	return HttpResponseRedirect('/produto/')
+	return HttpResponseRedirect('/produto/info_produtos/')
 
 
 def remover_despesa(request, despesa_id):

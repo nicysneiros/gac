@@ -47,11 +47,11 @@
 
     <div class="tabbable tabs-left" style="padding-left:50px;">
       <ul class="nav nav-tabs">
-        <li class="active">
+        <li id="liPedidos" class="active">
           <a href="#" data-toggle="tab">Pedidos</a>
         </li>
-        <li>
-          <a href="/sematrito/produtos/" data-toggle="tab">Produtos</a>
+        <li id="liProdutos" onClick="location.href = '/produto/info_produtos';">
+          <a href="/produto/info_produtos" data-toggle="tab">Produtos</a>
         </li>
       </ul>
       <!-- Example row of columns -->
@@ -291,6 +291,8 @@
         element2.value = _id;
         
       }
+
+
     </script>
 
     {% if retornoAdd %}
