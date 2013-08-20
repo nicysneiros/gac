@@ -16,11 +16,15 @@ from pedido.models import Pedido, Despesa, Servico
 from cliente.models import Cliente
 from ecrawler.models import Draft
 
-from pedido.forms import PedidoForm, DespesaForm
+from pedido.forms import PedidoForm, DespesaForm, CorporativoForm
 from django.forms import CharField
 
 import urllib2, urlparse
 
+
+def tipo_cliente(request, id_cliente):
+
+    cliente = Cliente.objects.get(id=id_cliente)
 
 def detalhe_pedido(request, id_pedido):
 
@@ -75,7 +79,11 @@ def pedidos(request):
         pedidoFechado = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista, desenho=pedido.desenho)
         pedidosFechados.append(pedidoFechado)
 
-    clienteLista = Cliente.objects.all()
+    clientes = Cliente.objects.all()
+    clienteLista = {}
+
+    for cliente in clientes:
+        clienteLista [cliente.id] = cliente.juridico
 
     crawl()
     drawings = Draft.objects.all()
@@ -83,16 +91,19 @@ def pedidos(request):
     #Se o usuario adicionou um novo pedido
     retornoAdd = False
     form = PedidoForm()
+    corporativoForm = CorporativoForm()
 
     if request.POST:
         d = Draft.objects.get(id=request.POST['desenho'])
         p = Pedido(desenho=d.photo) 
         form = PedidoForm(request.POST or None, instance=p)
         
+
         if form.is_valid():
-            form.save()
-        
-        retornoAdd = True        
+           form.save()
+
+        retornoAdd = True
+
     return render(
         request,
         'pedidos.html',
@@ -101,7 +112,8 @@ def pedidos(request):
          'clienteList': clienteLista,
          'drawings': drawings,
          'retornoAdd' : retornoAdd,
-         'form':form})
+         'form':form,
+         'corporativoForm':corporativoForm})
     
 
 class Pedidos:

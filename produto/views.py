@@ -1,12 +1,13 @@
 # Create your views here.
 from produto.models import Produto
-from pedido.models import Despesa
+from pedido.models import *
 from cliente.models import Cliente
 from produto.forms import ProdutoForm
 from django.shortcuts import render
 from django.http import Http404, HttpResponseRedirect
 from ecrawler.views import crawl
 from ecrawler.models import Draft
+from pedido.forms import DespesaForm
 
 import datetime
 
@@ -122,7 +123,24 @@ def detalhe_produto(request, product_id):
     for despesa in despesas:
     	valor_gasto += despesa.valor
 
-    return render(request, 'detalhe_produto.html', { "produto" : produto, "despesas" : despesas, "cliente" : produto.cliente, "valor_gasto" : valor_gasto})
+    retornoAddDespesa = False
+    despesaForm = DespesaForm()
+
+    if request.POST:
+        idServico = request.POST['servico']
+        print "ID: " + idServico
+        servico = Servico.objects.get(id=idServico)
+        print isinstance(servico, Servico)
+        print servico
+        despesa = Despesa(servico=servico)
+        despesaForm = DespesaForm(request.POST or None, instance=despesa)
+
+        if despesaForm.is_valid():
+            despesaForm.save()
+
+        retornoAddDespesa = True
+
+    return render(request, 'detalhe_produto.html', { "produto" : produto, "despesas" : despesas, "cliente" : produto.cliente, "valor_gasto" : valor_gasto, "form":despesaForm, "retornoAddDespesa":retornoAddDespesa})
 
 def remover_produto(request, product_id):
 

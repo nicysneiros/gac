@@ -1,5 +1,5 @@
 from django.forms import ModelForm, CharField, HiddenInput, DateField, ImageField
-from pedido.models import Pedido, Despesa
+from pedido.models import Pedido, Despesa, Corporativo, Personalizado
 from datetime import datetime
 from django.forms.widgets import DateTimeInput
 
@@ -9,6 +9,18 @@ DATE_FORMAT = '%d/%m/%Y'
 class FormattedDateInput(DateTimeInput):
 	format = DATE_FORMAT
 
+
+class CorporativoForm (ModelForm):
+
+	class Meta:
+		model = Corporativo
+		fields = ['qtd_P', 'qtd_M', 'qtd_G']
+
+	def __init__(self, *args, **kwargs):
+		super(CorporativoForm, self).__init__(*args, **kwargs)
+		self.fields ['qtd_P'].widget.attrs.update({'style':'float:left;width:30px;'})
+		self.fields ['qtd_M'].widget.attrs.update({'style':'float:left;width:30px;'})
+		self.fields ['qtd_G'].widget.attrs.update({'style':'float:left;width:30px;'})
 
 class PedidoForm (ModelForm):
 	
@@ -24,7 +36,7 @@ class PedidoForm (ModelForm):
 		self.fields ['descricao'].widget.attrs.update({'class':'span5', 'rows':'3'})
 		self.fields ['prazo'].widget.attrs.update({'class':'span2', 'size':'16','readonly':''})
 		self.fields ['valor'].widget.attrs.update({'class':'span2'})
-		self.fields ['cliente'].widget.attrs.update({'class':'span5'})
+		self.fields ['cliente'].widget.attrs.update({'class':'span5','id':'cliente'})
 		self.fields ['cliente'].label_from_instance = lambda obj: "%s"%obj.nome
 		#self.fields ['desenhoStr'].widget.attrs.update({'type':'hidden', 'id':'desenho'})
 	

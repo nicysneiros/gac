@@ -229,6 +229,64 @@
 
             <div class="span5" align="left">
               <div>
+                <label for="tipo_pedido">Selecione o Tipo do Pedido:</label>
+              </div>
+              <div class="span2" style="float:left;">
+                <input type="radio" name="tipo_pedido" value="coorporativo" style="float:left;" onClick="habilitarForm(true)">
+                <p style="float:left;margin-left:20px;">Coorporativo</p>
+              </div>
+              <div class="span2" style="float:right;">
+                <input type="radio" name="tipo_pedido" value="personalizado" style="float:left;" onClick="habilitarForm(false)">
+                <p style="float:left;margin-left:20px;">Personalizado</p>
+              </div>
+              <div style="clear:both;"></div>
+            </div>
+
+            <!-- Inserir form de Coorperativo e Personalizado-->
+            <div id="coorporativo" class="span5" align="left" style="display:none;">
+                <div>
+                  <label>Quantidades:</label>
+                </div>
+                <div class="span1" style="float:left;">
+                  <label style="float:left;margin-right:10px;">P:</label>
+                  <!--<input style="float:left;width:30px;">-->
+                  {{ corporativoForm.qtd_P }}
+                  <div style="clear:both;"></div>
+                </div>
+                <div class="span1" style="float:left;">
+                  <label style="float:left;margin-right:10px;">M:</label>
+                  <!--<input style="float:left;width:30px;">-->
+                  {{ corporativoForm.qtd_M }}
+                  <div style="clear:both;"></div>
+                </div>
+                <div class="span1" style="float:left;">
+                  <label style="float:left;margin-right:10px;">G:</label>
+                  <!--<input style="float:left;width:30px;">-->
+                  {{ corporativoForm.qtd_G }}
+                  <div style="clear:both;"></div>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+
+            <div id="personalizado" class="span5" align="left" style="display:none;">
+              <div>
+                <label>Medidas:</label>
+              </div>
+              <div class="span2" style="float:left;">
+                <label style="float:left;margin-right:10px;">Altura:</label>
+                <input style="float:left;width:50px;">
+                <div style="clear:both;"></div>
+              </div>
+              <div class="span2" style="float:left;">
+                <label style="float:left;margin-right:10px;">Largura:</label>
+                <input style="float:left;width:50px;">
+                <div style="clear:both;"></div>
+              </div>
+              <div style="clear:both;"></div>
+            </div>
+
+            <div class="span5" align="left">
+              <div>
                 <label>Escolha o Desenho do Pedido:</label>
               </div>
               <div>
@@ -291,6 +349,18 @@
         element2.value = _id;
         
       }
+
+      function habilitarForm(_juridico){
+        if(_juridico){
+          document.getElementById('personalizado').style.display = "none";
+          document.getElementById('coorporativo').style.display = "block";
+        } else {
+          document.getElementById('personalizado').style.display = "block";
+          document.getElementById('coorporativo').style.display = "none";
+          
+        }
+      }
+
     </script>
 
     {% if retornoAdd %}
@@ -298,5 +368,5 @@
        $('#adicionarPedido').modal('show');
       </script>
     {% endif %}
-     
-</body></html>
+    
+  </body></html>
