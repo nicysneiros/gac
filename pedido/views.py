@@ -1,7 +1,7 @@
 # Create your views here.
 from django.http import HttpResponse, QueryDict
 from core.models import *
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import Context, loader
 import logging
 from django.views.decorators.csrf import csrf_protect
@@ -21,6 +21,13 @@ from django.forms import CharField
 
 import urllib2, urlparse
 
+
+def remover_pedido(request, id_pedido):
+
+    pedido = Pedido.objects.get(id=id_pedido)
+    pedido.delete()
+
+    return redirect('/pedido/info_pedidos/')
 
 def detalhe_pedido(request, id_pedido):
 
