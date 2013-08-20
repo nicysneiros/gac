@@ -11,7 +11,6 @@ urlpatterns = patterns('',
 
     url(r'info_pedidos/$', pedidos),
     url(r'detalhe_pedido/(\d+)/$', detalhe_pedido),
-    url(r'get_tipo_cliente/(\s+)/$', tipo_cliente),
 
 )
 

@@ -22,10 +22,6 @@ from django.forms import CharField
 import urllib2, urlparse
 
 
-def tipo_cliente(request, id_cliente):
-
-    cliente = Cliente.objects.get(id=id_cliente)
-
 def detalhe_pedido(request, id_pedido):
 
     pedido = Pedido.objects.get(id=id_pedido)
@@ -131,47 +127,3 @@ class Pedidos:
         valorGastoTotal = 0
         for despesa in despesasLista: valorGastoTotal = valorGastoTotal + despesa.valor
         self.valorGasto = valorGastoTotal
-
-
-def validarDados(request, dataAtual):
-
-        erros = []
-
-        valorStr = request.POST['valor']
-        valor = 0
-
-        prazoStr = request.POST['prazo']
-        prazo = datetime.datetime.strptime(prazoStr + ' 1:00 AM', '%d/%m/%Y %I:%M %p')
-
-        descricao = request.POST['descricao']
-
-        clienteId = request.POST['cliente']
-        cliente = Cliente.objects.get(id=clienteId)
-
-        desenhoUrl = request.POST['desenho']
-
-        pathDesenho = desenhoUrl.split('/')
-        desenho = "fotos/" + pathDesenho[-1]
-        print desenho
-
-        data = dataAtual
-
-        try:
-            valor = float(valorStr)
-        except ValueError:
-            erros.append("Entrada do campo 'Valor do Pedido' precisa ser um dado numerico")
-        
-        if (descricao == ""):
-            erros.append("O campo 'Descricao do Pedido' e obrigatorio")
-
-        if len(erros) == 0:
-            try:
-                #Pedido (valor, descricao, Cliente, data, prazo, desenho)
-                novoPedido = Pedido (valor=valor, descricao=descricao, cliente=cliente, data=data, prazo=prazo, desenho=desenho)
-                novoPedido.save()
-            except Exception as e:
-                erros.append (e.__str__())
-
-        return erros
-
-        
