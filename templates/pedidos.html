@@ -69,8 +69,12 @@
                     <!-- Botão de Adicionar Pedido (abre Modal) -->
                     <a id="adicionarPedidoBtn" href="#adicionarPedido" role="button" class="btn pull-left" data-toggle="modal">Adicionar Pedido</a>
 
-                    <form class="navbar-search pull-right">
-                      <input type="text" class="search-query" placeholder="Search">
+                    <form method="post" class="navbar-search form-search pull-right" action="/pedido/pesquisar_pedido/">
+                      {% csrf_token %}
+                      <div class="input-append">
+                        <input name="descProcurada" type="text" class="span2 search-query" placeholder="Procurar">
+                        <button type="submit" class="btn"><i class="icon-search"></i></button>
+                      </div>
                     </form>
                   </div>
                 </div>

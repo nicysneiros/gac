@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'info_pedidos/$', pedidos),
     url(r'detalhe_pedido/(\d+)/$', detalhe_pedido),
     url(r'remover_pedido/(\d+)/$', remover_pedido),
+    url(r'pesquisar_pedido/$', pesquisar_pedido),
 
 )
 

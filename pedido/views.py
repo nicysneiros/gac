@@ -1,5 +1,6 @@
 # Create your views here.
-from django.http import HttpResponse, QueryDict
+from django.http import HttpResponse, QueryDict, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from core.models import *
 from django.shortcuts import render, redirect
 from django.template import Context, loader
@@ -18,8 +19,44 @@ from ecrawler.models import Draft
 
 from pedido.forms import PedidoForm, DespesaForm, CorporativoForm
 from django.forms import CharField
-
 import urllib2, urlparse
+
+
+DATA_TIME_ATUAL = datetime.datetime.now();
+DATA_ATUAL = datetime.date.today();
+
+
+def pesquisar_pedido(request):
+
+    if request.POST:
+        descricaoPedido = request.POST['descProcurada']
+        pedidosAchados = Pedido.objects.filter(descricao__contains=descricaoPedido)
+
+        pedidosAchadosAbertos = []
+        pedidosAchadosFechados = []
+
+        for pedido in pedidosAchados:
+            if pedido.prazo > DATA_ATUAL:
+                pedidosAchadosAbertos.append(pedido)
+            else:
+                pedidosAchadosFechados.append(pedido)
+
+        crawl()
+        drawings = Draft.objects.all()
+
+        retornoAdd = False
+        form = PedidoForm()
+        corporativoForm = CorporativoForm()
+
+        return render(
+            request,
+            'pedidos.html',
+            {'pedidoAbertoList': pedidosAchadosAbertos,
+             'pedidoFechadoList': pedidosAchadosFechados,
+             'drawings': drawings,
+             'retornoAdd' : retornoAdd,
+             'form':form,
+             'corporativoForm':corporativoForm})
 
 
 def remover_pedido(request, id_pedido):
@@ -28,6 +65,7 @@ def remover_pedido(request, id_pedido):
     pedido.delete()
 
     return redirect('/pedido/info_pedidos/')
+
 
 def detalhe_pedido(request, id_pedido):
 
@@ -60,12 +98,10 @@ def detalhe_pedido(request, id_pedido):
           'retornoAddDespesa' : retornoAddDespesa})
 
 
-def pedidos(request):
-
-    dataAtual = datetime.datetime.now();
+def pedidos(request, *args, **kwargs):
 
     #Gerando a lista de pedidos em aberto mostrados na tabela
-    pedidosAbertosLista = Pedido.objects.filter(prazo__gte=dataAtual)
+    pedidosAbertosLista = Pedido.objects.filter(prazo__gte=DATA_TIME_ATUAL)
     pedidosAbertos = []
     for pedido in pedidosAbertosLista:
         despesasLista = []
@@ -74,19 +110,13 @@ def pedidos(request):
         pedidosAbertos.append(pedidoAberto)
     
     #Gerando a lista de pedidos fechados mostrados na tabela
-    pedidosFechadosLista = Pedido.objects.filter(prazo__lt=dataAtual)
+    pedidosFechadosLista = Pedido.objects.filter(prazo__lt=DATA_TIME_ATUAL)
     pedidosFechados = []
     for pedido in pedidosFechadosLista:
         despesasLista = []
         despesasLista = Despesa.objects.filter(servico=pedido.id)
         pedidoFechado = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista, desenho=pedido.desenho)
         pedidosFechados.append(pedidoFechado)
-
-    clientes = Cliente.objects.all()
-    clienteLista = {}
-
-    for cliente in clientes:
-        clienteLista [cliente.id] = cliente.juridico
 
     crawl()
     drawings = Draft.objects.all()
@@ -112,7 +142,6 @@ def pedidos(request):
         'pedidos.html',
         {'pedidoAbertoList': pedidosAbertos,
          'pedidoFechadoList': pedidosFechados,
-         'clienteList': clienteLista,
          'drawings': drawings,
          'retornoAdd' : retornoAdd,
          'form':form,
