@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'pesquisar_pedido/$', pesquisar_pedido),
     url(r'atualizar_pedido/$', atualizar_pedido),
     url(r'remover_despesa/(\d+)/(\d+)/$', remover_despesa),
+    url(r'atualizar_despesa/$', atualizar_despesa),
 )
 
 

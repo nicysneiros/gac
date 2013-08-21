@@ -1,5 +1,5 @@
 # Create your views here.
-from django.http import HttpResponse, QueryDict, HttpResponseRedirect
+from django.http import HttpResponse, QueryDict, HttpResponseRedirect, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
 from core.models import *
 from django.shortcuts import render, redirect
@@ -26,6 +26,38 @@ DATA_TIME_ATUAL = datetime.datetime.now();
 DATA_ATUAL = datetime.date.today();
 
 
+def atualizar_despesa(request):
+
+    if request.POST:
+        name = request.POST['name']
+        pk = request.POST['pk']
+        value = request.POST['value']
+
+        print "ATUALIZACAO DESPESA" + name + " | " + pk + " | " + value
+
+        despesa = Despesa.objects.get(id=pk)
+
+        if name == 'dataCompra':
+            dataSplit = value.split('/')
+            despesa.data = datetime.date(int(dataSplit[2]), int(dataSplit[1]), int(dataSplit[0]))
+            despesa.save()
+        elif name == 'descricao':
+            despesa.descricao = value
+            despesa.save()
+        elif name == 'fornecedor':
+            despesa.fornecedor = value
+            despesa.save()
+        elif name == 'valor':
+            try:
+                valor = float(value)
+                despesa.valor = valor
+                despesa.save()
+            except ValueError:
+                return HttpResponseBadRequest('Insira um numero')
+
+    return HttpResponse(content="", status=200)
+
+
 def remover_despesa(request, id_pedido, id_despesa):
 
     despesa = Despesa.objects.get(id=id_despesa)
@@ -43,7 +75,24 @@ def atualizar_pedido(request):
 
         print "ATUALIZACAO " + name + " | " + pk + " | " + value
 
-    return redirect('/pedido/info_pedidos/')
+        pedido = Pedido.objects.get(id=pk)
+
+        if name == 'descricao':
+            pedido.descricao = value
+            pedido.save()
+        elif name == 'prazo':
+            dataSplit = value.split('/')
+            pedido.prazo = datetime.date(int(dataSplit[2]), int(dataSplit[1]), int(dataSplit[0]))
+            pedido.save()
+        elif name == 'valor':
+            try:
+                valor = float(value)
+                pedido.valor = valor
+                pedido.save()
+            except ValueError:
+                return HttpResponseBadRequest('Insira um numero')
+
+    return HttpResponse(content="", status=200)
 
 
 
