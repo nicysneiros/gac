@@ -16,6 +16,7 @@
       }
     </style>
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/bootstrap-editable.css" rel="stylesheet">
     <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
 
     <!-- Fav and touch icons -->
@@ -64,7 +65,7 @@
               <tr>
                 <td colspan="3">
                   <p style="font-weight:bold;">Descrição do Pedido</p>
-                  <p style="color:rgb(124,124,124);">{{pedido.descricao}}</p>
+                  <a name="descricao" href="#" id="descricaoPedido" data-type="text" data-pk="{{pedido.id}}" data-original-title="Descrição" class="descricaoPedido" data-url="/pedido/atualizar_pedido/">{{pedido.descricao}}</a>
                 </td>
                 <td rowspan="2" align="middle">
                   <p style="font-weight:bold;">Desenho do Pedido</p>
@@ -132,7 +133,7 @@
               <td>{{despesa.fornecedor}}</td>
               <td>R$ {{despesa.valor}}</td>
               <td>
-                <a type="button" href='remove_despesa/' class="btn-remove" href="#"><i class="icon-remove"></i></a>
+                <a type="button" class="btn-remove" onclick="location.href='/pedido/remover_despesa/{{pedido.id}}/{{despesa.id}}/'"><i class="icon-remove"></i></a>
               </td>
             </tr>
           {% endfor %}
@@ -256,6 +257,15 @@
       }
     </script>
     
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('#descricaoPedido').editable({params:function(params){
+          params.csrfmiddlewaretoken = '{% csrf_token %}';
+          return params;
+        }});
+      });
+    </script>
+
     {% if retornoAddDespesa %}
       <script>
        $('#adicionarDespesa').modal('show');

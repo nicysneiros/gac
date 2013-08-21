@@ -13,8 +13,10 @@ urlpatterns = patterns('',
     url(r'detalhe_pedido/(\d+)/$', detalhe_pedido),
     url(r'remover_pedido/(\d+)/$', remover_pedido),
     url(r'pesquisar_pedido/$', pesquisar_pedido),
-
+    url(r'atualizar_pedido/$', atualizar_pedido),
+    url(r'remover_despesa/(\d+)/(\d+)/$', remover_despesa),
 )
+
 
 
 urlpatterns += patterns('',

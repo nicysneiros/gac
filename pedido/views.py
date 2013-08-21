@@ -26,6 +26,27 @@ DATA_TIME_ATUAL = datetime.datetime.now();
 DATA_ATUAL = datetime.date.today();
 
 
+def remover_despesa(request, id_pedido, id_despesa):
+
+    despesa = Despesa.objects.get(id=id_despesa)
+    despesa.delete()
+
+    return redirect('/pedido/detalhe_pedido/' + id_pedido)
+
+
+def atualizar_pedido(request):
+
+    if request.POST:
+        name = request.POST['name']
+        pk = request.POST['pk']
+        value = request.POST['value']
+
+        print "ATUALIZACAO " + name + " | " + pk + " | " + value
+
+    return redirect('/pedido/info_pedidos/')
+
+
+
 def pesquisar_pedido(request):
 
     if request.POST:
