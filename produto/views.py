@@ -8,10 +8,13 @@ from django.http import Http404, HttpResponseRedirect
 from ecrawler.views import crawl
 from ecrawler.models import Draft
 from pedido.forms import DespesaForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import *
 
 import datetime
 
 
+@login_required(redirect_field_name='redirect_to')
 def produtos(request):
 
     productList = Produto.objects.all()
@@ -44,6 +47,7 @@ def produtos(request):
     return render(request,'produtos.html',{"productList": productList, "clienteList" : clientList, 'drawings': drawings, 'erros': erros, 'retornoAdd' : retornoAdd,'form':form})
 
 
+@login_required(redirect_field_name='redirect_to')
 def registrar_venda(request):
     if request.method == 'POST':
         productId = request.POST['productId']
@@ -58,6 +62,7 @@ def registrar_venda(request):
     return HttpResponseRedirect('/produto/info_produtos/')
 
 
+@login_required(redirect_field_name='redirect_to')
 def add_product(request):
 
     #Se o usuario adicionou um novo produto
@@ -93,6 +98,8 @@ def add_product(request):
         
     return render(request,'produtos.html',{"productList": productList, "clienteList" : clientList, 'drawings': drawings, 'erros': erros, 'retornoAdd' : retornoAdd,'form':form})
 
+
+@login_required(redirect_field_name='redirect_to')
 def add_despesa(request, product_id):
     if request.method == 'POST':
         _descricao = request.POST['descricao']
@@ -113,6 +120,7 @@ def add_despesa(request, product_id):
 
 
 
+@login_required(redirect_field_name='redirect_to')
 def detalhe_produto(request, product_id):
 
     produto = Produto.objects.get(id=product_id)
@@ -142,6 +150,7 @@ def detalhe_produto(request, product_id):
 
     return render(request, 'detalhe_produto.html', { "produto" : produto, "despesas" : despesas, "cliente" : produto.cliente, "valor_gasto" : valor_gasto, "form":despesaForm, "retornoAddDespesa":retornoAddDespesa})
 
+@login_required(redirect_field_name='redirect_to')
 def remover_produto(request, product_id):
 
 	Produto.objects.get(id = product_id).delete()
@@ -149,6 +158,7 @@ def remover_produto(request, product_id):
 	return HttpResponseRedirect('/produto/info_produtos/')
 
 
+@login_required(redirect_field_name='redirect_to')
 def remover_despesa(request, despesa_id):
     Despesa.objects.get(id = despesa_id).delete()
 
@@ -158,6 +168,7 @@ def remover_despesa(request, despesa_id):
 
 
 
+@login_required(redirect_field_name='redirect_to')
 def cutPath(path,n):
     path = path.split('/')
 

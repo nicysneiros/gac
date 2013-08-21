@@ -10,7 +10,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 import datetime
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth import *
 from ecrawler.views import crawl
 
 from pedido.models import Pedido, Despesa, Servico
@@ -88,6 +88,8 @@ def remover_pedido(request, id_pedido):
     return redirect('/pedido/info_pedidos/')
 
 
+
+@login_required(redirect_field_name='redirect_to')
 def detalhe_pedido(request, id_pedido):
 
     pedido = Pedido.objects.get(id=id_pedido)
@@ -119,8 +121,9 @@ def detalhe_pedido(request, id_pedido):
           'retornoAddDespesa' : retornoAddDespesa})
 
 
-def pedidos(request, *args, **kwargs):
 
+@login_required(redirect_field_name='redirect_to')
+def pedidos(request):
     #Gerando a lista de pedidos em aberto mostrados na tabela
     pedidosAbertosLista = Pedido.objects.filter(prazo__gte=DATA_TIME_ATUAL)
     pedidosAbertos = []

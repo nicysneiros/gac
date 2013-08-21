@@ -56,12 +56,13 @@
                       <p style="color:rgb(255,255,255);">Your username and password didn't match! Please try again!</p>
                     {% endif %}
                     <div style="clear:both;"></div>
-                  {% endif %}
+                  {% else %}
                 </form>
 
-            </div>
-            <button style="float:right;" class="btn btn-sm">Sair</button>
+            <a href="/login/logout" style="float:right;"  class="btn btn-sm">Sair</a>
             <p style="float:right;color:rgb(255,255,255);margin-top:10px;margin-right:20px;">Usuário: {{nome_usuario}}</p>
+            </div>
+            {% endif %}
             <div style="clear:both;"></div>
           </div><!--/.nav-collapse -->
         </div>
