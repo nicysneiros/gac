@@ -16,6 +16,7 @@
       }
     </style>
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/bootstrap-editable.css" rel="stylesheet">
     <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
 
     <!-- Fav and touch icons -->
@@ -71,7 +72,7 @@
               <tr>
                 <td colspan="4">
                   <p style="font-weight:bold;">Descrição do Produto</p>
-                  <p style="color:rgb(124,124,124);">{{produto.descricao}}</p>
+                  <a name="descricao" href="#" id="descricaoProduto" data-type="textarea" data-original-title="Descrição" data-pk="{{produto.id}}" style="color:rgb(124,124,124);">{{produto.descricao}}</a>
                 </td>
                 <td rowspan="2">
                   <p style="font-weight:bold;">Foto do Produto</p>
@@ -81,15 +82,15 @@
               <tr>
                 <td>
                   <p style="font-weight:bold;">Categoria</p>
-                  <p style="color:rgb(124,124,124);">{{produto.categoria}}</p>
+                  <a href="#" id="categoriaProduto" data-type="text" data-original-title="Categoria" data-pk="{{produto.id}}" style="color:rgb(124,124,124);">{{produto.categoria}}</a>
                 </td>
                 <td>
-                  <p style="font-weight:bold;">Tamanho</p>
-                  <p style="color:rgb(124,124,124);">{{produto.tamanho}}</p>
+                  <p style="font-weight:bold;">tamanho</p>
+                  <a href="#" id="tamanhoProduto" data-type="text" data-original-title="Tamanho" data-pk="{{produto.id}}" style="color:rgb(124,124,124);">{{produto.tamanho}}</a>
                 </td>
                 <td>
                   <p style="font-weight:bold;">Valor Cobrado</p>
-                  <p style="color:rgb(124,124,124);">R$ {{produto.valor}}</p>
+                  <p>R$ <a href="#" id="valorProduto" data-type="text" data-original-title="Valor Cobrado" data-pk="{{produto.id}}" style="color:rgb(124,124,124);">{{produto.valor}}</a></p>
                 </td>
                 <td>
                   <p style="font-weight:bold;">Valor Gasto</p>
@@ -141,6 +142,26 @@
           <tbody>
 
             {% for despesa in despesas %}
+
+             <tr>
+              <td>
+                <a href="#" id="dataDespesa" data-type="date" data-original-title="Data de Compra" data-pk="{{despesa.id}}" style="color:rgb(124,124,124)" class="dataDespesa">{{despesa.data.day}}/{{despesa.data.month}}/{{despesa.data.year}}</a>
+              </td>
+              <td>
+                <a href="#" id="descricaoDespesa" data-type="textarea" data-original-title="Descrição Despesa" data-pk="{{despesa.id}}" style="color:rgb(124,124,124)" class="descricaoDespesa">{{despesa.descricao}}</a>
+              </td>
+              <td>
+                <a href="#" id="fornecedorDespesa" data-type="text" data-original-title="Fornecedor" data-pk="{{despesa.id}}" style="color:rgb(124,124,124)" class="fornecedorDespesa">{{despesa.fornecedor}}</a>
+              </td>
+              <td>
+                <p>R$ <a href="#" id="valorDespesa" data-type="text" data-original-title="Valor Despesa" data-pk="{{despesa.id}}" style="color:rgb(124,124,124)" class="valorDespesa">{{despesa.valor}}</a></p>
+              </td>
+              <td>
+                <a type="button" class="btn-remove" href="remove_despesa/{{despesa.id}}"><i class="icon-remove"></i></a>
+              </td>
+            </tr>
+
+            <!--
              <tr>
               <td>{{despesa.data.day}}/{{despesa.data.month}}/{{despesa.data.year}}</td>
               <td>{{despesa.descricao}}</td>
@@ -150,6 +171,7 @@
                 <a type="button" class="btn-remove" href="remove_despesa/{{despesa.id}}"><i class="icon-remove"></i></a>
               </td>
             </tr>
+          -->
 
             {% empty %}
              <tr>
@@ -281,6 +303,109 @@
         element.value = _id;
       }
     </script>
+
+     <script type="text/javascript">
+        //var csrf_token = $.cookie('csrftoken');
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        $('#descricaoProduto').editable({
+          url: '/produto/atualizar_produto/',
+          name: 'descricao',
+          placement: 'bottom', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+
+        $('#categoriaProduto').editable({
+          url: '/produto/atualizar_produto/',
+          name: 'categoria',
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+          }
+        });
+
+        $('#tamanhoProduto').editable({
+          url: '/produto/atualizar_produto/',
+          name: 'tamanho',
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+          }
+        });
+
+        $('#valorProduto').editable({
+          url: '/produto/atualizar_produto/',
+          name: 'valor',
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+          }
+        });
+
+
+                $('.dataDespesa').editable({
+          format: 'dd/mm/yyyy',
+          viewformat: 'dd/mm/yyyy',
+          placement: 'top',
+          url: '/produto/atualizar_despesa/',
+          name: 'dataCompra',
+          datepicker:{
+            weekStart:1
+          },
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+          }
+        });
+
+        $('.descricaoDespesa').editable({
+          url: '/produto/atualizar_despesa/',
+          placement: 'top',
+          name: 'descricao',
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+          }
+        });
+
+        $('.fornecedorDespesa').editable({
+          url: '/produto/atualizar_despesa/',
+          placement: 'top',
+          name: 'fornecedor',
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+          }
+        });
+
+        $('.valorDespesa').editable({
+          url: '/produto/atualizar_despesa/',
+          placement: 'left',
+          name: 'valor',
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+          }
+        });
+    </script>
+
 
     {% if retornoAddDespesa %}
       <script>
