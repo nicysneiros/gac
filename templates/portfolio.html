@@ -69,8 +69,12 @@
                    <!-- Botão de Adicionar Pedido (abre Modal) -->
                     <a href="#adicionarItem" role="button" class="btn pull-left" data-toggle="modal">Adicionar Item</a>
 
-                    <form class="navbar-search pull-right">
-                      <input type="text" class="search-query" placeholder="Search">
+                    <form method="post" class="navbar-search form-search pull-right" action="/portfolio_admin/pesquisar_produto1/">
+                      {% csrf_token %}
+                      <div class="input-append">
+                        <input name="descProcurada" type="text" class="span2 search-query" placeholder="Procurar">
+                        <button type="submit" class="btn"><i class="icon-search"></i></button>
+                      </div>
                     </form>
                   </div>
             </div> <!--Fim da Barra Inicial-->
@@ -171,11 +175,15 @@
        <!-- Barra Inicial -->
            <div class="navbar">
               <div class="navbar-inner">
-                    <form class="navbar-search pull-right">
-                      <input type="text" class="search-query" placeholder="Search">
+                    <form method="post" class="navbar-search form-search pull-right" action="/portfolio_admin/pesquisar_produto2/">
+                      {% csrf_token %}
+                      <div class="input-append">
+                        <input name="descProcurada" type="text" class="span2 search-query" placeholder="Procurar">
+                        <button type="submit" class="btn"><i class="icon-search"></i></button>
+                      </div>
                     </form>
                   </div>
-            </div> 
+            </div>
             <!--Fim da Barra Inicial-->
       <!--Aqui serão mostrados apenas os produtos cadastrados que não estão no portfólio-->
        <div id="portfolio" align="center">
@@ -258,4 +266,11 @@
     <script src="{{STATIC_URL}}js/bootstrap.js"></script>
     <script src="{{STATIC_URL}}js/bootstrap-editable.js"></script>
     <script type="text/javascript">$('.thumbnail-title').editable();</script>
+
+{% if modal %}
+  <script>
+   $('#adicionarItem').modal('show');
+  </script>
+{% endif %}
+    
 </body></html>

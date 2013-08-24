@@ -15,6 +15,8 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^adicionar_portfolio/', adicionar_portfolio),
     url(r'^remover_portfolio/', remover_portfolio),
+    url(r'^pesquisar_produto1', buscar_portfolio1),
+    url(r'^pesquisar_produto2', buscar_portfolio2),
     url(r'^', portfolio),
 )
 
