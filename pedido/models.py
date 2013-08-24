@@ -48,7 +48,7 @@ class Despesa(models.Model):
 
     #relacao com a entidade servico
     servico = models.ForeignKey(Servico, db_column='ID_Servico')
-    data = models.DateTimeField()
+    data = models.DateField()
 
     class Meta:
         db_table = 'Despesa'

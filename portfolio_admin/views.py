@@ -15,14 +15,19 @@ from produto.models import *
 
 logger = logging.getLogger(__name__)
 
+
+@login_required(redirect_field_name='redirect_to')
 def portfolio (request):
     produtos = Produto.objects.all()
     return render(request, 'portfolio.html', {'produtos' : produtos})
-	
+
+
+@login_required(redirect_field_name='redirect_to')	
 def portfolio_admin (request):
     produtos = Produto.objects.all()
     return render(request, 'portfolio.html', {'produtos' : produtos})
-    
+ 
+@login_required(redirect_field_name='redirect_to')   
 def adicionar_portfolio (request):
     if request.method == 'POST':
         produtos = Produto.objects.all()
@@ -37,7 +42,8 @@ def adicionar_portfolio (request):
             print pp.portfolio
         print "\n"
     return render(request, 'redirect.html', {})
-    
+
+@login_required(redirect_field_name='redirect_to')    
 def remover_portfolio (request):
     if request.method == 'POST':
         produtos = Produto.objects.all()

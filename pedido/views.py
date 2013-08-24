@@ -1,7 +1,8 @@
 # Create your views here.
-from django.http import HttpResponse, QueryDict
+from django.http import HttpResponse, QueryDict, HttpResponseRedirect, HttpResponseBadRequest
+from django.core.urlresolvers import reverse
 from core.models import *
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import Context, loader
 import logging
 from django.views.decorators.csrf import csrf_protect
@@ -9,19 +10,135 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 import datetime
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth import *
 from ecrawler.views import crawl
 
 from pedido.models import Pedido, Despesa, Servico
 from cliente.models import Cliente
 from ecrawler.models import Draft
 
-from pedido.forms import PedidoForm, DespesaForm
+from pedido.forms import PedidoForm, DespesaForm, CorporativoForm
 from django.forms import CharField
-
 import urllib2, urlparse
 
 
+DATA_TIME_ATUAL = datetime.datetime.now();
+DATA_ATUAL = datetime.date.today();
+
+
+def atualizar_despesa(request):
+
+    if request.POST:
+        name = request.POST['name']
+        pk = request.POST['pk']
+        value = request.POST['value']
+
+        print "ATUALIZACAO DESPESA" + name + " | " + pk + " | " + value
+
+        despesa = Despesa.objects.get(id=pk)
+
+        if name == 'dataCompra':
+            dataSplit = value.split('/')
+            despesa.data = datetime.date(int(dataSplit[2]), int(dataSplit[1]), int(dataSplit[0]))
+            despesa.save()
+        elif name == 'descricao':
+            despesa.descricao = value
+            despesa.save()
+        elif name == 'fornecedor':
+            despesa.fornecedor = value
+            despesa.save()
+        elif name == 'valor':
+            try:
+                valor = float(value)
+                despesa.valor = valor
+                despesa.save()
+            except ValueError:
+                return HttpResponseBadRequest('Insira um numero')
+
+    return HttpResponse(content="", status=200)
+
+
+def remover_despesa(request, id_pedido, id_despesa):
+
+    despesa = Despesa.objects.get(id=id_despesa)
+    despesa.delete()
+
+    return redirect('/pedido/detalhe_pedido/' + id_pedido)
+
+
+def atualizar_pedido(request):
+
+    if request.POST:
+        name = request.POST['name']
+        pk = request.POST['pk']
+        value = request.POST['value']
+
+        print "ATUALIZACAO " + name + " | " + pk + " | " + value
+
+        pedido = Pedido.objects.get(id=pk)
+
+        if name == 'descricao':
+            pedido.descricao = value
+            pedido.save()
+        elif name == 'prazo':
+            dataSplit = value.split('/')
+            pedido.prazo = datetime.date(int(dataSplit[2]), int(dataSplit[1]), int(dataSplit[0]))
+            pedido.save()
+        elif name == 'valor':
+            try:
+                valor = float(value)
+                pedido.valor = valor
+                pedido.save()
+            except ValueError:
+                return HttpResponseBadRequest('Insira um numero')
+
+    return HttpResponse(content="", status=200)
+
+
+
+def pesquisar_pedido(request):
+
+    if request.POST:
+        descricaoPedido = request.POST['descProcurada']
+        pedidosAchados = Pedido.objects.filter(descricao__contains=descricaoPedido)
+
+        pedidosAchadosAbertos = []
+        pedidosAchadosFechados = []
+
+        for pedido in pedidosAchados:
+            if pedido.prazo > DATA_ATUAL:
+                pedidosAchadosAbertos.append(pedido)
+            else:
+                pedidosAchadosFechados.append(pedido)
+
+        crawl()
+        drawings = Draft.objects.all()
+
+        retornoAdd = False
+        form = PedidoForm()
+        corporativoForm = CorporativoForm()
+
+        return render(
+            request,
+            'pedidos.html',
+            {'pedidoAbertoList': pedidosAchadosAbertos,
+             'pedidoFechadoList': pedidosAchadosFechados,
+             'drawings': drawings,
+             'retornoAdd' : retornoAdd,
+             'form':form,
+             'corporativoForm':corporativoForm})
+
+
+def remover_pedido(request, id_pedido):
+
+    pedido = Pedido.objects.get(id=id_pedido)
+    pedido.delete()
+
+    return redirect('/pedido/info_pedidos/')
+
+
+
+@login_required(redirect_field_name='redirect_to')
 def detalhe_pedido(request, id_pedido):
 
     pedido = Pedido.objects.get(id=id_pedido)
@@ -53,12 +170,11 @@ def detalhe_pedido(request, id_pedido):
           'retornoAddDespesa' : retornoAddDespesa})
 
 
+
+@login_required(redirect_field_name='redirect_to')
 def pedidos(request):
-
-    dataAtual = datetime.datetime.now();
-
     #Gerando a lista de pedidos em aberto mostrados na tabela
-    pedidosAbertosLista = Pedido.objects.filter(prazo__gte=dataAtual)
+    pedidosAbertosLista = Pedido.objects.filter(prazo__gte=DATA_TIME_ATUAL)
     pedidosAbertos = []
     for pedido in pedidosAbertosLista:
         despesasLista = []
@@ -67,7 +183,7 @@ def pedidos(request):
         pedidosAbertos.append(pedidoAberto)
     
     #Gerando a lista de pedidos fechados mostrados na tabela
-    pedidosFechadosLista = Pedido.objects.filter(prazo__lt=dataAtual)
+    pedidosFechadosLista = Pedido.objects.filter(prazo__lt=DATA_TIME_ATUAL)
     pedidosFechados = []
     for pedido in pedidosFechadosLista:
         despesasLista = []
@@ -75,33 +191,34 @@ def pedidos(request):
         pedidoFechado = Pedidos(id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesasLista, desenho=pedido.desenho)
         pedidosFechados.append(pedidoFechado)
 
-    clienteLista = Cliente.objects.all()
-
     crawl()
     drawings = Draft.objects.all()
 
     #Se o usuario adicionou um novo pedido
     retornoAdd = False
     form = PedidoForm()
+    corporativoForm = CorporativoForm()
 
     if request.POST:
         d = Draft.objects.get(id=request.POST['desenho'])
         p = Pedido(desenho=d.photo) 
         form = PedidoForm(request.POST or None, instance=p)
         
+
         if form.is_valid():
-            form.save()
-        
-        retornoAdd = True        
+           form.save()
+
+        retornoAdd = True
+
     return render(
         request,
         'pedidos.html',
         {'pedidoAbertoList': pedidosAbertos,
          'pedidoFechadoList': pedidosFechados,
-         'clienteList': clienteLista,
          'drawings': drawings,
          'retornoAdd' : retornoAdd,
-         'form':form})
+         'form':form,
+         'corporativoForm':corporativoForm})
     
 
 class Pedidos:
@@ -119,47 +236,3 @@ class Pedidos:
         valorGastoTotal = 0
         for despesa in despesasLista: valorGastoTotal = valorGastoTotal + despesa.valor
         self.valorGasto = valorGastoTotal
-
-
-def validarDados(request, dataAtual):
-
-        erros = []
-
-        valorStr = request.POST['valor']
-        valor = 0
-
-        prazoStr = request.POST['prazo']
-        prazo = datetime.datetime.strptime(prazoStr + ' 1:00 AM', '%d/%m/%Y %I:%M %p')
-
-        descricao = request.POST['descricao']
-
-        clienteId = request.POST['cliente']
-        cliente = Cliente.objects.get(id=clienteId)
-
-        desenhoUrl = request.POST['desenho']
-
-        pathDesenho = desenhoUrl.split('/')
-        desenho = "fotos/" + pathDesenho[-1]
-        print desenho
-
-        data = dataAtual
-
-        try:
-            valor = float(valorStr)
-        except ValueError:
-            erros.append("Entrada do campo 'Valor do Pedido' precisa ser um dado numerico")
-        
-        if (descricao == ""):
-            erros.append("O campo 'Descricao do Pedido' e obrigatorio")
-
-        if len(erros) == 0:
-            try:
-                #Pedido (valor, descricao, Cliente, data, prazo, desenho)
-                novoPedido = Pedido (valor=valor, descricao=descricao, cliente=cliente, data=data, prazo=prazo, desenho=desenho)
-                novoPedido.save()
-            except Exception as e:
-                erros.append (e.__str__())
-
-        return erros
-
-        

@@ -12,6 +12,7 @@
     <style type="text/css">
       body {
         padding-top: 60px;
+
         padding-bottom: 40px;
       }
       
@@ -40,19 +41,29 @@
               <li><a href="#">Sobre</a></li>
               <li><a href="#">Contato</a></li>
             </ul>
-            {%if not logado%}            
-            <form class="navbar-form pull-right" method="post" action=".">
-            {% if form.errors %}
-            <p>Your username and password didn't match!Please try again!</p>
+            <div style="float:right;">
+                <form class="navbar-form pull-right" method="post" action=".">
+
+                  {%if not logado%}            
+                    {% csrf_token %}
+                    <div style="">
+                      <input class="span2" type="text" name="username" placeholder="Nome de Usuário">
+                      <input class="span2" type="password" name="password" placeholder="Senha">
+                      <input type="hidden" name="next" value="/cliente/info_clientes" />
+                      <button type="submit" class="btn">Entrar</button>
+                    </div>
+                    {% if form.errors %}
+                      <p style="color:rgb(255,255,255);">Your username and password didn't match! Please try again!</p>
+                    {% endif %}
+                    <div style="clear:both;"></div>
+                  {% else %}
+                </form>
+
+            <a href="/login/logout" style="float:right;"  class="btn btn-sm">Sair</a>
+            <p style="float:right;color:rgb(255,255,255);margin-top:10px;margin-right:20px;">Usuário: {{nome_usuario}}</p>
+            </div>
             {% endif %}
-            {% csrf_token %}
-            <input class="span2" type="text" name="username" placeholder="Nome de Usuário">
-            <input class="span2" type="password" name="password" placeholder="Senha">
-            <input type="hidden" name="next" value="/cliente/info_clientes" />
-            <button type="submit" class="btn">Entrar</button>
-            </form>
-            {% endif %}
-           <p>{{nome_usuario}}</p>
+            <div style="clear:both;"></div>
           </div><!--/.nav-collapse -->
         </div>
       </div>

@@ -18,6 +18,8 @@ from pedido.models import Pedido
 from produto.models import Produto
 from cliente.forms import ClienteForm, EnderecoForm
 
+
+@login_required(redirect_field_name='redirect_to')
 def cliente(request):
 
     if request.method == 'POST':
