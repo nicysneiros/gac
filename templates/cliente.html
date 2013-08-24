@@ -14,21 +14,6 @@
         padding-top: 60px;
         padding-bottom: 40px;
       }
-      .modal-body > div {
-        margin: 10px 50px 10px 40px;
-      }
-      .modal-body input {
-        width: 100%;
-      }
-      .modal-body ul {
-        list-style-type: none;
-      }
-      .modal-body label, .modal-body div {
-        display: inline-block;
-      }
-      .modal-body .left {
-        margin-right: 30px;
-      }
     </style>
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -83,8 +68,12 @@
                    <!-- Botão de Adicionar Pedido (abre Modal) -->
                     <a href="#adicionarPedido" role="button" class="btn pull-left" data-toggle="modal">Adicionar Cliente</a>
 
-                    <form class="navbar-search pull-right">
-                      <input type="text" class="search-query" placeholder="Search">
+                    <form method="post" class="navbar-search form-search pull-right" action="/cliente/pesquisar_cliente/">
+                      {% csrf_token %}
+                      <div class="input-append">
+                        <input name="clienteProcurado" type="text" class="span2 search-query" placeholder="Procurar">
+                        <button type="submit" class="btn"><i class="icon-search"></i></button>
+                      </div>
                     </form>
 
                     <form class="navbar-form pull-right" style="margin-right:20px;">
@@ -105,22 +94,20 @@
                   <th>Telefone</th>
                   <th>Pedidos em Aberto</th>
                   <th>Produtos Comprados</th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {# clientes com pedidos em aberto #}
                 {% for cliente in clientes %}
-                <tr>
+                <tr onclick="location.href = '/cliente/detalhe_cliente/{{cliente.id}}/'">
                   <td>{{cliente.nome}}</td>
                   <td>{{cliente.telCelular}}</td>
                   {% ifequal cliente.pedidos|length 0 %}
-                  <td>False</td>
+                  <td>Não</td>
                   {% else %}
-                  <td>True</td>
+                  <td>Sim</td>
                   {% endifequal %}
                   <td>{{cliente.produtos|length}}</td>
-                  <td><a type="button" class="btn-remove" href="#"><i class="icon-remove"></i></a></td>
                 </tr>
               {% endfor %}
 
@@ -146,49 +133,152 @@
       
       <form method="post" action="">
         {% csrf_token %}
-        <div class="modal-body" >
+        <div class="modal-body">
 
-<!--      {% if retornoAdd %}
+           <div align="center">
+
+            {% if retornoAdd %}
               {% if not form.errors %}
                 <div class="span5" align="left">
                   <div class="alert alert-success">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     <h4>Sucesso!</h4>
-                    <p>Pedido adicionado corretamente</p>
+                    <p>Cliente adicionado corretamente</p>
                   </div>
                 </div>
               {% endif %}
-            {% endif %} -->
+            {% endif %}
 
+            <div class="span5" align="left">
+              <div>
+                <label for="inputNome">Nome:</label>
+              </div>
+              <div>
+                <!--<input class="span5" type="text" name="inputNome">-->
+                {{clienteForm.nome}}
+              </div>
+              <p style="color:red;font-size:small;"> {{clienteForm.nome.errors.as_text}} </p>
+            </div>
 
-          <div align="left">
-            <!-- Formulario do Cliente -->
-            <label>Nome:</label>   
-            {{clienteForm.nome}}
-            <label>Email:</label> 
-            {{clienteForm.email}}
-            <label class="left" style="width: 45%;">Telefone Celular:</label>
-            <label style=" width: 45%;">Telefone Residencial:</label>
-            <div class="left" style="width: 45%;">{{clienteForm.telCelular}}</div>
-            <div style="width: 40%;">{{clienteForm.telResidencial}}</div>
+            <div class="span5" align="left">
+              <div>
+                <label for="inputEmail">Email:</label>
+              </div>
+              <div>
+                <!--<input class="span5" type="text" name="inputEmail">-->
+                {{clienteForm.email}}
+              </div>
+              <p style="color:red;font-size:small;"> {{clienteForm.email.errors.as_text}} </p>
+            </div>
 
-            <label style="width: 100%;">CPF/CNPJ:</label>
-            <div class="left" style="vertical-align: 40px; width: 45%;">{{clienteForm.id}}</div>
-            <div style="width: 40%;">{{clienteForm.tipo_identidade}}</div>          
-            
-            <!-- Formulario do Endereco -->
-            <label>Logradouro:</label>
-            {{enderecoForm.logradouro}}
-            <label class="left" style="width: 30%;">Complemento:</label>
-            <label style="width: 45%;">Bairro:</label>
-            <div class="left" style="width: 30%;">{{enderecoForm.complemento}}</div>
-            <div style="width: 62%;">{{enderecoForm.bairro}}</div>
+            <div class="span5" align="left">
+              <div style="float:left;">
+                <div>
+                  <label for="inputTelCelular">Telefone Celular:</label>
+                </div>
+                <div> 
+                  <!--<input class="span2" type="text" name="inputTelCelular">-->
+                  {{clienteForm.telCelular}}
+                </div>
+                <p style="color:red;font-size:small;"> {{clienteForm.telCelular.errors.as_text}} </p>
+              </div>
+              <div style="float:left;margin-left:20px;">
+                <div>
+                  <label for="inputTelResidencial">Telefone Residencial</label>
+                </div>
+                <div> 
+                  <!--<input class="span2" type="text" name="inputTelResidencial">-->
+                  {{clienteForm.telResidencial}}
+                </div>
+                <p style="color:red;font-size:small;"> {{clienteForm.telResidencial.errors.as_text}} </p>
+              </div>
+              <div style="clear:both;"></div>
+            </div>
 
-            <label class="left" style="width: 45%;">Cidade:</label>
-            <label style="width: 45%;">CEP:</label>
-            <div class="left" style="width: 45%;">{{enderecoForm.cidade}}</div>
-            <div style="width: 47%;">{{enderecoForm.cep}}</div>
-          </div>
+            <div class="span5" align="left">
+              <div style="float:left;">
+                <div>
+                  <label for="inputId">CPF/CNPJ:</label>
+                </div>
+                <div> 
+                  <!--<input class="span3" type="text" name="inputId">-->
+                  {{clienteForm.id}}
+                </div>
+                <p style="color:red;font-size:small;"> {{clienteForm.id.errors.as_text}} </p>
+              </div>
+              <div style="float:left;margin-left:20px;">
+                <!--<label class="radio">
+                  <input type="radio" name="inputJuridico" id="cpf" value="false" checked>CPF
+                </label>
+                <label class="radio">
+                  <input type="radio" name="inputJuridico" id="cnpj" value="true">CNPJ
+                </label>-->
+                {{clienteForm.tipo_identidade}}
+              </div>
+              <div style="clear:both;"></div>
+            </div>
+
+            <hr>
+
+            <div class="span5" align="left">
+              <div>
+                <label for="inputLogradouro">Logradouro:</label>
+              </div>
+              <div>
+                <!--<input class="span5" type="text" name="inputLogradouro">-->
+                {{enderecoForm.logradouro}}
+              </div>
+              <p style="color:red;font-size:small;"> {{enderecoForm.logradouro.errors.as_text}} </p>
+            </div>
+
+            <div class="span5" align="left">
+              <div style="float:left;">
+                <div>
+                  <label for="inputComplemento">Complemento:</label>
+                </div>
+                <div> 
+                  <!--<input class="span2" type="text" name="inputComplemento">-->
+                  {{enderecoForm.complemento}}
+                </div>
+                <p style="color:red;font-size:small;"> {{enderecoForm.complemento.errors.as_text}} </p>
+              </div>
+              <div style="float:left;margin-left:20px;">
+                <div>
+                  <label for="inputBairro">Bairro:</label>
+                </div>
+                <div> 
+                  <!--<input class="span3" type="text" name="inputBairro">-->
+                  {{enderecoForm.bairro}}
+                </div>
+                <p style="color:red;font-size:small;"> {{enderecoForm.bairro.errors.as_text}} </p>
+              </div>
+              <div style="clear:both;"></div>
+            </div>
+
+            <div class="span5" align="left">
+              <div style="float:left;">
+                <div>
+                  <label for="inputCidade">Cidade:</label>
+                </div>
+                <div> 
+                  <!--<input class="span3" type="text" name="inputCidade">-->
+                  {{enderecoForm.cidade}}
+                </div>
+                <p style="color:red;font-size:small;"> {{enderecoForm.cidade.errors.as_text}} </p>
+              </div>
+              <div style="float:left;margin-left:20px;">
+                <div>
+                  <label for="inputCep">CEP:</label>
+                </div>
+                <div> 
+                  <!--<input class="span2" type="text" name="inputCep">-->
+                  {{enderecoForm.cep}}
+                </div>
+                <p style="color:red;font-size:small;"> {{enderecoForm.cep.errors.as_text}} </p>
+              </div>
+              <div style="clear:both;"></div>
+            </div>
+          </div>    
         </div>
         <div class="modal-footer">
           <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
@@ -211,4 +301,9 @@
       });
 
     </script>
+    {% if retornoAdd %}
+      <script>
+       $('#adicionarPedido').modal('show');
+      </script>
+    {% endif %}
 </body></html>

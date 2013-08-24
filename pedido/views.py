@@ -106,10 +106,14 @@ def pesquisar_pedido(request):
         pedidosAchadosFechados = []
 
         for pedido in pedidosAchados:
+            
+            despesaLista = Despesa.objects.filter(servico=pedido.id)
+            pedidoAchado = Pedidos (id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesaLista, desenho=pedido.desenho)
+        
             if pedido.prazo > DATA_ATUAL:
-                pedidosAchadosAbertos.append(pedido)
+                pedidosAchadosAbertos.append(pedidoAchado)
             else:
-                pedidosAchadosFechados.append(pedido)
+                pedidosAchadosFechados.append(pedidoAchado)
 
         crawl()
         drawings = Draft.objects.all()
@@ -206,7 +210,32 @@ def pedidos(request):
         
 
         if form.is_valid():
-           form.save()
+            pedidoAdicionado = form.save(commit=False)
+
+            #print "Descricao Pedido " + pedidoAdicionado.descricao
+            #cliente = Cliente.objects.get(id=pedidoAdicionado.cliente.id)
+
+            if request.POST['qtd_P'] != '':
+                corporativo = Corporativo()
+                corporativo.id = pedidoAdicionado.id
+                corporativo.valor = pedidoAdicionado.valor
+                corporativo.descricao = "teste hard coded"
+                corporativo.data = pedidoAdicionado.data
+                corporativo.prazo = pedidoAdicionado.prazo
+                corporativo.desenho = pedidoAdicionado.desenho
+                corporativo.cliente_id = pedidoAdicionado.cliente.id
+                corporativo.qtd_P = request.POST['qtd_P']
+                corporativo.qtd_M = request.POST['qtd_M']
+                corporativo.qtd_G = request.POST['qtd_G']
+                corporativo.save()
+
+            elif request.POST['altura'] != '':
+                personalizado = Personalizado(id=pedidoAdicionado.id, valor=pedidoAdicionado.valor, descricao=pedidoAdicionado.descricao, prazo=pedidoAdicionado.prazo, desenho=pedidoAdicionado.desenho)
+                personalizado.data = pedidoAdicionado.data
+                personalizado.cliente_id = pedidoAdicionado.cliente.id
+                personalizado.altura = request.POST['altura']
+                personalizado.largura = request.POST['largura']
+                personalizado.save()
 
         retornoAdd = True
 

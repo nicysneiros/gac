@@ -16,6 +16,7 @@
       }
     </style>
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/bootstrap-editable.css" rel="stylesheet">
     <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
 
     <!-- Fav and touch icons -->
@@ -70,62 +71,63 @@
               <tr>
                 <td colspan="2">
                   <p style="font-weight:bold;">Nome</p>
-                  <p style="color:rgb(124,124,124);">Maria Barbosa</p>
+                  <a name="nome" href="#"  id="nome" data-type="text" data-original-title="Nome Cliente" data-pk="{{cliente.id}}" style="color:rgb(124,124,124);">{{cliente.nome}}</a>
                 </td>
               </tr>
               <tr>
                 <td>
                   <p style="font-weight:bold;">Email</p>
-                  <p style="color:rgb(124,124,124);">maria.barbosa@email.com</p>
+                  <a name="email" href="#" id="email" data-type="text" data-original-title="Email" data-pk="{{cliente.id}}" style="color:rgb(124,124,124);">{{cliente.email}}</a>
                 </td>
                 <td>
-                  <p style="font-weight:bold;">CPF</p>
-                  <p style="color:rgb(124,124,124);">000.000.000-00</p>
+                  {% if cliente.juridico %}
+                    <p style="font-weight:bold;">CNPJ</p>
+                  {% else %}
+                    <p style="font-weight:bold;">CPF</p>
+                  {% endif %}
+                  <p style="color:rgb(124,124,124);">{{cliente.id}}</p>
                 </td>
               </tr>
               <tr>
                 <td>
                   <p style="font-weight:bold;">Telefone Residencial</p>
-                  <p style="color:rgb(124,124,124);">3333-3333</p>
+                  <a name="telResidencial" href="#" id="telResidencial" data-type="text" data-original-title="Telefone Residencial" data-pk="{{cliente.id}}" style="color:rgb(124,124,124);">{{cliente.telResidencial}}</a>
                 </td>
                 <td>
                   <p style="font-weight:bold;">Telefone Celular</p>
-                  <p style="color:rgb(124,124,124);">8888-8888</p>
+                  <a name="telCelular" href="#" id="telCelular" data-type="text" data-original-title="Telefone Celular" data-pk="{{cliente.id}}" style="color:rgb(124,124,124);">{{cliente.telCelular}}</a>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
                   <p style="font-weight:bold;">Logradouro</p>
-                  <p style="color:rgb(124,124,124);">Rua do CIn, 24</p>
+                  <a name="logradouro" href="#" id="logradouro" data-type="text" data-original-title="Logradouro" data-pk="{{cliente.id}}" style="color:rgb(124,124,124);">{{cliente.endereco.logradouro}}</a>
                 </td>
               </tr>
               <tr>
                 <td>
                   <p style="font-weight:bold;">Complemento</p>
-                  <p style="color:rgb(124,124,124);">Apto 100</p>
+                  <a name="complemento" href="#" id="complemento" data-type="text" data-original-title="Complemento" data-pk="{{cliente.id}}" style="color:rgb(124,124,124);">{{cliente.endereco.complemento}}</a>
                 </td>
                 <td>
                   <p style="font-weight:bold;">Bairro</p>
-                  <p style="color:rgb(124,124,124);">Cidade Universitária</p>
+                  <a name="bairro" href="#" id="bairro" data-type="text" data-original-title="Bairro" data-pk="{{cliente.id}}" style="color:rgb(124,124,124);">{{cliente.endereco.bairro}}</a>
                 </td>
               </tr>
               <tr>
                 <td>
                   <p style="font-weight:bold;">Cidade</p>
-                  <p style="color:rgb(124,124,124);">Recife</p>
+                  <a name="cidade" href="#" id="cidade" data-type="text" data-original-title="Cidade" data-pk="{{cliente.id}}" style="color:rgb(124,124,124);">{{cliente.endereco.cidade}}</a>
                 </td>
                 <td>
                   <p style="font-weight:bold;">CEP</p>
-                  <p style="color:rgb(124,124,124);">55.555-555</p>
+                  <a name="cep" href="#" id="cep" data-type="text" data-original-title="CEP" data-pk="{{cliente.id}}" style="color:rgb(124,124,124);">{{cliente.endereco.cep}}</a>
                 </td>
               </tr>
             </tbody>
           </table>
 
-          <p style="margin-bottom:20px;" align="right">
-            <button class="btn" type="button">Remover Cliente</button>
-          </p>
-
+          
           <h4>Pedidos Recentes</h4>
           <hr style="margin-top:0px;">
           <table class="table table-bordered table-hover">
@@ -138,14 +140,13 @@
             </thead>
             <tbody>
 
+              {% for pedido in pedidosRecentes%}
               <tr >
-                <td>18/07/2013</td>
-                <td>Vestido de Seda. Cor: Azul</td>
-                <td>R$ 75,00</td>
+                <td>{{pedido.prazo.day}}/{{pedido.prazo.month}}/{{pedido.prazo.year}}</td>
+                <td>{{pedido.descricao}}</td>
+                <td>R$ {{pedido.valor}}</td>
               </tr>
-
-              /?id={{e.id}}
-
+              {% endfor %}
             </tbody>
           </table>
 
@@ -160,11 +161,13 @@
               </tr>
             </thead>
             <tbody>
+              {% for produto in produtosComprados %}
               <tr>
-                <td>06/07/2013</td>
-                <td>Vestido tomara-que-caia com babados Cor: Salmão</td>
-                <td>R$ 90,00</td>
+                <td>{{produto.data.day}}/{{produto.data.month}}/{{produto.data.year}}</td>
+                <td>{{produto.descricao}}</td>
+                <td>R$ {{produto.valor}}</td>
               </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
@@ -192,6 +195,109 @@
           .on('changeDate', function(ev){
            $('.datepicker').datepicker('hide');
            });
+    </script>
+
+    <script type="text/javascript">
+        //var csrf_token = $.cookie('csrftoken');
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        $('#nome').editable({
+          url: '/cliente/atualizar_cliente/',
+          name: 'nome',
+          placement: 'bottom', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+
+         $('#email').editable({
+          url: '/cliente/atualizar_cliente/',
+          name: 'email',
+          placement: 'bottom', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+
+        $('#telResidencial').editable({
+          url: '/cliente/atualizar_cliente/',
+          name: 'telResidencial',
+          placement: 'bottom', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+
+        $('#telCelular').editable({
+          url: '/cliente/atualizar_cliente/',
+          name: 'telCelular',
+          placement: 'bottom', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+
+        $('#logradouro').editable({
+          url: '/cliente/atualizar_cliente/',
+          name: 'logradouro',
+          placement: 'top', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+
+        $('#complemento').editable({
+          url: '/cliente/atualizar_cliente/',
+          name: 'complemento',
+          placement: 'top', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+
+        $('#bairro').editable({
+          url: '/cliente/atualizar_cliente/',
+          name: 'bairro',
+          placement: 'top', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+
+        $('#cidade').editable({
+          url: '/cliente/atualizar_cliente/',
+          name: 'cidade',
+          placement: 'top', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+
+        $('#cep').editable({
+          url: '/cliente/atualizar_cliente/',
+          name: 'cep',
+          placement: 'top', 
+          params:function(params){
+            params.csrfmiddlewaretoken=csrftoken;
+            return params
+        }});
+       
+       
     </script>
     
 </body></html>

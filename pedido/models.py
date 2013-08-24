@@ -7,11 +7,11 @@ from cliente.models import Cliente
 class Servico (models.Model):
     #atributos de servico
     valor = models.FloatField(blank=True)
-    descricao = models.TextField()
+    descricao = models.TextField(null=True, db_column='descricao')
 
     #relacao com a entidade cliente. essa e uma relacao opcional
     cliente = models.ForeignKey(Cliente, db_column='ID_Cliente', blank=True, null=True)
-    data = models.DateTimeField(blank=True, null=True)
+    data = models.DateField(blank=True, null=True)
 
     class Meta:
         db_table = 'Servico'
@@ -30,6 +30,7 @@ class Corporativo(Pedido):
 
     class Meta:
         db_table = 'Corporativo'
+
 
 # class Ajuste(Pedido):
 
