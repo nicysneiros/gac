@@ -10,7 +10,11 @@ admin.autodiscover()
 urlpatterns = patterns('',
   
     url(r'info_clientes/$', cliente),
-    url(r'detalhe_cliente/$', detalhe_cliente),
+    url(r'detalhe_cliente/(\d+)/$', detalhe_cliente),
+    url(r'atualizar_cliente/$', atualizar_cliente),
+    url(r'pesquisar_cliente/$', pesquisar_cliente),
+
+
 )
 
 

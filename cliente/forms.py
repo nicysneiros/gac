@@ -12,7 +12,7 @@ class ClienteForm(ModelForm):
 
     class Meta:
         model = Cliente
-        fields = ('nome', 'email', 'telResidencial', 'telCelular', 'id')
+        fields = ['nome', 'email', 'telResidencial', 'telCelular', 'id']
         widgets = {
             'nome': forms.TextInput(),
             'email': forms.TextInput(),
@@ -20,11 +20,20 @@ class ClienteForm(ModelForm):
             'telCelular': forms.TextInput(),
         }
 
+    def __init__ (self, *args, **kwargs):
+        super(ClienteForm, self).__init__(*args, **kwargs)
+        self.fields['nome'].widget.attrs.update({'class':'span5'})
+        self.fields['email'].widget.attrs.update({'class':'span5'})
+        self.fields['telResidencial'].widget.attrs.update({'class':'span2'})
+        self.fields['telCelular'].widget.attrs.update({'class':'span2'})
+        self.fields['id'].widget.attrs.update({'class':'span3'})
+
+
 class EnderecoForm(ModelForm):
 
     class Meta:
         model = Endereco
-        fields = ('logradouro', 'complemento', 'bairro', 'cidade', 'cep')
+        fields = ['logradouro', 'complemento', 'bairro', 'cidade', 'cep']
         widgets = {
             'logradouro': forms.TextInput(),
             'complemento': forms.TextInput(),
@@ -32,3 +41,11 @@ class EnderecoForm(ModelForm):
             'cidade': forms.TextInput(),
             'cep': forms.TextInput(),
         }
+
+    def __init__ (self, *args, **kwargs):
+        super(EnderecoForm,self).__init__(*args, **kwargs)
+        self.fields['logradouro'].widget.attrs.update({'class':'span5'})
+        self.fields['complemento'].widget.attrs.update({'class':'span2'})
+        self.fields['bairro'].widget.attrs.update({'class':'span3'})
+        self.fields['cidade'].widget.attrs.update({'class':'span3'})
+        self.fields['cep'].widget.attrs.update({'class':'span2'})
