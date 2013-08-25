@@ -251,10 +251,13 @@ def pedidos(request):
     corporativoForm = CorporativoForm()
 
     if request.POST:
-        d = Draft.objects.get(id=request.POST['desenho'])
-        p = Pedido(desenho=d.photo) 
-        form = PedidoForm(request.POST or None, instance=p)
+        d = Draft.objects.all().filter(id=request.POST.get('foto',0))
         
+        if d:
+            p = Pedido(desenho=d.photo) 
+            form = PedidoForm(request.POST or None, instance=p)
+        else:
+            form = PedidoForm(request.POST)
 
         if form.is_valid():
             pedidoAdicionado = form.save(commit=False)
