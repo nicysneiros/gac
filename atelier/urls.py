@@ -8,9 +8,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
 
-    url(r'^sematrito/', include('core.urls')),
-    url(r'^accounts/login/', include('core.urls')),
-
 
     url(r'^$', include('login.urls')),
     url(r'^login', include('login.urls')),
