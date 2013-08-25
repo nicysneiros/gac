@@ -4,7 +4,7 @@ from pedido.models import *
 from cliente.models import Cliente
 from produto.forms import ProdutoForm
 from django.shortcuts import render
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from ecrawler.views import crawl
 from ecrawler.models import Draft
 from pedido.forms import DespesaForm
@@ -12,6 +12,88 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import *
 
 import datetime
+
+@login_required(redirect_field_name='redirect_to')
+def pesquisar_produto(request):
+
+    if request.POST:
+        descricaoProduto = request.POST['descProcurada']
+        productList = Produto.objects.filter(descricao__contains=descricaoProduto)
+        clientList = Cliente.objects.all()
+
+        crawl()
+        drawings = Draft.objects.all()
+
+        retornoAdd = False
+        form = ProdutoForm()
+
+
+        return render(request,'produtos.html',{"productList": productList, "clienteList" : clientList, 'drawings': drawings,'retornoAdd' : retornoAdd,'form':form})
+
+
+@login_required(redirect_field_name='redirect_to')
+def atualizar_produto(request):
+
+    if request.POST:
+        name = request.POST['name']
+        pk = request.POST['pk']
+        value = request.POST['value']
+
+        print "ATUALIZACAO " + name + " | " + pk + " | " + value
+
+        produto = Produto.objects.get(id=pk)
+
+        if name == 'descricao':
+            produto.descricao = value
+            produto.save()
+        elif name == 'categoria':
+            produto.categoria = value
+            produto.save()
+        elif name == 'tamanho':
+            produto.tamanho = value
+            produto.save()
+        elif name == 'valor':
+            produto.valor = value
+            produto.save()
+
+    return HttpResponse(content="", status=200)
+
+
+
+
+@login_required(redirect_field_name='redirect_to')
+def atualizar_despesa(request):
+
+    if request.POST:
+        name = request.POST['name']
+        pk = request.POST['pk']
+        value = request.POST['value']
+
+        print "ATUALIZACAO DESPESA" + name + " | " + pk + " | " + value
+
+        despesa = Despesa.objects.get(id=pk)
+
+        if name == 'dataCompra':
+            dataSplit = value.split('/')
+            despesa.data = datetime.date(int(dataSplit[2]), int(dataSplit[1]), int(dataSplit[0]))
+            despesa.save()
+        elif name == 'descricao':
+            despesa.descricao = value
+            despesa.save()
+        elif name == 'fornecedor':
+            despesa.fornecedor = value
+            despesa.save()
+        elif name == 'valor':
+            try:
+                valor = float(value)
+                despesa.valor = valor
+                despesa.save()
+            except ValueError:
+                return HttpResponseBadRequest('Insira um numero')
+
+    return HttpResponse(content="", status=200)
+
+
 
 
 @login_required(redirect_field_name='redirect_to')
@@ -159,12 +241,11 @@ def remover_produto(request, product_id):
 
 
 @login_required(redirect_field_name='redirect_to')
-def remover_despesa(request, despesa_id):
+def remover_despesa(request, produto_id, despesa_id):
     Despesa.objects.get(id = despesa_id).delete()
 
-    url = cutPath(request.path,2)
-
-    return HttpResponseRedirect(url)
+    #url = cutPath(request.path,2)
+    return HttpResponseRedirect("/produto/detalhe_produto/%s"%produto_id)
 
 
 

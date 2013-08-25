@@ -11,7 +11,6 @@ urlpatterns = patterns('',
 
 	#url(r'^$', index),
 	url(r'bootstrap/$', addClient ),
-	url(r'pedidos/$', crawl ),
 	url(r'home/$', views.login, name='login'),
 	url(r'^$', views.login, name='login'),
 	url(r'clientes/$', cliente),

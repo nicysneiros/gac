@@ -19,7 +19,7 @@ Despesa.objects.all().delete()
 Pedido.objects.all().delete()
 
 
-startDate = datetime.strptime('23/08/2013 1:30 PM', '%d/%m/%Y %I:%M %p')
+startDate = datetime.strptime('20/08/2013 1:30 PM', '%d/%m/%Y %I:%M %p')
 endDate = datetime.strptime('28/09/2013 1:30 PM', '%d/%m/%Y %I:%M %p')
 
 for i in range(0,9):

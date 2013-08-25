@@ -36,7 +36,7 @@
           <a class="brand" href="#">GAC</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Inicio</a></li>
+              <li><a href="/">Inicio</a></li>
               <li><a href="#">Sobre</a></li>
               <li><a href="#">Contato</a></li>
             </ul>
@@ -185,7 +185,7 @@
                   <label for="id_prazo">Prazo de Entrega:</label>
                 </div>
                 <div> 
-                  <div class="input-append date" id="inputPrazo" data-date="01/01/2013" data-date-format="dd/mm/yyyy">
+                  <div class="input-append date" id="inputPrazo" data-date="" data-date-format="dd/mm/yyyy">
                     <!--<input class="span2" name="prazo" size="16" type="text" value="01/01/2013" readonly></input>-->
                     {{ form.prazo }}
                     <span class="add-on"><i class="icon-calendar"></i></span>
@@ -253,20 +253,17 @@
                 </div>
                 <div class="span1" style="float:left;">
                   <label style="float:left;margin-right:10px;">P:</label>
-                  <!--<input style="float:left;width:30px;">-->
-                  {{ corporativoForm.qtd_P }}
+                  <input name="qtd_P" style="float:left;width:30px;">
                   <div style="clear:both;"></div>
                 </div>
                 <div class="span1" style="float:left;">
                   <label style="float:left;margin-right:10px;">M:</label>
-                  <!--<input style="float:left;width:30px;">-->
-                  {{ corporativoForm.qtd_M }}
+                  <input name="qtd_M" style="float:left;width:30px;"> 
                   <div style="clear:both;"></div>
                 </div>
                 <div class="span1" style="float:left;">
                   <label style="float:left;margin-right:10px;">G:</label>
-                  <!--<input style="float:left;width:30px;">-->
-                  {{ corporativoForm.qtd_G }}
+                  <input name="qtd_G" style="float:left;width:30px;">
                   <div style="clear:both;"></div>
                 </div>
                 <div style="clear:both;"></div>
@@ -278,12 +275,12 @@
               </div>
               <div class="span2" style="float:left;">
                 <label style="float:left;margin-right:10px;">Altura:</label>
-                <input style="float:left;width:50px;">
+                <input name="altura" style="float:left;width:50px;">
                 <div style="clear:both;"></div>
               </div>
               <div class="span2" style="float:left;">
                 <label style="float:left;margin-right:10px;">Largura:</label>
-                <input style="float:left;width:50px;">
+                <input name="largura" style="float:left;width:50px;">
                 <div style="clear:both;"></div>
               </div>
               <div style="clear:both;"></div>
