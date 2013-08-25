@@ -35,7 +35,7 @@
           <a class="brand" href="#">GAC</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Inicio</a></li>
+              <li><a href="/">Inicio</a></li>
               <li><a href="#">Sobre</a></li>
               <li><a href="#">Contato</a></li>
             </ul>
@@ -46,16 +46,16 @@
 
     <div class="tabbable tabs-left" style="padding-left:50px;">
       <ul class="nav nav-tabs">
-        <li>
+        <li onClick="location.href = '/cliente/info_clientes';">
           <a href="../templates/cliente.html#" data-toggle="tab">Clientes</a>
         </li>
-        <li class="active">
+        <li class="active" onClick="location.href = '/servicos/';">
           <a href="../templates/servico.html#" data-toggle="tab">Serviços</a>
         </li>
-        <li>
+        <li onClick="location.href = '/portfolio/sematrito/portfolio/';">
           <a href="../templates/portfolio.html#" data-toggle="tab">Portfólio</a>
         </li>
-        <li>
+        <li onClick="location.href = '/relatorio/sematrito/relatorio/';">
           <a href="../templates/portfolio.html#" data-toggle="tab">Relatório</a>
         </li>
       </ul>
@@ -68,13 +68,13 @@
               <img src="{{STATIC_URL}}img/home_servico/pedidos2.jpg" class="img-rounded">
               <h2>Pedidos</h2>
               <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn" href="http://twitter.github.io/bootstrap/examples/hero.html#">View details »</a></p>
+              <p><a class="btn" href="/pedido/info_pedidos/">View details »</a></p>
             </div>
             <div class="span4" style="float:left;" align="center">
               <img src="{{STATIC_URL}}img/home_servico/produtos.jpg" class="img-rounded">
               <h2>Produtos</h2>
               <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-              <p><a class="btn" href="http://twitter.github.io/bootstrap/examples/hero.html#">View details »</a></p>
+              <p><a class="btn" href="/produto/info_produtos/">View details »</a></p>
             </div>
           </div>
         </div>

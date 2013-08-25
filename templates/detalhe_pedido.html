@@ -37,7 +37,7 @@
           <a class="brand" href="#">GAC</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="#">Inicio</a></li>
+              <li><a href="/">Inicio</a></li>
               <li><a href="#">Sobre</a></li>
               <li><a href="#">Contato</a></li>
             </ul>
@@ -48,11 +48,11 @@
 
     <div class="tabbable tabs-left" style="padding-left:50px;">
       <ul class="nav nav-tabs">
-        <li class="active">
-          <a href="../templates/pedidos.html#" data-toggle="tab">Pedidos</a>
+        <li id="liPedidos" class="active">
+          <a href="#" data-toggle="tab">Pedidos</a>
         </li>
-        <li>
-          <a href="../templates/servico.html#" data-toggle="tab">Produtos</a>
+        <li id="liProdutos" onClick="location.href = '/produto/info_produtos';">
+          <a href="/produto/info_produtos" data-toggle="tab">Produtos</a>
         </li>
       </ul>
       <!-- Example row of columns -->
