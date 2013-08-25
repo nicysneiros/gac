@@ -14,6 +14,24 @@ from django.contrib.auth import *
 import datetime
 
 @login_required(redirect_field_name='redirect_to')
+def pesquisar_produto(request):
+
+    if request.POST:
+        descricaoProduto = request.POST['descProcurada']
+        productList = Produto.objects.filter(descricao__contains=descricaoProduto)
+        clientList = Cliente.objects.all()
+
+        crawl()
+        drawings = Draft.objects.all()
+
+        retornoAdd = False
+        form = ProdutoForm()
+
+
+        return render(request,'produtos.html',{"productList": productList, "clienteList" : clientList, 'drawings': drawings,'retornoAdd' : retornoAdd,'form':form})
+
+
+@login_required(redirect_field_name='redirect_to')
 def atualizar_produto(request):
 
     if request.POST:
