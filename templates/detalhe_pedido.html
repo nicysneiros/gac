@@ -67,7 +67,7 @@
                   <p style="font-weight:bold;">Descrição do Pedido</p>
                   <a name="descricao" href="#" id="descricaoPedido" data-type="textarea" data-original-title="Descrição" data-pk="{{pedido.id}}"style="color:rgb(124,124,124);">{{pedido.descricao}}</a>
                 </td>
-                <td rowspan="2" align="middle">
+                <td rowspan="3" align="middle">
                   <p style="font-weight:bold;">Desenho do Pedido</p>
                   <img src="{{ pedido.desenho.url }}" width="200" height="200">
                 </td>
@@ -85,6 +85,31 @@
                   <p style="font-weight:bold;">Valor Gasto</p>
                   <p style="color:rgb(124,124,124);">R$ {{pedido.valorGasto}}</p>
                 </td>
+              </tr>
+              <tr>
+                {% if isCorporativo %}
+                  <td>
+                    <p style="font-weight:bold;">Quantidade P:</p>
+                    <p style="color:rgb(124,124,124);">{{corporativoInfo.qtd_P}}</p> 
+                  </td>
+                  <td>
+                    <p style="font-weight:bold;">Quantidade M:</p>
+                    <p style="color:rgb(124,124,124);">{{corporativoInfo.qtd_M}}</p> 
+                  </td>
+                  <td>
+                    <p style="font-weight:bold;">Quantidade G:</p>
+                    <p style="color:rgb(124,124,124);">{{corporativoInfo.qtd_G}}</p> 
+                  </td>
+                {% elif isPersonalizado %}
+                  <td>
+                    <p style="font-weight:bold;">Altura:</p>
+                    <p style="color:rgb(124,124,124);">{{personalizadoInfo.altura}}</p> 
+                  </td>
+                  <td colspan="2">
+                    <p style="font-weight:bold;">Largura:</p>
+                    <p style="color:rgb(124,124,124);">{{personalizadoInfo.largura}}</p> 
+                  </td>
+                {% endif %}
               </tr>
             </tbody>
           </table>
