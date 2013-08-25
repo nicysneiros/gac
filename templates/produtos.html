@@ -99,16 +99,7 @@
                               
                             </div>
 
-                            <div class = "span5" align="left">
-                                <div>
-                                  <label for="inputTamanho">Tamanho:</label>
-                                </div>
-                                <div> 
-                                  {{ form.tamanho }}
-                                  <!--<input class="span3" type="text" name = "categoria" id="inputCategoria"></input>-->
-                                </div>
-                                <p style="color:red;font-size:small;"> {{form.tamanho.errors.as_text}} </p>
-                              </div>
+
 
 
                             <div class="span5" align="left">
@@ -200,8 +191,12 @@
                       </form>
                     </div> <!--Final Modal de Adicionar Produto-->
 
-                    <form class="navbar-search pull-right">
-                      <input type="text" class="search-query" placeholder="Search">
+                    <form method="post" class="navbar-search form-search pull-right" action="/produto/pesquisar_produto/">
+                      {% csrf_token %}
+                      <div class="input-append">
+                        <input name="descProcurada" type="text" class="span2 search-query" placeholder="Procurar">
+                        <button type="submit" class="btn"><i class="icon-search"></i></button>
+                      </div>
                     </form>
                   </div>
             </div> <!--Fim da Barra Inicial-->
