@@ -1,7 +1,8 @@
 # Create your views here.
 from django.http import HttpResponse, QueryDict, HttpResponseRedirect, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
-from core.models import *
+from django.core.exceptions import *
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.template import Context, loader
 import logging
@@ -13,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import *
 from ecrawler.views import crawl
 
-from pedido.models import Pedido, Despesa, Servico
+from pedido.models import Pedido, Despesa, Servico, Corporativo, Personalizado
 from cliente.models import Cliente
 from ecrawler.models import Draft
 
@@ -100,13 +101,13 @@ def pesquisar_pedido(request):
 
     if request.POST:
         descricaoPedido = request.POST['descProcurada']
-        pedidosAchados = Pedido.objects.filter(descricao__contains=descricaoPedido)
+        pedidosAchados = Pedido.objects.filter(descricao__icontains=descricaoPedido)
 
         pedidosAchadosAbertos = []
         pedidosAchadosFechados = []
 
         for pedido in pedidosAchados:
-            
+
             despesaLista = Despesa.objects.filter(servico=pedido.id)
             pedidoAchado = Pedidos (id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesaLista, desenho=pedido.desenho)
         
@@ -145,11 +146,6 @@ def remover_pedido(request, id_pedido):
 @login_required(redirect_field_name='redirect_to')
 def detalhe_pedido(request, id_pedido):
 
-    pedido = Pedido.objects.get(id=id_pedido)
-    despesaLista = Despesa.objects.filter(servico=pedido.id)
-
-    pedidoInfo = Pedidos (id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesaLista, desenho=pedido.desenho)
-    
     retornoAddDespesa = False
     despesaForm = DespesaForm()
 
@@ -167,11 +163,62 @@ def detalhe_pedido(request, id_pedido):
 
         retornoAddDespesa = True
 
-    return render(request,
+    isCorporativo = False
+    isPersonalizado = False
+    
+    try:
+        corporativo = Corporativo.objects.get(id=id_pedido)
+        despesaLista = Despesa.objects.filter(servico=corporativo.id)
+        pedidoInfo = Pedidos (id=corporativo.id, dataEntrega=corporativo.prazo, descricao=corporativo.descricao, cliente=corporativo.cliente, valorCobrado=corporativo.valor, despesasLista=despesaLista, desenho=corporativo.desenho)
+        corporativoInfo = PedidoCorporativo(qtd_P=corporativo.qtd_P, qtd_M=corporativo.qtd_M, qtd_G=corporativo.qtd_G)
+        isCorporativo = True
+
+        return render(request,
         'detalhe_pedido.html',
         {'pedido' : pedidoInfo,
          'form' : despesaForm,
-          'retornoAddDespesa' : retornoAddDespesa})
+         'retornoAddDespesa' : retornoAddDespesa,
+         'isCorporativo' : isCorporativo,
+         'isPersonalizado' : isPersonalizado,
+         'pedido': pedidoInfo,
+         'corporativoInfo': corporativoInfo})
+    
+    except ObjectDoesNotExist:
+
+        try:
+            personalizado = Personalizado.objects.get(id=id_pedido)
+            despesaLista = Despesa.objects.filter(servico=personalizado.id)
+            pedidoInfo = Pedidos (id=personalizado.id, dataEntrega=personalizado.prazo, descricao=personalizado.descricao, cliente=personalizado.cliente, valorCobrado=personalizado.valor, despesasLista=despesaLista, desenho=personalizado.desenho)
+            personalizadoInfo = PedidoPersonalizado(altura=personalizado.altura, largura=personalizado.largura)
+            isPersonalizado = True
+
+            return render(request,
+             'detalhe_pedido.html',
+             {'pedido' : pedidoInfo,
+              'form' : despesaForm,
+              'retornoAddDespesa' : retornoAddDespesa,
+              'isCorporativo' : isCorporativo,
+              'isPersonalizado' : isPersonalizado,
+              'pedido': pedidoInfo,
+              'personalizadoInfo': personalizadoInfo})
+
+        except ObjectDoesNotExist:
+
+            pedido = Pedido.objects.get(id=id_pedido)
+            despesaLista = Despesa.objects.filter(servico=pedido.id)
+
+            pedidoInfo = Pedidos (id=pedido.id, dataEntrega=pedido.prazo, descricao=pedido.descricao, cliente=pedido.cliente, valorCobrado=pedido.valor, despesasLista=despesaLista, desenho=pedido.desenho)
+            
+            return render(request,
+             'detalhe_pedido.html',
+             {'pedido' : pedidoInfo,
+              'form' : despesaForm,
+              'retornoAddDespesa' : retornoAddDespesa,
+              'isCorporativo' : isCorporativo,
+              'isPersonalizado' : isPersonalizado,
+              'pedido': pedidoInfo})
+
+        
 
 
 
@@ -204,38 +251,36 @@ def pedidos(request):
     corporativoForm = CorporativoForm()
 
     if request.POST:
-        d = Draft.objects.get(id=request.POST['desenho'])
-        p = Pedido(desenho=d.photo) 
-        form = PedidoForm(request.POST or None, instance=p)
+        d = Draft.objects.all().filter(id=request.POST.get('foto',0))
         
+        if d:
+            p = Pedido(desenho=d.photo) 
+            form = PedidoForm(request.POST or None, instance=p)
+        else:
+            form = PedidoForm(request.POST)
 
         if form.is_valid():
             pedidoAdicionado = form.save(commit=False)
 
-            #print "Descricao Pedido " + pedidoAdicionado.descricao
-            #cliente = Cliente.objects.get(id=pedidoAdicionado.cliente.id)
-
             if request.POST['qtd_P'] != '':
-                corporativo = Corporativo()
-                corporativo.id = pedidoAdicionado.id
-                corporativo.valor = pedidoAdicionado.valor
-                corporativo.descricao = "teste hard coded"
-                corporativo.data = pedidoAdicionado.data
-                corporativo.prazo = pedidoAdicionado.prazo
-                corporativo.desenho = pedidoAdicionado.desenho
-                corporativo.cliente_id = pedidoAdicionado.cliente.id
+                corporativo = Corporativo(id=pedidoAdicionado.id, valor=pedidoAdicionado.valor, descricao=pedidoAdicionado.descricao, cliente_id=pedidoAdicionado.cliente.id, prazo=pedidoAdicionado.prazo, desenho=pedidoAdicionado.desenho)
+                corporativo.data = DATA_ATUAL
+                corporativo.prazo = form.cleaned_data['prazo']
                 corporativo.qtd_P = request.POST['qtd_P']
                 corporativo.qtd_M = request.POST['qtd_M']
                 corporativo.qtd_G = request.POST['qtd_G']
                 corporativo.save()
 
             elif request.POST['altura'] != '':
-                personalizado = Personalizado(id=pedidoAdicionado.id, valor=pedidoAdicionado.valor, descricao=pedidoAdicionado.descricao, prazo=pedidoAdicionado.prazo, desenho=pedidoAdicionado.desenho)
-                personalizado.data = pedidoAdicionado.data
-                personalizado.cliente_id = pedidoAdicionado.cliente.id
+                personalizado = Personalizado(id=pedidoAdicionado.id, valor=pedidoAdicionado.valor, descricao=pedidoAdicionado.descricao, cliente_id=pedidoAdicionado.cliente.id, prazo=pedidoAdicionado.prazo, desenho=pedidoAdicionado.desenho)
+                personalizado.data = DATA_ATUAL
                 personalizado.altura = request.POST['altura']
                 personalizado.largura = request.POST['largura']
                 personalizado.save()
+            
+            else:
+                pedidoAdicionado.data = DATA_ATUAL
+                form.save()
 
         retornoAdd = True
 
@@ -265,3 +310,14 @@ class Pedidos:
         valorGastoTotal = 0
         for despesa in despesasLista: valorGastoTotal = valorGastoTotal + despesa.valor
         self.valorGasto = valorGastoTotal
+
+class PedidoCorporativo:
+    def __init__(self, qtd_P, qtd_M, qtd_G):
+        self.qtd_P = qtd_P
+        self.qtd_M = qtd_M
+        self.qtd_G = qtd_G
+
+class PedidoPersonalizado:
+    def __init__(self,altura,largura):
+        self.altura = altura
+        self.largura = largura
