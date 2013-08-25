@@ -63,16 +63,18 @@
       <div class="tab-content" style="padding-right:50px;">
         <h2>Relatório Financeiro</h2>
         <h5>Defina o período de tempo que deve ser considerado para a geração do relatório</h5>
-        <form>
+        <form method="post" action="">
+         {% csrf_token %}
           <div style="float:left;">
             <div>
               <label for="inputPrazo">Data Inicial:</label>
             </div>
             <div> 
-              <div class="input-append date" id="inputPrazo" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                <input class="span2" size="16" type="text" value="12-02-2012" readonly>
+              <div name="dataInicio" class="input-append date" id="inputDataInicio" data-date="" data-date-format="dd/mm/yyyy">
+                {{form.dataInicio}}
                 <span class="add-on"><i class="icon-calendar"></i></span>
               </div>
+              
             </div>
           </div>
           <div style="float:left;margin-left:40px;">
@@ -80,17 +82,126 @@
               <label for="inputPrazo">Data Final</label>
             </div>
             <div> 
-              <div class="input-append date" id="inputPrazo" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                <input class="span2" size="16" type="text" value="12-02-2012" readonly>
+              <div class="input-append date" id="inputDataFim" data-date="" data-date-format="dd/mm/yyyy">
+               {{form.dataFim}}
                 <span class="add-on"><i class="icon-calendar"></i></span>
               </div>
+              <div style="clear:both;"></div>
+
+               <div style="float:left;margin-left:-300px;">
+                {{form.pdf}}
+               </div>
+               <div style="float:left;margin-left:-200px;">Gerar PDF</div>
+               <br></br>
             </div>
           </div>
           <div style="clear:both;"></div>
-        </form>
-        <p><button class="btn" type="button">Gerar Relatório</button></p>
-      </div>
+          <div style="float:left;">
+            <button id="gerarRelatorio" type="submit" class="btn">Gerar Relatório</button>
+          </div>
+          
+         </form>          
+          <div style="clear:both;"></div>
+        
+        
+        <div>
+            <h4 align="left">Pedidos do Periodo</h4>
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Data de Entrega</th>
+                  <th>Cliente</th>
+                  <th>Valor Cobrado</th>
+                  <th>Valor Gasto</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for pedido in pedidosList %}
+                  <tr>
+                    <td>{{ pedido.dataEntrega }}</td>
+                    <td>{{ pedido.cliente.nome }}</td>
+                    <td>R$ {{ pedido.valorCobrado }}</td>
+                    <td>R$ {{ pedido.valorGasto }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div> <!--Fim da Tabela de Pedidos em Aberto-->
+
+          
+            <div style="float:right;"> 
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>            
+                <th>Lucro:</th>
+                <td>R$ {{lucroPedidosTotal}}</td>
+                </tr>
+                <tr>
+                <th>Despesas</th>
+                <td>R$ {{depesaPedidosTotal}}</td>
+                </tr>
+                <tr>
+                <th>Subtotal-Pedidos:</th>
+                <td>R$ {{SubtotalPedidos}}</td>
+                </tr>
+              </thead>
+              
+            </table>
+          </div>
+          <br></br>
+          <br></br>
+          <br></br>
+          <div>
+            <h4 align="left">Produtos Vendidos</h4>
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Data de Venda</th>
+                  <th>Cliente</th>
+                  <th>Valor Cobrado</th>
+                  <th>Valor Gasto</th>
+                </tr>
+              </thead>
+              <tbody>        
+
+                  {% for product in produtoList %}
+                  
+                      {% if product.cliente %}
+                      <tr>
+                      <td>{{product.dataVenda.day}}/{{product.dataVenda.month}}/{{product.dataVenda.year}}</td>
+                      <td>{{product.cliente.nome}}</td>
+                      <td>R$ {{ product.valorCobrado }}</td>
+                      <td>R$ {{product.valorGasto}}</td>
+                      </tr>                  
+                      {% endif %}                  
+                  {% endfor %}
+                
+              </tbody>
+            </table>
+          </div> <!--Fim da Tabela de Produtos Vendidos-->
+          <div style="float:right;"> 
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>            
+                <th>Lucro:</th>
+                <td>R$ {{lucroProdutosTotal}}</td>
+                </tr>
+                <tr>
+                <th>Despesas</th>
+                <td>R$ {{despesaProdutoTotal}}</td>
+                </tr>
+                <tr>
+                <th>Subtotal-Produtos:</th>
+                <td>R$ {{SubtotalProdutos}}</td>
+                </tr>
+              </thead>
+              
+            </table>
+          </div>
+
     </div> <!-- /container -->
+      </div>
+        
 
     <div>
       <hr>
@@ -100,133 +211,7 @@
       </footer>
     </div>
 
-    <!--Modal de Adicionar Pedido-->
-    <div id="adicionarPedido" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="adicionarPedidoLabel" aria-hidden="true">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">Adicionar Cliente</h3>
-      </div>
-      
-      <form method="post">
-        <div class="modal-body">
-          <div align="center">
-
-            <div class="span5" align="left">
-              <div>
-                <label for="inputNome">Nome:</label>
-              </div>
-              <div>
-                <input class="span5" type="text" id="inputNome">
-              </div>
-            </div>
-
-            <div class="span5" align="left">
-              <div>
-                <label for="inputEmail">Email:</label>
-              </div>
-              <div>
-                <input class="span5" type="text" id="inputEmail">
-              </div>
-            </div>
-
-            <div class="span5" align="left">
-              <div style="float:left;">
-                <div>
-                  <label for="inputTelCelular">Telefone Celular:</label>
-                </div>
-                <div> 
-                  <input class="span2" type="text" id="inputTelCelular">
-                </div>
-              </div>
-              <div style="float:left;margin-left:20px;">
-                <div>
-                  <label for="inputTelResidencial">Telefone Residencial</label>
-                </div>
-                <div> 
-                  <input class="span2" type="text" id="inputTelResidencial">
-                </div>
-              </div>
-              <div style="clear:both;"></div>
-            </div>
-
-            <div class="span5" align="left">
-              <div style="float:left;">
-                <div>
-                  <label for="inputId">CPF/CNPJ:</label>
-                </div>
-                <div> 
-                  <input class="span3" type="text" id="inputId">
-                </div>
-              </div>
-              <div style="float:left;margin-left:20px;">
-                <label class="radio">
-                  <input type="radio" name="cpf" id="cpf" value="option1" checked>CPF
-                </label>
-                <label class="radio">
-                  <input type="radio" name="cnpj" id="cnpj" value="option2">CNPJ
-                </label>
-              </div>
-              <div style="clear:both;"></div>
-            </div>
-
-            <hr>
-
-            <div class="span5" align="left">
-              <div>
-                <label for="inputEmail">Logradouro:</label>
-              </div>
-              <div>
-                <input class="span5" type="text" id="inputEmail">
-              </div>
-            </div>
-
-            <div class="span5" align="left">
-              <div style="float:left;">
-                <div>
-                  <label for="inputComplemento">Complemento:</label>
-                </div>
-                <div> 
-                  <input class="span2" type="text" id="inputComplemento">
-                </div>
-              </div>
-              <div style="float:left;margin-left:20px;">
-                <div>
-                  <label for="inputBairro">Bairro:</label>
-                </div>
-                <div> 
-                  <input class="span3" type="text" id="inputBairro">
-                </div>
-              </div>
-              <div style="clear:both;"></div>
-            </div>
-
-            <div class="span5" align="left">
-              <div style="float:left;">
-                <div>
-                  <label for="inputCidade">Cidade:</label>
-                </div>
-                <div> 
-                  <input class="span3" type="text" id="inputComplemento">
-                </div>
-              </div>
-              <div style="float:left;margin-left:20px;">
-                <div>
-                  <label for="inputCep">CEP:</label>
-                </div>
-                <div> 
-                  <input class="span2" type="text" id="inputCep">
-                </div>
-              </div>
-              <div style="clear:both;"></div>
-            </div>
-          </div>   
-        </div>
-        <div class="modal-footer">
-          <a href="#" class="btn">Fechar</a>
-          <a href="#" class="btn btn-primary" type="submit">Adicionar</a>
-        </div>
-      </form>
-    </div> <!--Final Modal de Adicionar Pedido-->
+    
 
 
     <!-- Le javascript
@@ -235,4 +220,20 @@
     <script src="{{STATIC_URL}}js/jquery.js"></script>
     <script src="{{STATIC_URL}}js/bootstrap.js"></script>
     <script src="{{STATIC_URL}}js/bootstrap-editable.js"></script>
-</body></html>
+    <script src="{{STATIC_URL}}js/bootstrap-editable.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+      $(function() {
+    $('#inputDataInicio').datepicker({
+      language: 'pt-BR'
+    });
+  });
+    </script>
+    <script type="text/javascript">
+      $(function() {
+      $('#inputDataFim').datepicker({
+        language: 'pt-BR'
+       });
+    });
+    </script>
+    </body></html>
