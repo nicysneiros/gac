@@ -55,7 +55,7 @@
         <li class="active" onClick="location.href = '/portfolio/sematrito/portfolio/';">
           <a href="../templates/portfolio.html#" data-toggle="tab">Portfólio</a>
         </li>
-        <li onClick="location.href = '/relatorio/sematrito/relatorio/';">
+        <li onClick="location.href = '/portfolio_admin/;">
           <a href="../templates/portfolio.html#" data-toggle="tab">Relatório</a>
         </li>
       </ul>
@@ -140,7 +140,7 @@
                           {% load humanize %}
                           <h5>R$ {{ produto.valor|floatformat:2|intcomma }}</h5>
                           <p> 
-                          <form id="form{{ produto.id }}" action="../portfolio_admin/remover_portfolio/" method="POST">
+                          <form id="form{{ produto.id }}" action="/portfolio_admin/remover_portfolio/" method="POST">
                           <p> <a href="javascript:;" onclick="document.getElementById('form{{ produto.id }}').submit();" class="btn">Remover Item</a> </p>
                           <input type='hidden' name='id' value='{{ produto.id }}'/>
                           {% csrf_token %}
@@ -244,7 +244,7 @@
                           {% load humanize %}
                           <h5>R$ {{ produto.valor|floatformat:2|intcomma }}</h5>
 						  {% csrf_token %}
-                          <form id="form{{ produto.id }}" action="../portfolio_admin/adicionar_portfolio/" method="POST">
+                          <form id="form{{ produto.id }}" action="/portfolio_admin/adicionar_portfolio/" method="POST">
 						  <p> <a href="javascript:;" onclick="document.getElementById('form{{ produto.id }}').submit();" class="btn btn-primary">Adicionar ao Portfólio</a> </p>
 						  <input type='hidden' name='id' value='{{ produto.id }}'/>
 						  {% csrf_token %}
