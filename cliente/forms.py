@@ -26,7 +26,7 @@ class ClienteForm(ModelForm):
         self.fields['email'].widget.attrs.update({'class':'span5'})
         self.fields['telResidencial'].widget.attrs.update({'class':'span2'})
         self.fields['telCelular'].widget.attrs.update({'class':'span2'})
-        self.fields['id'].widget.attrs.update({'class':'span3', 'placehold':'Sem pontos ou tracos'})
+        self.fields['id'].widget.attrs.update({'class':'span3', 'placeholder':'Sem pontos ou tracos'})
 
 
 class EnderecoForm(ModelForm):
