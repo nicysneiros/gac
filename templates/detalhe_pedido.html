@@ -67,10 +67,21 @@
                   <p style="font-weight:bold;">Descrição do Pedido</p>
                   <a name="descricao" href="#" id="descricaoPedido" data-type="textarea" data-original-title="Descrição" data-pk="{{pedido.id}}"style="color:rgb(124,124,124);">{{pedido.descricao}}</a>
                 </td>
-                <td rowspan="3" align="middle">
-                  <p style="font-weight:bold;">Desenho do Pedido</p>
-                  <img src="{{ pedido.desenho.url }}" width="200" height="200">
-                </td>
+                {% if isCorporativo or isPersonalizado %}
+                  <td rowspan="3" align="middle">
+                    <p style="font-weight:bold;">Desenho do Pedido</p>
+                    {% if pedido.desenho %}
+                      <img src="{{ pedido.desenho.url }}" width="200" height="200">
+                    {% endif %}
+                  </td>
+                {% else %}
+                  <td rowspan="2" align="middle">
+                    <p style="font-weight:bold;">Desenho do Pedido</p>
+                    {% if pedido.desenho %}
+                      <img src="{{ pedido.desenho.url }}" width="200" height="200">
+                    {% endif %}
+                  </td>
+                {% endif %}
               </tr>
               <tr>
                 <td>
@@ -86,6 +97,7 @@
                   <p style="color:rgb(124,124,124);">R$ {{pedido.valorGasto}}</p>
                 </td>
               </tr>
+              {% if isCorporativo or isPersonalizado %}
               <tr>
                 {% if isCorporativo %}
                   <td>
@@ -111,6 +123,7 @@
                   </td>
                 {% endif %}
               </tr>
+              {% endif %}
             </tbody>
           </table>
 
@@ -122,7 +135,7 @@
           <hr style="margin-top:0px;">
           <table class="table table-bordered table-hover">
             <tbody>
-              <tr>
+              <tr onclick="location.href='/cliente/detalhe_cliente/{{pedido.cliente.id}}'">
                 <td>
                   <p style="font-weight:bold;">Nome do Cliente</p>
                   <p style="color:rgb(124,124,124);">{{pedido.cliente.nome}}</p>

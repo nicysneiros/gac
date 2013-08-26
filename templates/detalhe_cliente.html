@@ -49,13 +49,13 @@
     <div class="tabbable tabs-left" style="padding-left:50px;">
       <ul class="nav nav-tabs">
         <li class="active">
-          <a href="../templates/pedidos.html#" data-toggle="tab">Clientes</a>
+          <a href="/cliente/info_clientes/" data-toggle="tab">Clientes</a>
         </li>
         <li>
-          <a href="../templates/servico.html#" data-toggle="tab">Serviços</a>
+          <a href="/servico/" data-toggle="tab">Serviços</a>
         </li>
         <li>
-          <a href="../templates/servico.html#" data-toggle="tab">Portfólio</a>
+          <a href="/portfolio_admin/" data-toggle="tab">Portfólio</a>
         </li>
         <li>
           <a href="../templates/portfolio.html#" data-toggle="tab">Relatório</a>
@@ -141,7 +141,7 @@
             <tbody>
 
               {% for pedido in pedidosRecentes%}
-              <tr >
+              <tr onclick="location.href='/pedido/detalhe_pedido/{{pedido.id}}'">
                 <td>{{pedido.prazo.day}}/{{pedido.prazo.month}}/{{pedido.prazo.year}}</td>
                 <td>{{pedido.descricao}}</td>
                 <td>R$ {{pedido.valor}}</td>
@@ -162,7 +162,7 @@
             </thead>
             <tbody>
               {% for produto in produtosComprados %}
-              <tr>
+              <tr onclick="location.href='/produto/detalhe_produto/{{produto.id}}'">
                 <td>{{produto.data.day}}/{{produto.data.month}}/{{produto.data.year}}</td>
                 <td>{{produto.descricao}}</td>
                 <td>R$ {{produto.valor}}</td>
