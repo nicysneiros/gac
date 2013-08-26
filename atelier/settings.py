@@ -136,7 +136,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    #'core',
     'cliente',
     'ecrawler',
     'login',
@@ -148,6 +148,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'geraldo',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -181,4 +182,8 @@ LOGGING = {
     }
 }
 
+import dj_database_url
+DATABASES['default'] = dj_database_url.config(default='postgres://postgres:1234@localhost/gac')
+ 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
