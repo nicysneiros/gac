@@ -134,11 +134,13 @@ def registrar_venda(request):
     if request.method == 'POST':
         productId = request.POST['productId']
         clientId = request.POST['selectedClient']
+        valor = request.POST['inputValor']
         produto = Produto.objects.get(id = productId)
         cliente = Cliente.objects.get(id = clientId)
         produto.cliente = cliente
         data = (request.POST['data_venda']).replace('-','/')
         produto.data = datetime.datetime.strptime( data + ' 1:00 AM', '%d/%m/%Y %I:%M %p')
+        produto.valor = valor
         produto.save()
 
     return HttpResponseRedirect('/produto/info_produtos/')

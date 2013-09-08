@@ -222,7 +222,7 @@
                     <td onclick="location.href = '/produto/detalhe_produto/{{product.id}}'">{{ product.categoria }}</td>
                     <td onclick="location.href = '/produto/detalhe_produto/{{product.id}}'">{{ product.valor }}</td>
                     <td width="130">
-                      <button class="btn" href="#registrarVenda" onclick="addProductId('{{product.id}}')" data-toggle="modal">Registrar Venda</button>
+                      <button class="btn" href="#registrarVenda" onclick="addProductId('{{product.id}}',{{product.valor}})" data-toggle="modal">Registrar Venda</button>
                     </td>
                   </tr>
                    {% endif %}
@@ -235,7 +235,7 @@
                   <td>Moda Feminina</td>
                   <td>R$ 90,00</td>
                   <td width="130">
-                    <button class="btn" href="#registrarVenda" onclick="addProductId('someProductId')" data-toggle="modal">Registrar Venda</button>
+                    <button class="btn" href="#registrarVenda" onclick="addProductId('someProductId',0)" data-toggle="modal">Registrar Venda</button>
                   </td>
                 </tr>
                 <tr>
@@ -243,7 +243,7 @@
                   <td>Moda Feminina</td>
                   <td>R$ 40,00</td>
                   <td width="130">
-                    <button class="btn" href="#registrarVenda" onclick="addProductId('someProductId')" data-toggle="modal">Registrar Venda</button>
+                    <button class="btn" href="#registrarVenda" onclick="addProductId('someProductId',0)" data-toggle="modal">Registrar Venda</button>
                   </td>
                 </tr>
 
@@ -260,7 +260,7 @@
                         <h3 id="myModalLabel">Registrar Venda</h3>
                       </div>
                       <div class="modal-body">
-                        <form id='registrarVendaForm' method="post" action="registrar_venda/">
+                        <form id='registrarVendaForm' method="post" action="/produto/registrar_venda/">
                           {% csrf_token %}
                           <input type = 'hidden' id = 'productId' name = 'productId' value=""></input>
 
@@ -285,12 +285,14 @@
                                   <label for="inputPrazo">Data da Venda:</label>
                                 </div>
                                 <div> 
-                                  <div class="input-append date" id="inputPrazo" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input name="data_venda" class="span2" size="16" type="text" value="12-02-2012" readonly></input>
+
+                                  <div class="input-append date" id="inputPrazo" data-date="12/02/2012" data-date-format="dd/mm/yyyy">
+                                    <input name="data_venda" class="span2" size="16" type="text" value="12/02/2012"></input>
                                     <span class="add-on"><i class="icon-calendar"></i></span>
                                   </div>
                                 </div>
                               </div>
+                              
                               <div style="float:right;">
                                 <div>
                                   <label for="inputValor">Valor do Produto:</label>
@@ -298,7 +300,7 @@
                                 <div> 
                                   <div class="input-prepend input-append">
                                     <span class="add-on">R$</span>
-                                    <input class="span2" id="inputValor" type="text" ></input>
+                                    <input class="span2" id="inputValor" name="inputValor" type="text" value="" ></input>
                                   </div>
                                 </div>
                               </div>
@@ -393,10 +395,15 @@
         element2.value = _id;
       }
 
-      function addProductId(_id){
+      function addProductId(_id,valor){
         productId = document.getElementById('productId');
 
         productId.value = _id;
+
+        inputValor = document.getElementById('inputValor')
+        inputValor.value = valor
+
+        log.print(inputValor.value)
 
 
       }
