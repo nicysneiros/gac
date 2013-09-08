@@ -61,7 +61,7 @@ DATETIME_FORMAT = 'd/m/Y - H:i:s'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = os.path.abspath(os.path.join(ROOT_PATH,'../media'))
+MEDIA_ROOT = os.path.abspath(os.path.join(ROOT_PATH,'../static'))
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -83,7 +83,6 @@ STATIC_URL = '/static/'
 # Additional locations of static files
 STATICFILES_DIRS = (
     os.path.abspath(os.path.join(ROOT_PATH,'../static_files')),
-    os.path.abspath(os.path.join(ROOT_PATH,'../media/')),
 
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
