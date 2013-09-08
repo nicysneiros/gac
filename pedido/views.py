@@ -251,9 +251,11 @@ def pedidos(request):
     corporativoForm = CorporativoForm()
 
     if request.POST:
-        d = Draft.objects.all().filter(id=request.POST.get('foto',0))
+        print request.POST.get('desenho',0)
+        d = Draft.objects.all().filter(id=request.POST.get('desenho',0))
         
         if d:
+            d = Draft.objects.get(id=request.POST.get('desenho',0))
             p = Pedido(desenho=d.photo) 
             form = PedidoForm(request.POST or None, instance=p)
         else:
