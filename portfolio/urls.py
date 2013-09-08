@@ -10,7 +10,7 @@ from portfolio.views import *
 urlpatterns = patterns('',
     # Examples:
     url(r'^filtrar', filtrar),
-    url(r'^', portfolio),
+    url(r'^$', portfolio),
 )
 
 
