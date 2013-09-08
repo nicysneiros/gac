@@ -183,8 +183,8 @@ LOGGING = {
 }
 
 
-import dj_database_url
-DATABASES['default'] = dj_database_url.config(default='postgres://postgres:1234@localhost/gac')
+#import dj_database_url
+#DATABASES['default'] = dj_database_url.config(default='postgres://postgres:1234@localhost/gac')
  
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
