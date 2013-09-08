@@ -15,14 +15,14 @@ def photos(request):
 
 	return render(request, 'photos.html', {"img_list": img_list})
 
-def crawl():
+def crawl(all=False):
 
 	imap = imaplib.IMAP4_SSL(settings.MAIL_SERVER)
 	imap.login(settings.BOTMAIL_USER, settings.BOTMAIL_PASSWORD)
 	imap.select("INBOX") 
 
 	imap.select()
-	typ, data = imap.uid('SEARCH', 'UNSEEN')
+	typ, data = imap.uid('SEARCH', 'ALL' if all else 'UNSEEN')
 	msgs = data[0].split()
 	
 	#print "Found {0} msgs".format(len(msgs))

@@ -5,10 +5,19 @@ from random import randrange
 from datetime import timedelta
 from random import randint
 from datetime import datetime
+from ecrawler.models import *
+from ecrawler.views import crawl
 
 def random_date(start, end):
     return start + timedelta(
         seconds=randint(0, int((end - start).total_seconds())))
+
+def random_photo():
+
+	drafts = Draft.objects.all()
+	random_index = randint(0, int((len(drafts) - 1)))
+
+	return drafts[random_index].photo
 
 #para rodar, abra python manage.py shell, e digite execfile('povoamento.py')
 
@@ -17,6 +26,10 @@ Cliente.objects.all().delete()
 Produto.objects.all().delete()
 Despesa.objects.all().delete()
 Pedido.objects.all().delete()
+Draft.objects.all().delete()
+
+#Forcing download of all images from botmail.
+crawl(True)
 
 
 startDate = datetime.strptime('20/08/2013 1:30 PM', '%d/%m/%Y %I:%M %p')
@@ -35,17 +48,17 @@ for i in range(0,10):
 	#Produto (valor, descricao, Cliente, data, tamanho, categoria, foto, titulo, portfolio)
 	if (i%2 == 0):
 		dataProduto = random_date(startDate,datetime.now())
-		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=c, data=dataProduto, tamanho='mm', categoria='categoria', titulo='tituloProduto%d'%i, portfolio=False)
+		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=c, data=dataProduto, tamanho='mm', categoria='categoria', titulo='tituloProduto%d'%i, portfolio=False, foto = random_photo())
 		p.save()
 	else:
-		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=None, data=None, tamanho='mm', categoria='categoria', titulo='tituloProduto%d'%i, portfolio=True)
+		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=None, data=None, tamanho='mm', categoria='categoria', titulo='tituloProduto%d'%i, portfolio=True, foto = random_photo())
 		p.save()
 	
 	
 	#Pedido (valor, descricao, Cliente, data, prazo, desenho)
 	dataPrazo = random_date(startDate,endDate)
 	dataPedido = random_date(startDate,datetime.now())
-	pe = Pedido(valor=randint(10,500), descricao='descPedido', cliente=c, data=dataPedido, prazo=dataPrazo)
+	pe = Pedido(valor=randint(10,500), descricao='descPedido', cliente=c, data=dataPedido, prazo=dataPrazo, desenho = random_photo())
 	pe.save()
 
 	#Despesa (valor, fornecedor, descricao, Servico, data)
