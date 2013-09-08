@@ -28,9 +28,9 @@ class PedidosReport(Report):
         height = 0.5*cm
         elements=(
                 ObjectValue(attribute_name='cliente.nome', left=0.5*cm),
-                ObjectValue(attribute_name='dataEntrega', left=3*cm),
-                ObjectValue(attribute_name='valorCobrado',left=7*cm),
-                ObjectValue(attribute_name='valorGasto', left=11*cm),                    
+                ObjectValue(attribute_name='dataEntrega', left=6*cm),
+                ObjectValue(attribute_name='valorCobrado',left=10*cm),
+                ObjectValue(attribute_name='valorGasto', left=14*cm),                    
                 )
 
        
@@ -40,9 +40,9 @@ class PedidosReport(Report):
                 SystemField(expression='%(report_title)s', top=0.1*cm, left=0, width=BAND_WIDTH,
                     style={'fontName': 'Helvetica-Bold', 'fontSize': 18, 'alignment': TA_CENTER}),
                 Label(text="Cliente", top=0.8*cm, left=0.5*cm),
-                Label(text=u"Data Entrega", top=0.8*cm, left=3*cm),
-                Label(text=u"Valor Cobrado", top=0.8*cm, left=7*cm),
-                Label(text=u"Valor Gasto", top=0.8*cm, left=11*cm),
+                Label(text=u"Data Entrega", top=0.8*cm, left=6*cm),
+                Label(text=u"Valor Cobrado", top=0.8*cm, left=10*cm),
+                Label(text=u"Valor Gasto", top=0.8*cm, left=14*cm),
                 SystemField(expression=u'Pagina %(page_number)d de %(page_count)d', top=0.1*cm,
                     width=BAND_WIDTH, style={'alignment': TA_RIGHT}),
                 ]
@@ -52,8 +52,7 @@ class PedidosReport(Report):
         height = 0.5*cm
         elements = [
                 Label(text='GAC', top=0.1*cm),
-                SystemField(expression=u'Impresso em %(now:Y, b d)s as %(now:H:i)s', top=0.1*cm,
-                    width=BAND_WIDTH, style={'alignment': TA_RIGHT}),
+                
                 ]
 
         borders = {'top': True}        
@@ -84,10 +83,10 @@ class ProdutosReport(Report):
         height = 0.5*cm
         elements=(                
                 ObjectValue(attribute_name='cliente.nome', left=0.5*cm),
-                ObjectValue(attribute_name='dataVenda', left=3*cm,
+                ObjectValue(attribute_name='dataVenda', left=6*cm,
                     get_value=lambda instance: instance.dataVenda.strftime('%d/%m/%Y')),
-                ObjectValue(attribute_name='valorCobrado',left=7*cm),
-                ObjectValue(attribute_name='valorGasto', left=11*cm),                    
+                ObjectValue(attribute_name='valorCobrado',left=10*cm),
+                ObjectValue(attribute_name='valorGasto', left=14*cm),                    
                 )
     class band_page_header(ReportBand):
         height = 1.3*cm
@@ -95,9 +94,9 @@ class ProdutosReport(Report):
                 SystemField(expression='%(report_title)s', top=0.1*cm, left=0, width=BAND_WIDTH,
                     style={'fontName': 'Helvetica-Bold', 'fontSize': 18, 'alignment': TA_CENTER}),
                 Label(text=u"Cliente", top=0.8*cm, left=0.5*cm),
-                Label(text="Data da Venda", top=0.8*cm, left=3*cm),
-                Label(text=u"Valor Cobrado", top=0.8*cm, left=7*cm),
-                Label(text=u"Valor Gasto", top=0.8*cm, left=11*cm),
+                Label(text="Data da Venda", top=0.8*cm, left=6*cm),
+                Label(text=u"Valor Cobrado", top=0.8*cm, left=10*cm),
+                Label(text=u"Valor Gasto", top=0.8*cm, left=14*cm),
                 SystemField(expression=u'Pagina %(page_number)d de %(page_count)d', top=0.1*cm,
                     width=BAND_WIDTH, style={'alignment': TA_RIGHT}),
                 ]
@@ -106,8 +105,6 @@ class ProdutosReport(Report):
     class band_page_footer(ReportBand):
         height = 0.5*cm
         elements = [
-                Label(text='GAC', top=0.1*cm),
-                SystemField(expression=u'Impresso em %(now:Y, b d)s as %(now:H:i)s', top=0.1*cm,
-                    width=BAND_WIDTH, style={'alignment': TA_RIGHT}),
+                Label(text='GAC', top=0.1*cm)
                 ]
         borders = {'top': True}                
