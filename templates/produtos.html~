@@ -17,7 +17,7 @@
 
     </style>
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
-    <!--<link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">-->
+    <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico">
@@ -49,7 +49,7 @@
     <div class="tabbable tabs-left" style="padding-left:50px;">
       <ul class="nav nav-tabs">
         <li id="liPedidos" onClick="location.href = '/pedido/info_pedidos';">
-          <a href="/pedido/info_pedidos/" data-toggle="tab">Pedidos</a>
+          <a href="pedidos/info_pedidos/" data-toggle="tab">Pedidos</a>
         </li>
         <li id="liProdutos" class="active">
           <a href="#" data-toggle="tab">Produtos</a>
