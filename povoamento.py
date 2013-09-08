@@ -22,29 +22,30 @@ Pedido.objects.all().delete()
 startDate = datetime.strptime('20/08/2013 1:30 PM', '%d/%m/%Y %I:%M %p')
 endDate = datetime.strptime('28/09/2013 1:30 PM', '%d/%m/%Y %I:%M %p')
 
-for i in range(0,9):
+nomes = ['Nicolle Chaves Cysneiros', 'Rafael Lucena de Oliveira', 'Roberta Cabral', 'Joao Lucas de Miranda', 'Ermano Ardiles Arruda', 'Jose Luiz Correa', 'Fanny Chien', 'Mariama Oliveira', 'Luiz Vasconcelos', 'Brunete Soares']
+for i in range(0,10):
 	#Endereco(logradouro, complemento, bairro, cidade, cep)
 	e = Endereco(logradouro='logradouro%d'%i, complemento='complemento%d'%i, bairro='bairro%d'%i, cidade='cidade%d'%i, cep='cep%d'%i)
 	e.save()
 
 	#Cliente (cpf, nome, email, Endereco, telResidencial, telCelular, juridico)
-	c = Cliente(id=i, nome='nome%d'%i, email='email@email.com%d'%i, endereco=e, telResidencial='3333-3333', telCelular='8888-8888', juridico=False)
+	c = Cliente(id=i, nome=nomes[i], email='email@email.com%d'%i, endereco=e, telResidencial='3333-3333', telCelular='8888-8888', juridico=False)
 	c.save()
 
 	#Produto (valor, descricao, Cliente, data, tamanho, categoria, foto, titulo, portfolio)
 	if (i%2 == 0):
 		dataProduto = random_date(startDate,datetime.now())
-		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=c, data=dataProduto, tamanho='mm', categoria='categoria', foto='abc/', titulo='tituloProduto%d'%i, portfolio=False)
+		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=c, data=dataProduto, tamanho='mm', categoria='categoria', titulo='tituloProduto%d'%i, portfolio=False)
 		p.save()
 	else:
-		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=None, data=None, tamanho='mm', categoria='categoria', foto='abc/', titulo='tituloProduto%d'%i, portfolio=True)
+		p = Produto(valor=randint(10,200), descricao='descProduto%d'%i, cliente=None, data=None, tamanho='mm', categoria='categoria', titulo='tituloProduto%d'%i, portfolio=True)
 		p.save()
 	
 	
 	#Pedido (valor, descricao, Cliente, data, prazo, desenho)
 	dataPrazo = random_date(startDate,endDate)
 	dataPedido = random_date(startDate,datetime.now())
-	pe = Pedido(valor=randint(10,500), descricao='descPedido', cliente=c, data=dataPedido, prazo=dataPrazo, desenho='def/')
+	pe = Pedido(valor=randint(10,500), descricao='descPedido', cliente=c, data=dataPedido, prazo=dataPrazo)
 	pe.save()
 
 	#Despesa (valor, fornecedor, descricao, Servico, data)
