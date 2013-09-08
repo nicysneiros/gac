@@ -55,7 +55,7 @@
         <li class="active" onClick="location.href = '/portfolio_admin/';">
           <a href="/portfolio_admin/" data-toggle="tab">Portfólio</a>
         </li>
-        <li onClick="location.href = '/relatorio/;">
+        <li onClick="location.href = '/relatorio/';">
           <a href="/relatorio/" data-toggle="tab">Relatório</a>
         </li>
       </ul>
@@ -130,7 +130,9 @@
 					{% if produto.portfolio %}
 					<li class="span3">
                       <div class="thumbnail">
-                        <img src="{{ produto.foto.url }}" width="160" height="230"/>
+                      	{% if produto.foto %}
+                        	<img src="{{ produto.foto.url }}" width="160" height="230"/>
+                        {% endif %}
                         <div class="caption">
                           <h3>{{ produto.titulo }}</h3>
                           <h5>{{ produto.categoria }}</h5>

@@ -127,7 +127,9 @@
                 {% if produto.portfolio %}
                 <li class="span3">
                   <div class="thumbnail">
-                    <img src="{{ produto.foto.url }}" width="160" height="230"/>
+                  	{% if produto.foto %}
+                    	<img src="{{ produto.foto.url }}" width="160" height="230"/>
+                    {% endif %}
                     <div class="caption">
                       <h3>{{ produto.titulo }}</h3>
                       <h5>{{ produto.categoria }}</h5>

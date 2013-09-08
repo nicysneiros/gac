@@ -3,6 +3,8 @@ from django.conf import settings
 
 from atelier.views import servicos
 
+from portfolio.views import portfolio
+
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -20,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^portfolio/', include('portfolio.urls')),
     url(r'^portfolio_admin/', include('portfolio_admin.urls')),
     url(r'^relatorio/', include('relatorio.urls')),
-    url(r'^servicos/', servicos),
+    url(r'^servicos/$', servicos),
     
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

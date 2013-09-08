@@ -17,7 +17,7 @@
 
     </style>
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
-    <!--<link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">-->
+    <link rel="stylesheet" href="{{STATIC_URL}}css/datepicker.css">
 
     <!-- Fav and touch icons -->
     <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico">
@@ -260,7 +260,7 @@
                         <h3 id="myModalLabel">Registrar Venda</h3>
                       </div>
                       <div class="modal-body">
-                        <form id='registrarVendaForm' method="post" action="registrar_venda/">
+                        <form id='registrarVendaForm' method="post" action="/produto/registrar_venda/">
                           {% csrf_token %}
                           <input type = 'hidden' id = 'productId' name = 'productId' value=""></input>
 
@@ -285,8 +285,8 @@
                                   <label for="inputPrazo">Data da Venda:</label>
                                 </div>
                                 <div> 
-                                  <div class="input-append date" id="inputPrazo" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-                                    <input name="data_venda" class="span2" size="16" type="text" value="12-02-2012" readonly></input>
+                                  <div class="input-append date" id="inputPrazo" data-date="" data-date-format="dd-mm-yyyy">
+                                    <input name="data_venda" class="span2" size="16" type="text" value="" readonly></input>
                                     <span class="add-on"><i class="icon-calendar"></i></span>
                                   </div>
                                 </div>
